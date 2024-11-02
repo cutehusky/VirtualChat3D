@@ -1,11 +1,10 @@
 {
   "dependencies": {
-    "com.yasirkula.nativegallery": "https://github.com/yasirkula/UnityNativeGallery.git",
-    "com.yasirkula.nativefilepicker": "https://github.com/yasirkula/UnityNativeFilePicker.git",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
+    "com.endel.nativewebsocket": "https://github.com/endel/NativeWebSocket.git#upm",
     "com.jimmycushnie.jimmysunityutilities": "https://github.com/JimmyCushnie/JimmysUnityUtilities.git",
     "com.unity.ai.navigation": "2.0.0",
-    "com.unity.cinemachine": "2.9.7",
+    "com.unity.cinemachine": "3.0.1",
     "com.unity.ide.rider": "3.0.27",
     "com.unity.ide.visualstudio": "2.0.22",
     "com.unity.inputsystem": "1.7.0",
@@ -19,6 +18,8 @@
     "com.uralstech.ucloud.operations": "https://github.com/Uralstech/UCloud.Operations.git#upm",
     "com.uralstech.ugemini": "https://github.com/Uralstech/UGemini.git#upm",
     "com.uralstech.utils.singleton": "https://github.com/Uralstech/Utils.Singleton.git#upm",
+    "com.yasirkula.nativefilepicker": "https://github.com/yasirkula/UnityNativeFilePicker.git",
+    "com.yasirkula.nativegallery": "https://github.com/yasirkula/UnityNativeGallery.git",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
