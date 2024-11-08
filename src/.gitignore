@@ -85,3 +85,4 @@ credential.json.bytes.meta
 /[Aa]ssets/GeneratedLocalRepo/*
 /[Aa]ssets/Editor Default Resources/*
 
+/NodeServer/node_modules/*
