@@ -17,10 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Temp/Vroid LoadModelTest.unity
     guid: e6e2416dd69e17e4a9004ba547ec3f68
-  - enabled: 1
+  - enabled: 0
     path: Assets/Temp/Online.unity
     guid: d87db494e55678e48bb25a408d6ebd48
-  - enabled: 1
+  - enabled: 0
     path: Assets/Temp/websocket.unity
     guid: a758c7f0a6ed3d942b5eeb2fea7e31a3
   m_configObjects:
