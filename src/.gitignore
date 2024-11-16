@@ -79,7 +79,6 @@ credential.json.bytes
 credential.json.bytes.meta
 .idea/*
 .utmp/*
-/[Aa]ssets/Firebase/*
 /[Aa]ssets/ExternalDependencyManager/*
 /[Aa]ssets/GeneratedLocalRepo/*
 /[Aa]ssets/Editor Default Resources/*
