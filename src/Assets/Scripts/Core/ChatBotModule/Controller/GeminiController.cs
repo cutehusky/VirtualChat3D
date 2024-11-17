@@ -10,12 +10,12 @@ namespace Core.ChatBotModule.Controller
             return null;
         }
 
-        public void ExpressionControl(string emotion)
+        public void ExpressionControl(EEmotion emotion)
         {
             
         }
 
-        public void NewChat()
+        public void NewChat(string geminiModelName)
         {
             
         }

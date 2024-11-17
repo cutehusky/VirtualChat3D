@@ -12,6 +12,21 @@ namespace Core.CharacterCustomizeModule.Model
         public string ChatRoomSelectModelId;
         public string ChatBotSelectModelId;
         
+        public void LoadModelList()
+        {
+            
+        }
+
+        public byte[] LoadModelFromInternal(string fileName)
+        {
+            return null;
+        }
+        
+        public GameObject CreateCharacter(string modelId)
+        {
+            return null;
+        }
+        
         protected override void OnInit()
         {
             

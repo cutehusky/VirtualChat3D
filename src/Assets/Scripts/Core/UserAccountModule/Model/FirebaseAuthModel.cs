@@ -1,4 +1,5 @@
-﻿using QFramework;
+﻿using System;
+using QFramework;
 
 namespace Core.UserAccountModule.Model
 {
@@ -8,6 +9,10 @@ namespace Core.UserAccountModule.Model
         
         public void InitFirebase() {
             Auth =  Firebase.Auth.FirebaseAuth.DefaultInstance;
+        }
+        
+        public void GetLoginToken(Action<string> callback)
+        {
         }
         
         protected override void OnInit()

@@ -8,6 +8,7 @@ namespace Core.ChatBotModule.View
     public class ChatBotView: ViewBase
     {
         public Transform chatBotModelPoint;
+        public ExpressionControl chatBotExpressionControl;
         public TMP_InputField chatInput;
         public ChatBox userInput;
         public ChatBox chatBotOutput;

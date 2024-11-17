@@ -7,7 +7,7 @@ namespace Core.UserAccountModule.Model
 {
     public class UserProfileDataModel: ModelBase
     {
-        public UserData UserData;
+        public UserAccountData UserProfileData;
         
         protected override void OnInit()
         {

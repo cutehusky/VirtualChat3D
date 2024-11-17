@@ -9,21 +9,6 @@ namespace Core.CharacterCustomizeModule.Controller
             
         }
 
-        public void CreateCharacter(string modelId)
-        {
-            
-        }
-
-        public void LoadModelList()
-        {
-            
-        }
-
-        public void LoadModelFromInternal()
-        {
-            
-        }
-
         public void SelectChatRoomModel(string id)
         {
             

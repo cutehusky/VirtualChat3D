@@ -7,6 +7,7 @@ namespace Core.ChatBotModule.Model
     public class GeminiDataModel: ModelBase
     {
         public List<GeminiContent> History;
+        public string CurrentGeminiModelName;
 
         protected override void OnInit()
         {

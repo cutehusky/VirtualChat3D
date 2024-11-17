@@ -2,7 +2,7 @@
 
 namespace Core.MessageModule.Controller
 {
-    public class FriendManagerController : ControllerBase
+    public class FriendController : ControllerBase
     {
         
         public void LoadFriendList()
@@ -15,12 +15,12 @@ namespace Core.MessageModule.Controller
             
         }
         
-        public void AcceptFriend()
+        public void AcceptFriend(string userId)
         {
             
         }
 
-        public void RemoveFriend()
+        public void RemoveFriend(string userId)
         {
             
         }

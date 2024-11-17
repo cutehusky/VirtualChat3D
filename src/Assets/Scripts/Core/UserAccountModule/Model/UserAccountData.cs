@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.UserAccountModule.Model
 {
-    public class UserData
+    public class UserAccountData
     {
         public Texture2D Avatar;
         public string Description;

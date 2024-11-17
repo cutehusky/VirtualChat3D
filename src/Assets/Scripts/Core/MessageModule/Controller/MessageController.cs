@@ -4,16 +4,8 @@ using QFramework;
 
 namespace Core.MessageModule.Controller
 {
-    public class MessageManager: MonoSingletonControllerBase
+    public class MessageController: ControllerBase
     {
-        /// <summary>
-        ///  Receive new message from server
-        /// </summary>
-        public void ReceiveNewMessage()
-        {
-            
-        }
-
         /// <summary>
         /// Mark all new message as read
         /// </summary>
@@ -22,7 +14,28 @@ namespace Core.MessageModule.Controller
         {
             
         }
+
+        public void SendMessage(string userId, string data)
+        {
+            
+        }
         
+        /// <summary>
+        ///  Receive new message from server
+        /// </summary>
+        public void ReceiveNewMessage()
+        {
+            
+        }
+        
+        public bool IsHaveNewMessageFromUser(string userId)
+        {
+            if (this.GetModel<MessageDataModel>().ChatSessions.TryGetValue(userId, out var chatSession))
+                return chatSession.NewChatData.Count > 0;
+            return false;
+        }
+        
+           
         /// <summary>
         /// Load all message from server
         /// </summary>
@@ -31,19 +44,8 @@ namespace Core.MessageModule.Controller
             
         }
 
-        public bool IsHaveNewMessageFromUser(string userId)
-        {
-            if (this.GetModel<MessageDataModel>().ChatSessions.TryGetValue(userId, out var chatSession))
-                return chatSession.NewChatData.Count > 0;
-            return false;
-        }
 
-        public void SendMessage(string userId, string data)
-        {
-            
-        }
-        
-        public override void OnInit()
+        public override void OnInit(ViewBase view)
         {
             
         }

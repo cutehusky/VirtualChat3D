@@ -24,10 +24,6 @@ namespace Core.UserAccountModule.Controller
         {
             
         }
-
-        public void GetLoginToken(Action<string> callback)
-        {
-        }
         
         public override void OnInit()
         {

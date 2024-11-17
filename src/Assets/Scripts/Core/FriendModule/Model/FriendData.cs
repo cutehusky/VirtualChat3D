@@ -2,7 +2,7 @@
 
 namespace Core.FriendModule
 {
-    public class FriendData : UserData
+    public class FriendData : UserAccountData
     {
         public bool IsAccepted;
     }
