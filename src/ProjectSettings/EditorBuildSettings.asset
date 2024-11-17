@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Temp/websocket.unity
     guid: a758c7f0a6ed3d942b5eeb2fea7e31a3
+  - enabled: 1
+    path: Assets/Temp/New Scene.unity
+    guid: ed441d010058718439f54efd99397a6c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 149cb6d72e74b2f42b522d411c97abb8,
       type: 2}

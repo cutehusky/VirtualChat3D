@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "355146874335",
+    "firebase_url": "https://virtualchat3d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "virtualchat3d",
+    "storage_bucket": "virtualchat3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355146874335:android:9dce22127f0b3b4207586a",
+        "android_client_info": {
+          "package_name": "com.cutehusky.VirtualChat3D"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeBc0K8yUpEcvHwkX150Hdp1fk4V4zwg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

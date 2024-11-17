@@ -1,0 +1,24 @@
+﻿using Core.MessageModule.View;
+using Core.MVC;
+using TMPro;
+using UnityEngine;
+
+namespace Core.ChatBotModule.View
+{
+    public class ChatBotView: ViewBase
+    {
+        public Transform chatBotModelPoint;
+        public TMP_InputField chatInput;
+        public ChatBox userInput;
+        public ChatBox chatBotOutput;
+        public override void Render(ModelBase model)
+        {
+            
+        }
+
+        public override void OnInit()
+        {
+            
+        }
+    }
+}

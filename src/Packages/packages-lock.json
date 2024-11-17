@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "8a8fa5a9659a6d63f196391c71e06c4286c8acd7"
     },
+    "com.devsdaddy.cryptolibrary": {
+      "version": "https://github.com/DevsDaddy/UnityCrypto.git?path=/DevsDaddy/Shared/CryptoLibrary/",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "e39f5852c0e6b7bd8d9bfaa44a9e1931adb2d9b5"
+    },
     "com.itisnajim.socketiounity": {
       "version": "https://github.com/itisnajim/SocketIOUnity.git",
       "depth": 0,
