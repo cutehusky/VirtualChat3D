@@ -4,30 +4,31 @@ using Core.OnlineRuntimeModule.RoomManagementModule.View;
 
 namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
 {
-    public class RoomManager: ControllerBase
+    public class ConnectionManager: ControllerBase
     {
         private HostRoomView _hostRoomView;
-        
-        public void CreateRoom()
+        private JoinedUserListView _userListView;
+        private JoinRoomView _joinRoomView;
+        public void ClientConnect(string ip, int port)
         {
             
         }
 
-        public void EditRoomAccessType(string roomId)
+        public void Host(string ip, int port)
         {
             
         }
 
-        public void DeleteRoom(string roomId)
+        public void KickUser()
         {
             
         }
-        
-        public void LoadRoomsData()
+
+        public void Disconnect()
         {
             
         }
-        
+
         public override void OnInit(List<ViewBase> view)
         {
             

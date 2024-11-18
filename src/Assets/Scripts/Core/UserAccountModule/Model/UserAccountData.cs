@@ -10,5 +10,6 @@ namespace Core.UserAccountModule.Model
         public string Username;
         public DateTime DateOfBirth;
         public string UserId;
+        public bool IsOnline;
     }
 }

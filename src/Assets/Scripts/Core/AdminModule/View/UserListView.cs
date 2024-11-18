@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.FriendModule.View;
 using Core.MVC;
 using TMPro;

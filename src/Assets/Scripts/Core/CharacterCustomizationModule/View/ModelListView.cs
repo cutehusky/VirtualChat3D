@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core.MVC;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Core.FriendModule.View
+namespace Core.CharacterCustomizationModule.View
 {
-    public class FriendListView: ViewBase
+    public class ModelListView: ViewBase
     {
         public RectTransform scrollViewParent;
         public GameObject listItemTemplate;
-        public List<FriendListItem> items;
-        public TMP_InputField userIdSearch;
-        public Button addFriendButton;
-        
+        public List<ModelListViewItem> items;
+        public Button select;
+        public Transform previewModelPoint;
         public override void Render(ModelBase model)
         {
             

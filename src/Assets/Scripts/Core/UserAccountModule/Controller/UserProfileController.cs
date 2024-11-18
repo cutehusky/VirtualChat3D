@@ -1,11 +1,22 @@
-﻿using Core.MVC;
+﻿using System.Collections.Generic;
+using Core.MVC;
+using Core.UserAccountModule.Model;
 using Core.UserAccountModule.View;
+using QFramework;
 
 namespace Core.UserAccountModule.Controller
 {
     public class UserProfileController: ControllerBase
     {
-        private UserProfileView _view;
+        public UserProfileView UserProfileView;
+
+        public ViewBase OpenUserProfileView()
+        {
+            AppMain.Instance.CloseCurrentView();
+            UserProfileView.Display();
+            UserProfileView.Render(this.GetModel<UserProfileDataModel>());
+            return UserProfileView;
+        }
         
         public void LoadUserProfile()
         {
@@ -32,9 +43,9 @@ namespace Core.UserAccountModule.Controller
             
         }
         
-        public override void OnInit(ViewBase view)
+        public override void OnInit(List<ViewBase> view)
         {
-            _view = (UserProfileView) view;
+            UserProfileView = (UserProfileView) view[0];
         }
     }
 }

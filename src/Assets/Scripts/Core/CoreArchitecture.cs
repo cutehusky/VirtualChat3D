@@ -1,10 +1,10 @@
 ﻿using Core.AdminModule.Model;
-using Core.CharacterCustomizeModule.Model;
+using Core.CharacterCustomizationModule.Model;
 using Core.ChatBotModule.Model;
 using Core.FirebaseDatabaseModule.Model;
 using Core.MessageModule.Model;
 using Core.NetworkModule.Model;
-using Core.OnlineRuntimeModule.EnvironmentCustomizeModule.Model;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;
 using Core.OnlineRuntimeModule.InputModule.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.UserAccountModule.Model;

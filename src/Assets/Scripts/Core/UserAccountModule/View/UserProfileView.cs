@@ -1,4 +1,5 @@
-﻿using Core.MVC;
+﻿using System;
+using Core.MVC;
 using Core.UserAccountModule.Model;
 using TMPro;
 using UI.Dates;
@@ -13,11 +14,17 @@ namespace Core.UserAccountModule.View
         public TMP_InputField description;
         public Image avatar;
         public DatePicker dateOfBirth;
+        public Button save;
+        public Button cancel;
         public Button resetPassword;
+        public Button signOut;
+
         public override void Render(ModelBase model)
         {
-            var userProfileModel = model as UserProfileDataModel;
-            //
+            var userData = (model as UserProfileDataModel).UserProfileData;
+            userId.text = userData.UserId;
+            username.text = userData.Username;
+            description.text = userData.Description;
         }
 
         public override void OnInit()

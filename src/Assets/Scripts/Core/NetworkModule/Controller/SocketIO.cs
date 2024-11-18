@@ -8,10 +8,11 @@ using SocketIOClient;
 using SocketIOClient.Newtonsoft.Json;
 using SocketIOClient.Transport;
 using UnityEngine;
+using Utilities;
 
 namespace Core.NetworkModule.Controller
 {
-    public class SocketIO: MonoSingletonControllerBase
+    public class SocketIO: MonoSingleton<SocketIO>, IController
     {
         [JsonObject]
         public class KeyRepPacket
@@ -101,7 +102,7 @@ namespace Core.NetworkModule.Controller
             await _socket.DisconnectAsync();
         }
 
-        public override async void OnInit()
+        public async void OnInit()
         {
             this.GetModel<EncryptionProvider>().SetServerKey("<RSAKeyValue><Modulus>iDk6uA51M3XpWp/6rbjPMrJUqGPZXowRJKODTxx1iTFZUi/IgGWL3el1QrI72c8lMS/gAsadUlDw8n6cch8kMQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
             
@@ -214,6 +215,11 @@ namespace Core.NetworkModule.Controller
                 _sendKeyDeltaTime = 0;
             };
             await _socket.ConnectAsync();
+        }
+
+        public IArchitecture GetArchitecture()
+        {
+            return CoreArchitecture.Interface;
         }
     }
 }

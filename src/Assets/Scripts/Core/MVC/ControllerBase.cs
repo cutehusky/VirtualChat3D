@@ -1,4 +1,5 @@
-﻿using QFramework;
+﻿using System.Collections.Generic;
+using QFramework;
 
 namespace Core.MVC
 {
@@ -8,7 +9,7 @@ namespace Core.MVC
         /// Bind input action.
         /// </summary>
         /// <param name="view"></param>
-        public abstract void OnInit(ViewBase view);
+        public virtual void OnInit(List<ViewBase> view) {}
         
         public IArchitecture GetArchitecture()
         {

@@ -1,4 +1,6 @@
-﻿using Core.MessageModule.Model;
+﻿using System.Collections.Generic;
+using Core.MessageModule.Model;
+using Core.MessageModule.View;
 using Core.MVC;
 using QFramework;
 
@@ -6,6 +8,7 @@ namespace Core.MessageModule.Controller
 {
     public class MessageController: ControllerBase
     {
+        private MessageView _messageView;
         /// <summary>
         /// Mark all new message as read
         /// </summary>
@@ -45,7 +48,7 @@ namespace Core.MessageModule.Controller
         }
 
 
-        public override void OnInit(ViewBase view)
+        public override void OnInit(List<ViewBase> view)
         {
             
         }

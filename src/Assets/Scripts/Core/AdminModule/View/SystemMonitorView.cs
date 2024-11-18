@@ -1,4 +1,5 @@
-﻿using Core.MVC;
+﻿using System;
+using Core.MVC;
 
 namespace Core.AdminModule.View
 {

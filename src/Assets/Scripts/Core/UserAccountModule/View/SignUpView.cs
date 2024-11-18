@@ -1,5 +1,10 @@
-﻿using Core.MVC;
+﻿using System;
+using System.Text.RegularExpressions;
+using Core.MVC;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Core.UserAccountModule.View
 {
@@ -8,25 +13,45 @@ namespace Core.UserAccountModule.View
         public TMP_InputField email;
         public TMP_InputField password;
         public TMP_InputField re_password;
+        public Button login;
+        public Button signUp;
         
-        public bool PasswordCheck(string value)
+        public static bool EmailCheck(string s)
         {
-            return true;
-        }
-        
-        public bool EmailCheck()
-        {
-            return true;
+            string regex = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+            return Regex.IsMatch(s, regex);
         }
 
         public override void Render(ModelBase model)
         {
-            
+            email.text = "";
+            password.text = "";
+            re_password.text = "";
         }
 
         public override void OnInit()
         {
-            
+            email.onValueChanged.AddListener(s =>
+            {
+                if (EmailCheck(s))
+                    email.textComponent.color = Color.green;
+                else
+                    email.textComponent.color = Color.red;
+            });
+            password.onValueChanged.AddListener(s =>
+            {
+                if (s == re_password.text)
+                    email.textComponent.color = Color.green;
+                else
+                    email.textComponent.color = Color.red;
+            });
+            re_password.onValueChanged.AddListener(s =>
+            {
+                if (s == password.text)
+                    email.textComponent.color = Color.green;
+                else
+                    email.textComponent.color = Color.red;
+            });
         }
     }
 }
