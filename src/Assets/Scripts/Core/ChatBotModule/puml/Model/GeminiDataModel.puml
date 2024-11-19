@@ -1,0 +1,8 @@
+@startuml
+class GeminiDataModel {
+    + History : List<GeminiContent>
+    + CurrentGeminiModelName : string
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- GeminiDataModel
+@enduml

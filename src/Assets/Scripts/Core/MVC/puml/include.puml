@@ -1,0 +1,7 @@
+@startuml
+!include .\\.\AppMain.puml
+!include .\\.\ControllerBase.puml
+!include .\\.\FirebaseModelBase.puml
+!include .\\.\ModelBase.puml
+!include .\\.\ViewBase.puml
+@enduml

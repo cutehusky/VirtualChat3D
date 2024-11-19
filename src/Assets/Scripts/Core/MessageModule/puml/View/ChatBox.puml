@@ -1,0 +1,8 @@
+@startuml
+class ChatBox {
+    + role : TMP_Text
+    + text : TMP_Text
+    + time : TMP_Text
+}
+MonoBehaviour <|-- ChatBox
+@enduml

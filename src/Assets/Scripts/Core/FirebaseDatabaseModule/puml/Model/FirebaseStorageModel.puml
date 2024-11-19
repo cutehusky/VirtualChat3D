@@ -1,0 +1,7 @@
+@startuml
+class FirebaseStorageModel {
+    + Storage : FirebaseStorage
+    + <<override>> InitFirebase() : void
+}
+FirebaseModelBase <|-- FirebaseStorageModel
+@enduml

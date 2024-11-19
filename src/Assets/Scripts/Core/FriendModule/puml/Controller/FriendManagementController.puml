@@ -1,0 +1,11 @@
+@startuml
+class FriendManagementController {
+    - _friendListView : FriendListView
+    + LoadFriendList() : void
+    + AddFriend(userId:string) : void
+    + AcceptFriend(userId:string) : void
+    + RemoveFriend(userId:string) : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- FriendManagementController
+@enduml

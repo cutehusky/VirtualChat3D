@@ -1,0 +1,10 @@
+@startuml
+abstract class ViewBase {
+    + {abstract} Render(model:ModelBase) : void
+    + Display() : void
+    + Hide() : void
+    + {abstract} OnInit() : void
+    # Awake() : void
+}
+MonoBehaviour <|-- ViewBase
+@enduml

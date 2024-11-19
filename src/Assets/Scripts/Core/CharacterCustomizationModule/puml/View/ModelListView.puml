@@ -1,0 +1,12 @@
+@startuml
+class ModelListView {
+    + scrollViewParent : RectTransform
+    + listItemTemplate : GameObject
+    + items : List<ModelListViewItem>
+    + select : Button
+    + previewModelPoint : Transform
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- ModelListView
+@enduml

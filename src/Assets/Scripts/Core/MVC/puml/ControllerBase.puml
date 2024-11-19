@@ -1,0 +1,7 @@
+@startuml
+abstract class ControllerBase {
+    + <<virtual>> OnInit(view:List<ViewBase>) : void
+    + GetArchitecture() : IArchitecture
+}
+IController <|-- ControllerBase
+@enduml

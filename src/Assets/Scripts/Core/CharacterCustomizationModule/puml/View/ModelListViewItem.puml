@@ -1,0 +1,6 @@
+@startuml
+class ModelListViewItem {
+    + modelId : TMP_Text
+}
+MonoBehaviour <|-- ModelListViewItem
+@enduml

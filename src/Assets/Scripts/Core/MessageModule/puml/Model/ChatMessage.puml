@@ -1,0 +1,7 @@
+@startuml
+class ChatMessage {
+    + UserId : string
+    + Content : string
+    + Time : string
+}
+@enduml

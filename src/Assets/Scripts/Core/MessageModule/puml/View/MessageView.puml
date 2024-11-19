@@ -1,0 +1,12 @@
+@startuml
+class MessageView {
+    + chatInput : TMP_InputField
+    + scrollViewParent : RectTransform
+    + listItemTemplate : GameObject
+    + items : List<ChatBox>
+    + send : Button
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- MessageView
+@enduml

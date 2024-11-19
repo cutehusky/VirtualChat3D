@@ -1,0 +1,7 @@
+@startuml
+class FirebaseRealTimeDatabaseModel {
+    + DatabaseRootReference : DatabaseReference
+    + <<override>> InitFirebase() : void
+}
+FirebaseModelBase <|-- FirebaseRealTimeDatabaseModel
+@enduml

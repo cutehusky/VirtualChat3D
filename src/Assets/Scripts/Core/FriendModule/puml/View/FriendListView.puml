@@ -1,0 +1,12 @@
+@startuml
+class FriendListView {
+    + scrollViewParent : RectTransform
+    + listItemTemplate : GameObject
+    + items : List<FriendListItem>
+    + userIdSearch : TMP_InputField
+    + addFriendButton : Button
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- FriendListView
+@enduml

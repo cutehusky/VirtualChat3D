@@ -1,0 +1,6 @@
+@startuml
+class ChatSession {
+    + ChatData : List<ChatMessage>
+    + NewChatData : List<ChatMessage>
+}
+@enduml

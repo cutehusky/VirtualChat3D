@@ -1,0 +1,12 @@
+@startuml
+class MessageController {
+    - _messageView : MessageView
+    + ReadMessageOfUser(userId:string) : void
+    + SendMessage(userId:string, data:string) : void
+    + ReceiveNewMessage() : void
+    + IsHaveNewMessageFromUser(userId:string) : bool
+    + LoadMessage() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- MessageController
+@enduml

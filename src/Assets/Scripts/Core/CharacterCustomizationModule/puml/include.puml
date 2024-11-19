@@ -1,0 +1,6 @@
+@startuml
+!include .\\.\Controller\CharacterCustomizationController.puml
+!include .\\.\Model\CharacterModelDataModel.puml
+!include .\\.\View\ModelListView.puml
+!include .\\.\View\ModelListViewItem.puml
+@enduml

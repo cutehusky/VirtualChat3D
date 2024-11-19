@@ -1,0 +1,6 @@
+@startuml
+class FriendData {
+    + IsAccepted : bool
+}
+UserAccountData <|-- FriendData
+@enduml

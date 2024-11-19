@@ -1,0 +1,8 @@
+@startuml
+!include .\\.\Controller\MessageController.puml
+!include .\\.\Model\ChatMessage.puml
+!include .\\.\Model\ChatSession.puml
+!include .\\.\Model\MessageDataModel.puml
+!include .\\.\View\ChatBox.puml
+!include .\\.\View\MessageView.puml
+@enduml

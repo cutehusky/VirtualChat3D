@@ -1,0 +1,7 @@
+@startuml
+!include .\\.\Controller\FriendManagementController.puml
+!include .\\.\Model\FriendData.puml
+!include .\\.\Model\FriendDataModel.puml
+!include .\\.\View\FriendListItemView.puml
+!include .\\.\View\FriendListView.puml
+@enduml

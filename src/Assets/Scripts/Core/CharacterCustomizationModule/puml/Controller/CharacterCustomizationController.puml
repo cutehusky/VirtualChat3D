@@ -1,0 +1,10 @@
+@startuml
+class CharacterCustomizationController {
+    - _modelListView : ModelListView
+    + LoadModelFromExternal() : void
+    + SelectChatRoomModel(id:string) : void
+    + SelectChatBotModel(id:string) : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- CharacterCustomizationController
+@enduml

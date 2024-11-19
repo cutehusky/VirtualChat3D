@@ -1,0 +1,7 @@
+@startuml
+abstract class FirebaseModelBase {
+    + {abstract} InitFirebase() : void
+    # <<override>> OnInit() : void
+}
+AbstractModel <|-- FirebaseModelBase
+@enduml

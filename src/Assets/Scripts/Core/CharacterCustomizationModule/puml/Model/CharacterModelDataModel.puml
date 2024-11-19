@@ -1,0 +1,12 @@
+@startuml
+class CharacterModelDataModel {
+    + ModelId : List<string>
+    + ChatRoomSelectModelId : string
+    + ChatBotSelectModelId : string
+    + LoadModelList() : void
+    + LoadModelFromInternal(fileName:string) : byte[]
+    + CreateCharacter(modelId:string) : GameObject
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- CharacterModelDataModel
+@enduml

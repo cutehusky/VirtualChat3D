@@ -1,0 +1,7 @@
+@startuml
+class FriendDataModel {
+    + FriendList : List<FriendData>
+    # <<override>> OnInit() : void
+}
+AbstractModel <|-- FriendDataModel
+@enduml

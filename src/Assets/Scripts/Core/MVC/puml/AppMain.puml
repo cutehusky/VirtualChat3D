@@ -1,0 +1,19 @@
+@startuml
+class AppMain {
+    + LoginView : LoginView
+    + SignUpView : SignUpView
+    + UserProfileView : UserProfileView
+    + App : FirebaseApp
+    - _currentView : ViewBase
+    + UserProfileController : UserProfileController
+    + UserAuthController : UserAuthController
+    # <<override>> Awake() : void
+    + OpenSignUpView() : void
+    + CloseCurrentView() : void
+    + OpenUserProfileView() : void
+    + OpenLoginView() : void
+    + GetArchitecture() : IArchitecture
+}
+"MonoSingleton`1" "<AppMain>" <|-- AppMain
+IController <|-- AppMain
+@enduml
