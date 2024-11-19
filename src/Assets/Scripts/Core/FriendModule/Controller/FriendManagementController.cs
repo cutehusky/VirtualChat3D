@@ -2,7 +2,7 @@
 using Core.FriendModule.View;
 using Core.MVC;
 
-namespace Core.MessageModule.Controller
+namespace Core.FriendModule.Controller
 {
     public class FriendManagementController : ControllerBase
     {

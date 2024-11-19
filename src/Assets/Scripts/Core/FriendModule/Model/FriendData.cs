@@ -1,6 +1,6 @@
 ﻿using Core.UserAccountModule.Model;
 
-namespace Core.FriendModule
+namespace Core.FriendModule.Model
 {
     public class FriendData : UserAccountData
     {

@@ -79,3 +79,8 @@ crashlytics-build.properties
 /[Aa]ssets/Editor Default Resources/*
 
 /NodeServer/node_modules/*
+
+*.puml.meta
+**/puml/*.meta
+**/*puml.meta
+**/puml.meta
