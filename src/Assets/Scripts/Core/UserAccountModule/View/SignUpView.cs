@@ -13,6 +13,7 @@ namespace Core.UserAccountModule.View
         public TMP_InputField email;
         public TMP_InputField password;
         public TMP_InputField re_password;
+        public TMP_Text notice;
         public Button login;
         public Button signUp;
         
@@ -27,6 +28,14 @@ namespace Core.UserAccountModule.View
             email.text = "";
             password.text = "";
             re_password.text = "";
+        }
+
+        public void SetNotice(string notice)
+        {
+            this.notice.text = notice;
+            Hide();
+            Display();
+            
         }
 
         public override void OnInit()

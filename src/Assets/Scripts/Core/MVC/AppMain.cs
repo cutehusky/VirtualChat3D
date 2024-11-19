@@ -111,6 +111,7 @@ namespace Core.MVC
             _currentView = LoginView;
             LoginView.Display();
             LoginView.Render(null);
+            UnityThread.initUnityThread();
         }
 
         public void OpenSignUpView()

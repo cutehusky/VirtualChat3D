@@ -11,6 +11,7 @@ namespace Core.UserAccountModule.View
     {
         public TMP_InputField email;
         public TMP_InputField password;
+        public TMP_Text notice;
         public Button resetPassword;
         public Button login;
         public Button signUp;
@@ -29,9 +30,11 @@ namespace Core.UserAccountModule.View
 
         public override void OnInit()
         {
-            email.onValueChanged.AddListener(s =>
+            login.onClick.AddListener(() =>
             {
-                if (EmailCheck(s))
+                if (email.text == "" || password.text == "")
+                    notice.text = "Please fill in email and password!";
+                if (EmailCheck(email.text))
                     email.textComponent.color = Color.green;
                 else
                     email.textComponent.color = Color.red;

@@ -29,10 +29,49 @@ namespace Core.UserAccountModule.Controller
             LoginView.Render(null);
             return LoginView;
         }
-        
+
+        string notifyContent;
+
         public void SignUp()
         {
-            Debug.Log($"Sign up with email: {SignUpView.email.text} pass: {SignUpView.password.text}");
+            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(SignUpView.email.text, SignUpView.password.text).ContinueWith(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    notifyContent = "Sign up was canceled by Firebase.";
+                    UnityThread.executeInUpdate(() =>
+                    {
+                        Debug.Log("test");
+                        SignUpView.SetNotice(notifyContent);
+                    });
+
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    
+                    UnityThread.executeInUpdate(() =>
+                    {
+                        Debug.Log("test");
+                        SignUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception);
+                    });
+
+                    return;
+                }
+                UnityThread.executeInUpdate(()=>
+                {
+                    Debug.Log("test");
+                 notifyContent = "Sign up successed by Firebase.";
+
+                    SignUpView.SetNotice(notifyContent);
+                });
+                //SignUpView.SetNotice("Firebase user created successfully");
+            });
+        }
+
+        public void Update()
+        {
+            SignUpView.SetNotice(notifyContent);
         }
 
         public void ResetPassword()
