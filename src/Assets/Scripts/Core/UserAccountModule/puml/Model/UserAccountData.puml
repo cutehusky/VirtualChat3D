@@ -1,0 +1,10 @@
+@startuml
+class UserAccountData {
+    + Avatar : Texture2D
+    + Description : string
+    + Username : string
+    + DateOfBirth : DateTime
+    + UserId : string
+    + IsOnline : bool
+}
+@enduml

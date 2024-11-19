@@ -1,0 +1,27 @@
+@startuml
+class SocketIO {
+    - _socket : SocketIOUnity
+    - _sendKeyDeltaTime : float = 0
+    - _isSentAESKey : bool = false
+    - _isSentRSAKey : bool = false
+    + ip : string
+    + sendKeyTimeout : float = 10f
+    + SendWebSocketMessageRSA(eventName:string, data:string) : void
+    + SendWebSocketMessageAES(eventName:string, data:string) : void
+    - SendKey() : void
+    - Update() : void
+    + AddUnityCallback(eventName:string, callback:Action<SocketIOResponse>) : void
+    + AddCallback(eventName:string, callback:Action<SocketIOResponse>) : void
+    - <<async>> OnDestroy() : void
+    - <<async>> OnApplicationQuit() : void
+    + <<async>> OnInit() : void
+    + GetArchitecture() : IArchitecture
+}
+class KeyRepPacket {
+    + Header : string
+    + Value : string
+}
+"MonoSingleton`1" "<SocketIO>" <|-- SocketIO
+IController <|-- SocketIO
+SocketIO +-- KeyRepPacket
+@enduml

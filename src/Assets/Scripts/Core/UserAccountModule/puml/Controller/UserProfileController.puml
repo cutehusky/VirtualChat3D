@@ -1,0 +1,13 @@
+@startuml
+class UserProfileController {
+    + UserProfileView : UserProfileView
+    + OpenUserProfileView() : ViewBase
+    + LoadUserProfile() : void
+    + EditUsername() : void
+    + EditDescription() : void
+    + EditDateOfBirth() : void
+    + EditAvatar() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- UserProfileController
+@enduml

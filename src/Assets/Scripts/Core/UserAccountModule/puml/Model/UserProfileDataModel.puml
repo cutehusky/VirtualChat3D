@@ -1,0 +1,7 @@
+@startuml
+class UserProfileDataModel {
+    + UserProfileData : UserAccountData
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- UserProfileDataModel
+@enduml

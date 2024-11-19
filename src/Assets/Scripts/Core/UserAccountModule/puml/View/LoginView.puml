@@ -1,0 +1,13 @@
+@startuml
+class LoginView {
+    + email : TMP_InputField
+    + password : TMP_InputField
+    + resetPassword : Button
+    + login : Button
+    + signUp : Button
+    + {static} EmailCheck(s:string) : bool
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- LoginView
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+!include .\\.\Controller\UserAuthController.puml
+!include .\\.\Controller\UserProfileController.puml
+!include .\\.\Model\FirebaseAuthModel.puml
+!include .\\.\Model\UserAccountData.puml
+!include .\\.\Model\UserProfileDataModel.puml
+!include .\\.\View\LoginView.puml
+!include .\\.\View\SignUpView.puml
+!include .\\.\View\UserProfileView.puml
+UserAuthController o-- LoginView
+UserAuthController o-- SignUpView
+UserAuthController o-- UserProfileView
+UserProfileController o-- UserProfileView
+UserAuthController o-- FirebaseAuthModel
+UserProfileController o-- UserProfileDataModel
+UserProfileDataModel *-- UserAccountData
+@enduml

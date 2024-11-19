@@ -1,0 +1,8 @@
+@startuml
+class FirebaseAuthModel {
+    + Auth : Firebase.Auth.FirebaseAuth
+    + <<override>> InitFirebase() : void
+    + GetLoginToken(callback:Action<string>) : void
+}
+FirebaseModelBase <|-- FirebaseAuthModel
+@enduml

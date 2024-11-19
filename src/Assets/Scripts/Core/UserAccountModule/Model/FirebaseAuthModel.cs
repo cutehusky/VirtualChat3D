@@ -1,23 +1,19 @@
 ﻿using System;
+using Core.MVC;
 using QFramework;
 
 namespace Core.UserAccountModule.Model
 {
-    public class FirebaseAuthModel: AbstractModel
+    public class FirebaseAuthModel: FirebaseModelBase
     {
         public Firebase.Auth.FirebaseAuth Auth;
         
-        public void InitFirebase() {
+        public override void InitFirebase() {
             Auth =  Firebase.Auth.FirebaseAuth.DefaultInstance;
         }
         
         public void GetLoginToken(Action<string> callback)
         {
-        }
-        
-        protected override void OnInit()
-        {
-            
         }
     }
 }

@@ -1,0 +1,15 @@
+@startuml
+class UserAuthController {
+    + LoginView : LoginView
+    + SignUpView : SignUpView
+    + UserProfileView : UserProfileView
+    + OpenSignUpView() : ViewBase
+    + OpenLoginView() : ViewBase
+    + SignUp() : void
+    + ResetPassword() : void
+    + Login() : void
+    + SignOut() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- UserAuthController
+@enduml
