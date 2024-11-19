@@ -50,12 +50,13 @@ namespace Core.MessageModule.Controller
 
         public override void OnInit(List<ViewBase> view)
         {
-            _messageView = view[0] as MessageView
+            _messageView = view[0] as MessageView;
         }
 
-        public void OpenMessageView()
+        public ViewBase OpenMessageView()
         {
-            
+            // CODE HERE
+            return null;
         }
     }
 }

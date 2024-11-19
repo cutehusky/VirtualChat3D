@@ -25,12 +25,13 @@ namespace Core.ChatBotModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
-            _chatBotView = view[0] as GeminiController
+            _chatBotView = view[0] as ChatBotView;
         }
 
-        public void OpenChatBotView()
+        public ViewBase OpenChatBotView()
         {
             // CODE HERE
+            return null;
         }
     }
 }

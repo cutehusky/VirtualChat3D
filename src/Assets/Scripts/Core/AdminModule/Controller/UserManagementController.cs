@@ -29,12 +29,13 @@ namespace Core.AdminModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
-            _userListView = view[0] as UserListView
+            _userListView = view[0] as UserListView;
         }
 
-        public void OpenUserListView()
+        public ViewBase OpenUserListView()
         {
             // CODE HERE
+            return null;
         }
     }
 }

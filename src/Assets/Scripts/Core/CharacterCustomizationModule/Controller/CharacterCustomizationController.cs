@@ -24,12 +24,13 @@ namespace Core.CharacterCustomizationModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
-            _modelListView = view[0] as ModelListView
+            _modelListView = view[0] as ModelListView;
         }
 
-        public void OpenModelListView()
+        public ViewBase OpenModelListView()
         {
             // CODE HERE
+            return null;
         }
     }
 }

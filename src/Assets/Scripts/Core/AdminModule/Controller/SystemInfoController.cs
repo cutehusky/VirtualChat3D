@@ -17,9 +17,10 @@ namespace Core.AdminModule.Controller
             _systemMonitorView = view[0] as SystemMonitorView;
         }
 
-        public void OpenSystemMonitorView()
+        public ViewBase OpenSystemMonitorView()
         {
             // CODE HERE
+            return null;
         }
     }
 }

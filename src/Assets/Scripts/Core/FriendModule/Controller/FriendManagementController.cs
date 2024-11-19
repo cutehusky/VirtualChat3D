@@ -29,12 +29,13 @@ namespace Core.MessageModule.Controller
 
         public override void OnInit(List<ViewBase> view)
         {
-            _friendListView = view[0] as FriendListView
+            _friendListView = view[0] as FriendListView;
         }
 
-        public void OpenFriendListView ()
+        public ViewBase OpenFriendListView ()
         {
             // CODE HERE
+            return null;
         }
     }
 }
