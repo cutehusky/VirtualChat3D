@@ -23,6 +23,14 @@ namespace Core.MVC
         public FirebaseApp App;
         // list all view here
         //....
+        public SystemMonitorView SystemMonitorView;
+        public UserListView UserListView;
+        public ModelListView ModelListView;
+        public ChatBotView CharBotView;
+        public FriendListItemView FriendListItemView;
+        public FriendListView FriendListView;
+        public MessageView MessageView;
+
 
         private ViewBase _currentView;
 
@@ -31,6 +39,15 @@ namespace Core.MVC
         public UserAuthController UserAuthController;
         // list all Controller here
         // ... 
+        public SystemInfoController SystemInfoController;
+        public UserManagementController UserManagementController;
+        public CharacterCustomizationController CharacterCustomizationController;
+        public GeminiController GeminiController;
+        public FriendManagementController FriendManagementController;
+        public MessageController MessageController;
+
+
+
         protected override void Awake()
         {
             // initial all view and controller here.
@@ -49,7 +66,8 @@ namespace Core.MVC
             });
             
             UserAuthController = new();
-            UserAuthController.OnInit(new List<ViewBase>() {
+            UserAuthController.OnInit(new List<ViewBase>() 
+            {
                 LoginView,
                 SignUpView,
                 UserProfileView
@@ -59,6 +77,41 @@ namespace Core.MVC
             {
                 UserProfileView
             });
+            
+            // 
+            SystemInfoController = new();
+            SystemInfoController.OnInit(new List<ViewBase>)(
+            {
+                SystemMonitorView
+            });
+            UserManagementController = new();
+            UserManagementController.OnInit(new List<ViewBase>)(
+            {
+                UserListView
+            });
+            CharacterCustomizationController = new();
+            CharacterCustomizationController.OnInit(new List<ViewBase>)(
+            {
+                ModelListView
+            });
+            GeminiController = new();
+            GeminiController.OnInit(new List<ViewBase>)(
+            {
+                GeminiController
+            });
+            FriendManagementController = new();
+            FriendManagementController.OnInit(new List<ViewBase>)(
+            {
+                FriendListView
+            });
+            MessageController = new();
+            MessageController.OnInit(new List<ViewBase>)(
+            {
+                MessageView
+            });
+
+
+
             _currentView = LoginView;
             LoginView.Display();
         }
@@ -85,6 +138,36 @@ namespace Core.MVC
         
         // list all open view here
         // ...
+        public void OpenSystemMonitorView()
+        {
+            _currentView = SystemInfoController.OpenSystemMonitorView();
+        }
+
+        public void OpenUserListView()
+        {
+            _currentView = UserManagementController.OpenUserListView();
+        }
+
+        public void OpenModelListView()
+        {
+            _currentView = CharacterCustomizationController.OpenModelListView();
+        }
+
+        public void OpenChatBotView()
+        {
+            _currentView = GeminiController.OpenChatBotView();
+        }
+
+        public void OpenFriendListView()
+        {
+            _currentView = FriendManagementController.OpenFriendListView();
+        }
+
+        public void OpenMessageView()
+        {
+            _currentView = MessageController.OpenMessageView();
+        }
+
 
         public IArchitecture GetArchitecture()
         {

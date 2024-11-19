@@ -14,7 +14,12 @@ namespace Core.AdminModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
-            
+            _systemMonitorView = view[0] as SystemMonitorView;
+        }
+
+        public void OpenSystemMonitorView()
+        {
+            // CODE HERE
         }
     }
 }
