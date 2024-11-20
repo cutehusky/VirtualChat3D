@@ -1,0 +1,12 @@
+@startuml
+class PlayerExpressionController {
+    + vrm10Instance : Vrm10Instance
+    + Relax() : void
+    + Angry() : void
+    + Surprised() : void
+    + Sad() : void
+    + Fun() : void
+    + Neutral() : void
+}
+NetworkBehaviour <|-- PlayerExpressionController
+@enduml

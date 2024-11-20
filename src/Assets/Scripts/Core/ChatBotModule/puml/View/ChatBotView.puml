@@ -1,8 +1,10 @@
 @startuml
 class ChatBotView {
+    + newChat : Button
     + chatBotModelPoint : Transform
     + chatBotExpressionControl : ExpressionControl
     + chatInput : TMP_InputField
+    + send : Button
     + userInput : ChatBox
     + chatBotOutput : ChatBox
     + <<override>> Render(model:ModelBase) : void

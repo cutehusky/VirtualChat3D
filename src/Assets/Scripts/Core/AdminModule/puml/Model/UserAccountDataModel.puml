@@ -1,0 +1,7 @@
+@startuml
+class UserAccountDataModel {
+    + UserList : List<UserAccountData>
+    # <<override>> OnInit() : void
+}
+AbstractModel <|-- UserAccountDataModel
+@enduml

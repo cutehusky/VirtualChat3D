@@ -1,0 +1,11 @@
+@startuml
+class MessageController {
+    - _messageView : MessageView
+    + OnInit(view:MessageView) : void
+    + SendMessageServerRpc(username:string, message:string) : void
+    + SendMessageClientRpc(username:string, message:string) : void
+    + GetArchitecture() : IArchitecture
+}
+NetworkBehaviour <|-- MessageController
+IController <|-- MessageController
+@enduml

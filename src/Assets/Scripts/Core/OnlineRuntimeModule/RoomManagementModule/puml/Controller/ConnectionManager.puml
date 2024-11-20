@@ -1,0 +1,13 @@
+@startuml
+class ConnectionManager {
+    - _hostRoomView : HostRoomView
+    - _userListView : JoinedUserListView
+    - _joinRoomView : JoinRoomView
+    + ClientConnect(ip:string, port:int) : void
+    + Host(ip:string, port:int) : void
+    + KickUser() : void
+    + Disconnect() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- ConnectionManager
+@enduml

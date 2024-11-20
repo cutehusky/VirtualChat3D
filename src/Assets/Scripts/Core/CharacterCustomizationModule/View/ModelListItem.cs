@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.CharacterCustomizationModule.View
 {
-    public class ModelListViewItem: MonoBehaviour
+    public class ModelListItem: MonoBehaviour
     {
         public TMP_Text modelId;
     }

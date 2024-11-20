@@ -1,0 +1,8 @@
+@startuml
+class WhiteboardController {
+    - _render : LineRenderer
+    + DrawAtPositionServerRpc(v:Vector3) : void
+    + DrawAtPositionClientRpc(v:Vector3) : void
+}
+NetworkBehaviour <|-- WhiteboardController
+@enduml

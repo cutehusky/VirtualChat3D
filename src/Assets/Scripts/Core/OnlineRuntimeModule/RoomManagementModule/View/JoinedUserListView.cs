@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Core.MVC;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core.OnlineRuntimeModule.RoomManagementModule.View
 {
     public class JoinedUserListView: ViewBase
     {
-        public RectTransform scrollViewParent;
+        public RectTransform joinedUserListScrollViewParent;
         public GameObject listItemTemplate;
         public List<JoinedUserListItem> items;
         

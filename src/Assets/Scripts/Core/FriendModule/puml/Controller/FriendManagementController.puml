@@ -6,6 +6,7 @@ class FriendManagementController {
     + AcceptFriend(userId:string) : void
     + RemoveFriend(userId:string) : void
     + <<override>> OnInit(view:List<ViewBase>) : void
+    + OpenFriendListView() : ViewBase
 }
 ControllerBase <|-- FriendManagementController
 @enduml

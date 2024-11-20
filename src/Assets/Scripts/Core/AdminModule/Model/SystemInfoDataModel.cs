@@ -1,10 +1,13 @@
-﻿using Core.MVC;
+﻿using System.Collections.Generic;
+using Core.MVC;
 
 namespace Core.AdminModule.Model
 {
     public class SystemInfoDataModel: ModelBase
     {
-        // TO DO: add attribute in future :))
+        public List<string> Logs;
+        public int OnlineUserCount;
+        public string ServerStatus;
         protected override void OnInit()
         {
             

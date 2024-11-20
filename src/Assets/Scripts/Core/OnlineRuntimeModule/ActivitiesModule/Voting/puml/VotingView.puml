@@ -1,0 +1,12 @@
+@startuml
+class VotingView {
+    + yes : Button
+    + no : Button
+    + time : TMP_Text
+    + note : TMP_Text
+    + result : TMP_Text
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- VotingView
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class RoomData {
+    + RoomId : string
+    + AccessType : EAccessType
+}
+@enduml

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.MVC;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Core.MessageModule.View
@@ -10,10 +11,10 @@ namespace Core.MessageModule.View
     public class MessageView: ViewBase
     {
         public TMP_InputField chatInput;
-        public RectTransform scrollViewParent;
+        public Button send;
+        public RectTransform messageScrollViewParent;
         public GameObject listItemTemplate;
         public List<ChatBox> items;
-        public Button send;
         
         public override void Render(ModelBase model)
         {

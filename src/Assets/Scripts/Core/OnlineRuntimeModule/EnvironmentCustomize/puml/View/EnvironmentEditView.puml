@@ -1,0 +1,13 @@
+@startuml
+class EnvironmentEditView {
+    + rootOfScene : Transform
+    + itemToPut : List<GameObject>
+    + objectListScrollViewParent : RectTransform
+    + items : List<ObjectListItem>
+    + listItemTemplate : GameObject
+    + objectPuttingArea : ObjectPuttingArea
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- EnvironmentEditView
+@enduml

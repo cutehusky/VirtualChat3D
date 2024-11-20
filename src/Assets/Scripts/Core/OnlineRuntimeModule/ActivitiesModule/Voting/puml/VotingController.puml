@@ -1,0 +1,12 @@
+@startuml
+class VotingController {
+    + HostVotingServerRpc() : void
+    + StartVotingClientRpc() : void
+    + JoinVotingServerRpc(choose:bool) : void
+    + SendResultServerRpc() : void
+    + SendResultClientRpc() : void
+    - _votingView : VotingView
+    + OnInit(view:VotingView) : void
+}
+NetworkBehaviour <|-- VotingController
+@enduml

@@ -1,6 +1,6 @@
 @startuml
 class UserProfileController {
-    + UserProfileView : UserProfileView
+    - _userProfileView : UserProfileView
     + OpenUserProfileView() : ViewBase
     + LoadUserProfile() : void
     + EditUsername() : void

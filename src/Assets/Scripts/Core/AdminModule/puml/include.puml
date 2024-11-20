@@ -1,0 +1,14 @@
+@startuml
+!include .\\.\Controller\SystemInfoController.puml
+!include .\\.\Controller\UserManagementController.puml
+!include .\\.\Model\SystemInfoDataModel.puml
+!include .\\.\Model\UserAccountDataModel.puml
+!include .\\.\View\SystemMonitorView.puml
+!include .\\.\View\UserListItem.puml
+!include .\\.\View\UserListView.puml
+UserListView *-- UserListItem
+UserManagementController o-- UserListView
+UserManagementController o-- UserAccountDataModel
+SystemInfoController o-- SystemMonitorView
+SystemInfoController o-- SystemInfoDataModel
+@enduml

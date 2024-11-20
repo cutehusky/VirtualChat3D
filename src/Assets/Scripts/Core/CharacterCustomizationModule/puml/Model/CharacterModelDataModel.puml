@@ -5,7 +5,7 @@ class CharacterModelDataModel {
     + ChatBotSelectModelId : string
     + LoadModelList() : void
     + LoadModelFromInternal(fileName:string) : byte[]
-    + CreateCharacter(modelId:string) : GameObject
+    + CreateCharacter(modelId:string, onVrmModelLoaded:Action<GameObject>) : void
     # <<override>> OnInit() : void
 }
 ModelBase <|-- CharacterModelDataModel

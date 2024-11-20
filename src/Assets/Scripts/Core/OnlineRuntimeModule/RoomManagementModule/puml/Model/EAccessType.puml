@@ -1,0 +1,6 @@
+@startuml
+enum EAccessType {
+    Anyone,
+    Friend,
+}
+@enduml

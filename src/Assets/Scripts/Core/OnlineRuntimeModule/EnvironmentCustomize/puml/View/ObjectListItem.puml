@@ -1,0 +1,7 @@
+@startuml
+class ObjectListItem {
+    + objectName : TMP_Text
+    + icon : Image
+}
+MonoBehaviour <|-- ObjectListItem
+@enduml

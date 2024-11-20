@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
 {
-    public class ItemPuttingArea: MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class ObjectPuttingArea: MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         public Action<GameObject> OnObjectMoved;
         public Action<GameObject> OnObjectRotated;

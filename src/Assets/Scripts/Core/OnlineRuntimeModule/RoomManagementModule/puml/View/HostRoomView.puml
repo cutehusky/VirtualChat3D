@@ -1,0 +1,14 @@
+@startuml
+class HostRoomView {
+    + ip : TMP_InputField
+    + port : TMP_InputField
+    + accessType : Toggle
+    + create : Button
+    + roomListScrollViewParent : RectTransform
+    + listItemTemplate : GameObject
+    + items : List<RoomListItem>
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- HostRoomView
+@enduml

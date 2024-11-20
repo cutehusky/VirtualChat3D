@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Controller
+namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
 {
-    public class ObjectController: MonoBehaviour
+    public class OnSceneObjectController: MonoBehaviour
     {
         public bool isValid;
         

@@ -2,6 +2,7 @@
 using Core.CharacterCustomizationModule.Model;
 using Core.ChatBotModule.Model;
 using Core.FirebaseDatabaseModule.Model;
+using Core.FriendModule.Model;
 using Core.MessageModule.Model;
 using Core.NetworkModule.Model;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;

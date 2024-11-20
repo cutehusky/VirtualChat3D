@@ -5,6 +5,7 @@ class CharacterCustomizationController {
     + SelectChatRoomModel(id:string) : void
     + SelectChatBotModel(id:string) : void
     + <<override>> OnInit(view:List<ViewBase>) : void
+    + OpenModelListView() : ViewBase
 }
 ControllerBase <|-- CharacterCustomizationController
 @enduml

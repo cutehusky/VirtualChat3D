@@ -1,0 +1,10 @@
+@startuml
+class JoinedUserListView {
+    + joinedUserListScrollViewParent : RectTransform
+    + listItemTemplate : GameObject
+    + items : List<JoinedUserListItem>
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- JoinedUserListView
+@enduml

@@ -5,4 +5,9 @@
 !include .\\.\Model\MessageDataModel.puml
 !include .\\.\View\ChatBox.puml
 !include .\\.\View\MessageView.puml
+MessageController o-- MessageView
+MessageController o-- MessageDataModel
+MessageDataModel *-- ChatSession
+ChatSession *-- ChatMessage
+MessageView *-- ChatBox
 @enduml

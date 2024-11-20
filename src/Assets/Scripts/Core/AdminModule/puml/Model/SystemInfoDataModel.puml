@@ -1,0 +1,9 @@
+@startuml
+class SystemInfoDataModel {
+    + Logs : List<string>
+    + OnlineUserCount : int
+    + ServerStatus : string
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- SystemInfoDataModel
+@enduml

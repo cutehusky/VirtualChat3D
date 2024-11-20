@@ -1,0 +1,20 @@
+@startuml
+!include .\\.\Controller\ConnectionManager.puml
+!include .\\.\Controller\RoomManager.puml
+!include .\\.\Model\EAccessType.puml
+!include .\\.\Model\RoomData.puml
+!include .\\.\Model\RoomDataModel.puml
+!include .\\.\View\HostRoomView.puml
+!include .\\.\View\JoinedUserListItem.puml
+!include .\\.\View\JoinedUserListView.puml
+!include .\\.\View\JoinRoomView.puml
+!include .\\.\View\RoomListItem.puml
+RoomManager o-- RoomDataModel
+RoomManager o-- HostRoomView
+ConnectionManager o-- HostRoomView
+ConnectionManager o-- JoinedUserListView
+JoinedUserListView *-- JoinedUserListItem
+HostRoomView *-- RoomListItem
+ConnectionManager o-- JoinRoomView
+RoomDataModel *-- RoomData
+@enduml

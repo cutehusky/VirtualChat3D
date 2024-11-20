@@ -1,0 +1,12 @@
+@startuml
+class UserListItem {
+    + userId : TMP_Text
+    + username : TMP_Text
+    + description : TMP_Text
+    + avatar : Image
+    + dateOfBirth : TMP_Text
+    + button1 : Button
+    + button2 : Button
+}
+MonoBehaviour <|-- UserListItem
+@enduml

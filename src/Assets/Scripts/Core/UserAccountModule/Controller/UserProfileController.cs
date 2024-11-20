@@ -8,14 +8,14 @@ namespace Core.UserAccountModule.Controller
 {
     public class UserProfileController: ControllerBase
     {
-        public UserProfileView UserProfileView;
+        private UserProfileView _userProfileView;
 
         public ViewBase OpenUserProfileView()
         {
             AppMain.Instance.CloseCurrentView();
-            UserProfileView.Display();
-            UserProfileView.Render(this.GetModel<UserProfileDataModel>());
-            return UserProfileView;
+            _userProfileView.Display();
+            _userProfileView.Render(this.GetModel<UserProfileDataModel>());
+            return _userProfileView;
         }
         
         public void LoadUserProfile()
@@ -45,7 +45,7 @@ namespace Core.UserAccountModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
-            UserProfileView = (UserProfileView) view[0];
+            _userProfileView = (UserProfileView) view[0];
         }
     }
 }

@@ -1,7 +1,11 @@
 @startuml
 !include .\\.\Controller\EEmotion.puml
-!include .\\.\Controller\ExpressionControl.puml
 !include .\\.\Controller\GeminiController.puml
 !include .\\.\Model\GeminiDataModel.puml
 !include .\\.\View\ChatBotView.puml
+!include .\\.\View\ExpressionControl.puml
+GeminiController o-- GeminiDataModel
+GeminiController o-- ChatBotView
+GeminiController o-- ExpressionControl
+ChatBotView *-- ChatBox
 @enduml

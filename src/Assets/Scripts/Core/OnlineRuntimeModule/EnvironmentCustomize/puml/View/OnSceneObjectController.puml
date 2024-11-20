@@ -1,0 +1,8 @@
+@startuml
+class OnSceneObjectController {
+    + isValid : bool
+    - OnCollisionEnter(other:Collision) : void
+    - OnCollisionExit(other:Collision) : void
+}
+MonoBehaviour <|-- OnSceneObjectController
+@enduml

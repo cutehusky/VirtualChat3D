@@ -1,0 +1,10 @@
+@startuml
+class RoomListItem {
+    + roomId : TMP_Text
+    + roomAccessType : Toggle
+    + delete : Button
+    + host : Button
+    + editEnvironment : Button
+}
+MonoBehaviour <|-- RoomListItem
+@enduml

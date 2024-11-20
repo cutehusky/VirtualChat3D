@@ -1,0 +1,8 @@
+@startuml
+class JoinedUserListItem {
+    + userId : TMP_Text
+    + username : TMP_Text
+    + kick : Button
+}
+MonoBehaviour <|-- JoinedUserListItem
+@enduml

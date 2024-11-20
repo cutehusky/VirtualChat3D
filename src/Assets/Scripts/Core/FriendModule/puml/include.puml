@@ -2,6 +2,10 @@
 !include .\\.\Controller\FriendManagementController.puml
 !include .\\.\Model\FriendData.puml
 !include .\\.\Model\FriendDataModel.puml
-!include .\\.\View\FriendListItemView.puml
+!include .\\.\View\FriendListItem.puml
 !include .\\.\View\FriendListView.puml
+FriendManagementController o-- FriendDataModel
+FriendManagementController o-- FriendListView
+FriendListView *-- FriendListItem
+FriendDataModel *-- FriendData
 @enduml

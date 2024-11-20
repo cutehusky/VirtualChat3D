@@ -1,0 +1,12 @@
+@startuml
+class PlayerController {
+    + Jump() : void
+    + SetCrouch(isCrouch:bool) : void
+    + SetSprint(isSprint:bool) : void
+    + MoveAndRotate() : void
+    + PlayAnimation(animationName:EAnimation) : void
+    + GetArchitecture() : IArchitecture
+}
+NetworkBehaviour <|-- PlayerController
+IController <|-- PlayerController
+@enduml

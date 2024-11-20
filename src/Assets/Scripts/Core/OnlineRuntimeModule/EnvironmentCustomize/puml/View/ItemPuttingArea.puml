@@ -1,0 +1,13 @@
+@startuml
+class ItemPuttingArea {
+    + OnObjectMoved : Action<GameObject>
+    + OnObjectRotated : Action<GameObject>
+    + OnBeginDrag(eventData:PointerEventData) : void
+    + OnEndDrag(eventData:PointerEventData) : void
+    + OnDrag(eventData:PointerEventData) : void
+}
+MonoBehaviour <|-- ItemPuttingArea
+IBeginDragHandler <|-- ItemPuttingArea
+IEndDragHandler <|-- ItemPuttingArea
+IDragHandler <|-- ItemPuttingArea
+@enduml

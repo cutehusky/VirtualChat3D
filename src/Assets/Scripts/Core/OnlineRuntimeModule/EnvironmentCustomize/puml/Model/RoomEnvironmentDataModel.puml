@@ -1,0 +1,10 @@
+@startuml
+class RoomEnvironmentDataModel {
+    + CurrentEditingRoomId : string
+    + CurrentEditingEnvironmentData : List<RoomEnvironmentItemData>
+    + CurrentSelectObject : GameObject
+    + ObjectInScene : List<GameObject>
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- RoomEnvironmentDataModel
+@enduml

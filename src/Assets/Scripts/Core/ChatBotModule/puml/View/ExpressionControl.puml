@@ -1,0 +1,17 @@
+@startuml
+class ExpressionControl {
+    - isSpeaking : bool = false
+    + vrm10Instance : Vrm10Instance
+    + SetSpeak(isSpeak:bool) : void
+    - _speakTimeout : float = 0
+    + RandomSpeak() : void
+    + Relax() : void
+    + Angry() : void
+    + Surprised() : void
+    + Sad() : void
+    + Fun() : void
+    + Neutral() : void
+    - Update() : void
+}
+MonoBehaviour <|-- ExpressionControl
+@enduml

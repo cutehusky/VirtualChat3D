@@ -2,6 +2,7 @@
 class GeminiDataModel {
     + History : List<GeminiContent>
     + CurrentGeminiModelName : string
+    + ChatBotAvatar : GameObject
     # <<override>> OnInit() : void
 }
 ModelBase <|-- GeminiDataModel

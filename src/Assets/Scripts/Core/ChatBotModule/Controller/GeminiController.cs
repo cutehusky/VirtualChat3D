@@ -8,6 +8,7 @@ namespace Core.ChatBotModule.Controller
     public class GeminiController: ControllerBase
     {
         private ChatBotView _chatBotView;
+        private ExpressionControl _chatBotExpressionControl;
         public async Task<string> OnChat(string text)
         {
             return null;
@@ -18,7 +19,12 @@ namespace Core.ChatBotModule.Controller
             
         }
 
-        public void NewChat(string geminiModelName)
+        public void NewChat(string geminiModelName, string avatarId)
+        {
+            
+        }
+
+        public void EndChat()
         {
             
         }

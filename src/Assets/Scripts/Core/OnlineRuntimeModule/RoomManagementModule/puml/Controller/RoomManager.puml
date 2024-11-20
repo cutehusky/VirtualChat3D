@@ -1,0 +1,11 @@
+@startuml
+class RoomManager {
+    - _hostRoomView : HostRoomView
+    + CreateRoom() : void
+    + EditRoomAccessType(roomId:string) : void
+    + DeleteRoom(roomId:string) : void
+    + LoadRoomsData() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- RoomManager
+@enduml

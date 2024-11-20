@@ -1,0 +1,9 @@
+@startuml
+class RoomDataModel {
+    + RoomsData : List<RoomData>
+    + CurrentHostRoomData : RoomData
+    + CurrentHostRoomJoinedUser : List<UserAccountData>
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- RoomDataModel
+@enduml

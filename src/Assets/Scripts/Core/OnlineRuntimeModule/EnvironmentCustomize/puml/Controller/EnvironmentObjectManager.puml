@@ -1,0 +1,11 @@
+@startuml
+class EnvironmentObjectManager {
+    - _environmentEditView : EnvironmentEditView
+    + MoveObject(obj:GameObject) : void
+    + RotateObject(obj:GameObject) : void
+    + SaveRoomEnvironmentData() : void
+    + LoadRoomEnvironmentData(roomId:string) : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+}
+ControllerBase <|-- EnvironmentObjectManager
+@enduml

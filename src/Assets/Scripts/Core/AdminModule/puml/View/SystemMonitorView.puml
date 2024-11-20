@@ -1,0 +1,10 @@
+@startuml
+class SystemMonitorView {
+    + logs : TMP_Text
+    + OnlineUserCount : TMP_Text
+    + ServerStatus : TMP_Text
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- SystemMonitorView
+@enduml

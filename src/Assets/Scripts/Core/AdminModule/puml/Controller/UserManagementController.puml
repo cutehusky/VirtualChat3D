@@ -1,0 +1,12 @@
+@startuml
+class UserManagementController {
+    - _userListView : UserListView
+    + RemoveUser(userId:string) : void
+    + LockUser(userId:string) : void
+    + UnlockUser(userId:string) : void
+    + LoadUserList() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+    + OpenUserListView() : ViewBase
+}
+ControllerBase <|-- UserManagementController
+@enduml

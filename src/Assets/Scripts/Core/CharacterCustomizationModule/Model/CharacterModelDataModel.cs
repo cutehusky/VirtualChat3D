@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.MVC;
 using UnityEngine;
 
@@ -20,9 +21,9 @@ namespace Core.CharacterCustomizationModule.Model
             return null;
         }
         
-        public GameObject CreateCharacter(string modelId)
+        public void CreateCharacter(string modelId, Action<GameObject> onVrmModelLoaded)
         {
-            return null;
+            
         }
         
         protected override void OnInit()

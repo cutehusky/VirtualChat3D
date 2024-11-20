@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using Core.MVC;
+using TMPro;
 
 namespace Core.AdminModule.View
 {
     public class SystemMonitorView: ViewBase
     {
-        // TO DO: add attribute in future :))
-        
+        public TMP_Text logs;
+        public TMP_Text OnlineUserCount;
+        public TMP_Text ServerStatus;
         public override void Render(ModelBase model)
         {
             

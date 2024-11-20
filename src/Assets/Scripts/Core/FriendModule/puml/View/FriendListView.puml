@@ -1,6 +1,6 @@
 @startuml
 class FriendListView {
-    + scrollViewParent : RectTransform
+    + friendListScrollViewParent : RectTransform
     + listItemTemplate : GameObject
     + items : List<FriendListItem>
     + userIdSearch : TMP_InputField

@@ -10,86 +10,70 @@ namespace Core.UserAccountModule.Controller
 {
     public class UserAuthController: ControllerBase
     {
-        public LoginView LoginView;
-        public SignUpView SignUpView;
-        public UserProfileView UserProfileView;
+        private LoginView _loginView;
+        private SignUpView _signUpView;
+        private UserProfileView _userProfileView;
         
         public ViewBase OpenSignUpView()
         {
             AppMain.Instance.CloseCurrentView();
-            SignUpView.Display();
-            SignUpView.Render(null);
-            return SignUpView;
+            _signUpView.Display();
+            _signUpView.Render(null);
+            return _signUpView;
         }
 
         public ViewBase OpenLoginView()
         {
             AppMain.Instance.CloseCurrentView();
-            LoginView.Display();
-            LoginView.Render(null);
-            return LoginView;
+            _loginView.Display();
+            _loginView.Render(null);
+            return _loginView;
         }
-
-        string notifyContent;
 
         public void SignUp()
         {
-            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(SignUpView.email.text, SignUpView.password.text).ContinueWith(task =>
+            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.text, _signUpView.password.text).ContinueWith(task =>
             {
                 if (task.IsCanceled)
                 {
-                    notifyContent = "Sign up was canceled by Firebase.";
                     UnityThread.executeInUpdate(() =>
                     {
-                        Debug.Log("test");
-                        SignUpView.SetNotice(notifyContent);
+                        _signUpView.SetNotice("Sign up was canceled by Firebase.");
                     });
 
                     return;
                 }
                 if (task.IsFaulted)
                 {
-                    
                     UnityThread.executeInUpdate(() =>
                     {
-                        Debug.Log("test");
-                        SignUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception);
+                        _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception);
                     });
-
                     return;
                 }
                 UnityThread.executeInUpdate(()=>
                 {
-                    Debug.Log("test");
-                    notifyContent = "Sign up successed by Firebase.";
-
-                    SignUpView.SetNotice(notifyContent);
+                    _signUpView.SetNotice("Firebase user created successfully");
                 });
-                //SignUpView.SetNotice("Firebase user created successfully");
             });
-        }
-
-        public void Update()
-        {
-            SignUpView.SetNotice(notifyContent);
         }
 
         public void ResetPassword()
         {
-            Debug.Log($"reset password with email: {LoginView.email.text}");
+            Debug.Log($"reset password with email: {_loginView.email.text}");
 
         }
         
         public void Login()
         {
-            Debug.Log($"Login with email: {LoginView.email.text} pass: {LoginView.password.text}");
-            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(LoginView.email.text, LoginView.password.text).ContinueWith(task =>
+            Debug.Log($"Login with email: {_loginView.email.text} pass: {_loginView.password.text}");
+            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(_loginView.email.text, _loginView.password.text).ContinueWith(task =>
             {
                 if (task.IsCanceled)
                 {
                     UnityThread.executeInUpdate(() =>
                     {
-                        //LoginView.SetNotice("Login was canceled by Firebase.");
+                        _loginView.SetNotice("Login was canceled by Firebase.");
                     });
                     return;
                 }
@@ -97,15 +81,13 @@ namespace Core.UserAccountModule.Controller
                 {
                     UnityThread.executeInUpdate(() =>
                     {
-                        //LoginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
-                        Debug.Log("Login encountered a Firebase error: " + task.Exception);
+                        _loginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
                     });
                     return;
                 }
                 UnityThread.executeInUpdate(() =>
                 {
-                    //LoginView.SetNotice("Firebase user signed in successfully");
-                    Debug.Log("Firebase user signed in successfully");
+                    _loginView.SetNotice("Firebase user signed in successfully");
                     AppMain.Instance.OpenUserProfileView();
                 });
             });
@@ -119,21 +101,21 @@ namespace Core.UserAccountModule.Controller
 
         public override void OnInit(List<ViewBase> view)
         {
-            LoginView = view[0] as LoginView;
-            LoginView.signUp.onClick.AddListener(() =>
+            _loginView = view[0] as LoginView;
+            _loginView.signUp.onClick.AddListener(() =>
             {
                 AppMain.Instance.OpenSignUpView();
             });
-            LoginView.login.onClick.AddListener(Login);
-            LoginView.resetPassword.onClick.AddListener(ResetPassword);
-            SignUpView = view[1] as SignUpView;
-            SignUpView.login.onClick.AddListener(() =>
+            _loginView.login.onClick.AddListener(Login);
+            _loginView.resetPassword.onClick.AddListener(ResetPassword);
+            _signUpView = view[1] as SignUpView;
+            _signUpView.login.onClick.AddListener(() =>
             {
                 AppMain.Instance.OpenLoginView();
             });
-            SignUpView.signUp.onClick.AddListener(SignUp);
-            UserProfileView = view[2] as UserProfileView;
-            UserProfileView.signOut.onClick.AddListener(SignOut);
+            _signUpView.signUp.onClick.AddListener(SignUp);
+            _userProfileView = view[2] as UserProfileView;
+            _userProfileView.signOut.onClick.AddListener(SignOut);
         }
     }
 }

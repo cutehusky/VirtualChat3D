@@ -1,0 +1,9 @@
+@startuml
+class SystemInfoController {
+    - _systemMonitorView : SystemMonitorView
+    + LoadSystemInfo() : void
+    + <<override>> OnInit(view:List<ViewBase>) : void
+    + OpenSystemMonitorView() : ViewBase
+}
+ControllerBase <|-- SystemInfoController
+@enduml

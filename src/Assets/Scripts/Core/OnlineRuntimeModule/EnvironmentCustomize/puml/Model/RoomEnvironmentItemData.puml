@@ -1,0 +1,10 @@
+@startuml
+class RoomEnvironmentItemData {
+    + Id : int
+    + TypeId : int
+    + X : float
+    + Y : float
+    + Z : float
+    + Rotation : float
+}
+@enduml

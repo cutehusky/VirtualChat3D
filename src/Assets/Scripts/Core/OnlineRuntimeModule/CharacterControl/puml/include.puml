@@ -1,0 +1,5 @@
+@startuml
+!include .\\.\EAnimation.puml
+!include .\\.\PlayerController.puml
+!include .\\.\PlayerExpressionController.puml
+@enduml

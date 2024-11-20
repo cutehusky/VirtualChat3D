@@ -1,0 +1,5 @@
+@startuml
+!include .\\.\VotingController.puml
+!include .\\.\VotingView.puml
+VotingController o-- VotingView
+@enduml

@@ -1,0 +1,4 @@
+@startuml
+!include .\\.\PlayerController.puml
+!include .\\.\WhiteboardController.puml
+@enduml

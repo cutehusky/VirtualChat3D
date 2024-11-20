@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Core.MVC;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
 {
@@ -10,8 +11,10 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         public Transform rootOfScene;
         public List<GameObject> itemToPut;
         
-        public RectTransform scrollViewParent;
+        public RectTransform objectListScrollViewParent;
         public List<ObjectListItem> items;
+        public GameObject listItemTemplate;
+        public ObjectPuttingArea objectPuttingArea;
      
         public override void Render(ModelBase model)
         {

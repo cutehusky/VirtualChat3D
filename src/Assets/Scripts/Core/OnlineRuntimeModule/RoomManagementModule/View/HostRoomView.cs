@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.MVC;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Core.OnlineRuntimeModule.RoomManagementModule.View
@@ -14,7 +15,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
         public Toggle accessType;
         public Button create;
         
-        public RectTransform scrollViewParent;
+        public RectTransform roomListScrollViewParent;
         public GameObject listItemTemplate;
         public List<RoomListItem> items; 
         

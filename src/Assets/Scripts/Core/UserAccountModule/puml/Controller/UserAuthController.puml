@@ -1,8 +1,8 @@
 @startuml
 class UserAuthController {
-    + LoginView : LoginView
-    + SignUpView : SignUpView
-    + UserProfileView : UserProfileView
+    - _loginView : LoginView
+    - _signUpView : SignUpView
+    - _userProfileView : UserProfileView
     + OpenSignUpView() : ViewBase
     + OpenLoginView() : ViewBase
     + SignUp() : void

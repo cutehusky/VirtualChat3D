@@ -1,0 +1,8 @@
+@startuml
+class PlayerController {
+    + Draw() : void
+    + GetArchitecture() : IArchitecture
+}
+NetworkBehaviour <|-- PlayerController
+IController <|-- PlayerController
+@enduml

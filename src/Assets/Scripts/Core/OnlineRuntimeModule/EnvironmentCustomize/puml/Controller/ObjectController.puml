@@ -1,0 +1,8 @@
+@startuml
+class ObjectController {
+    + isValid : bool
+    - OnCollisionEnter(other:Collision) : void
+    - OnCollisionExit(other:Collision) : void
+}
+MonoBehaviour <|-- ObjectController
+@enduml
