@@ -7,10 +7,10 @@ namespace Core.MessageModule.Model
 {
     public class FriendDataModel: AbstractModel
     {
-        public List<FriendData> FriendList;
+        //public List<FriendData> FriendList;
         protected override void OnInit()
         {
-            FriendList = new();
+            //FriendList = new();
         }
     }
 }

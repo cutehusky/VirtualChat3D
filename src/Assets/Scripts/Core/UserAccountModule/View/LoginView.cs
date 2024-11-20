@@ -28,16 +28,20 @@ namespace Core.UserAccountModule.View
             password.text = "";
         }
 
+        public void SetNotice(string notice)
+        {
+            this.notice.text = notice;
+            Hide();
+            Display();
+            
+        }
+
         public override void OnInit()
         {
             login.onClick.AddListener(() =>
             {
                 if (email.text == "" || password.text == "")
                     notice.text = "Please fill in email and password!";
-                if (EmailCheck(email.text))
-                    email.textComponent.color = Color.green;
-                else
-                    email.textComponent.color = Color.red;
             });
         }
     }

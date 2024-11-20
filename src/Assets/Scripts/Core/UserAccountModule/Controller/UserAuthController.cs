@@ -61,7 +61,7 @@ namespace Core.UserAccountModule.Controller
                 UnityThread.executeInUpdate(()=>
                 {
                     Debug.Log("test");
-                 notifyContent = "Sign up successed by Firebase.";
+                    notifyContent = "Sign up successed by Firebase.";
 
                     SignUpView.SetNotice(notifyContent);
                 });
@@ -83,11 +83,32 @@ namespace Core.UserAccountModule.Controller
         public void Login()
         {
             Debug.Log($"Login with email: {LoginView.email.text} pass: {LoginView.password.text}");
-            // demo load data to model
-            this.GetModel<UserProfileDataModel>().UserProfileData.UserId = "123";
-            this.GetModel<UserProfileDataModel>().UserProfileData.Username = "hello";
-            this.GetModel<UserProfileDataModel>().UserProfileData.Description = "hello 123";
-            AppMain.Instance.OpenUserProfileView();
+            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(LoginView.email.text, LoginView.password.text).ContinueWith(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    UnityThread.executeInUpdate(() =>
+                    {
+                        //LoginView.SetNotice("Login was canceled by Firebase.");
+                    });
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    UnityThread.executeInUpdate(() =>
+                    {
+                        //LoginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
+                        Debug.Log("Login encountered a Firebase error: " + task.Exception);
+                    });
+                    return;
+                }
+                UnityThread.executeInUpdate(() =>
+                {
+                    //LoginView.SetNotice("Firebase user signed in successfully");
+                    Debug.Log("Firebase user signed in successfully");
+                    AppMain.Instance.OpenUserProfileView();
+                });
+            });
         }
 
         public void SignOut()
