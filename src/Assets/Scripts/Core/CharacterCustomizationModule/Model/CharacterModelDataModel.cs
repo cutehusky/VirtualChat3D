@@ -16,7 +16,7 @@ namespace Core.CharacterCustomizationModule.Model
         public string ChatRoomSelectModelId;
         public string ChatBotSelectModelId = "FoxGirl.vrm_";
         private static SynchronizationContext s_context;
-        private const string ModelPath = "/Model/";
+        public const string ModelPath = "/Model/";
         
         public void LoadModelList()
         {

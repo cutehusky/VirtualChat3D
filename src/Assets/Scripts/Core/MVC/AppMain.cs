@@ -109,7 +109,8 @@ namespace Core.MVC
             });
 
             //OpenLoginView();
-            OpenChatBotView();
+            //OpenChatBotView();
+            OpenModelListView();
             UnityThread.initUnityThread();
         }
 

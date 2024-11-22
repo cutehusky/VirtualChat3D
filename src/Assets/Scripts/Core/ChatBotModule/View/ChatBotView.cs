@@ -3,6 +3,7 @@ using Core.ChatBotModule.Controller;
 using Core.ChatBotModule.Model;
 using Core.MessageModule.View;
 using Core.MVC;
+using JimmysUnityUtilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ namespace Core.ChatBotModule.View
         {
             var geminiDataModel = model as GeminiDataModel;
             geminiDataModel.ChatBotAvatar.GetComponent<Animator>().runtimeAnimatorController = animatorController;
+            chatBotModelPoint.DestroyAllChildren();
             geminiDataModel.ChatBotAvatar.transform.SetParent(chatBotModelPoint, false);
             chatBotExpressionControl = geminiDataModel.ChatBotAvatar.GetComponent<ExpressionControl>();
             userInput.gameObject.SetActive(false);
