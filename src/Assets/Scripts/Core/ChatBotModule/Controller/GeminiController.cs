@@ -1,43 +1,92 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using Core.CharacterCustomizationModule.Model;
+using Core.ChatBotModule.Model;
 using Core.ChatBotModule.View;
 using Core.MVC;
+using QFramework;
+using UnityEngine;
+using UniVRM10;
 
 namespace Core.ChatBotModule.Controller
 {
     public class GeminiController: ControllerBase
     {
         private ChatBotView _chatBotView;
-        private ExpressionControl _chatBotExpressionControl;
-        public async Task<string> OnChat(string text)
+        
+        private async void OnChat(string text)
         {
-            return null;
+            var str = await this.GetModel<GeminiDataModel>().GetResponse(text);
+            Debug.Log(str);
+            str = ExpressionControl(str);
+            Debug.Log(str);
+            _chatBotView.SetOutputText(str);
+            _chatBotView.send.interactable = true;
+            _chatBotView.newChat.interactable = true;
         }
 
-        public void ExpressionControl(EEmotion emotion)
+        private string ExpressionControl(string chatContent)
         {
-            
+            if (chatContent.IndexOf("*Sad*", StringComparison.Ordinal) != -1)
+            {
+                _chatBotView.chatBotExpressionControl.Sad();
+                chatContent = chatContent.Replace("*Sad*", "");
+            }
+            else if (chatContent.IndexOf("*Happy*", StringComparison.Ordinal) != -1)
+            {
+                _chatBotView.chatBotExpressionControl.Fun();
+                chatContent = chatContent.Replace("*Happy*", "");
+            } else if (chatContent.IndexOf("*Angry*", StringComparison.Ordinal) != -1)
+            {
+                _chatBotView.chatBotExpressionControl.Angry();
+                chatContent = chatContent.Replace("*Angry*", "");
+            } else if (chatContent.IndexOf("*Surprised*", StringComparison.Ordinal) != -1)
+            {
+                _chatBotView.chatBotExpressionControl.Surprised();
+                chatContent = chatContent.Replace("*Surprised*", "");
+            } else if (chatContent.IndexOf("*Neutral*", StringComparison.Ordinal) != -1)
+            {
+                _chatBotView.chatBotExpressionControl.Neutral();
+                chatContent = chatContent.Replace("*Neutral*", "");
+            }
+            return chatContent;
         }
 
-        public void NewChat(string geminiModelName, string avatarId)
+        public void NewChat()
         {
-            
-        }
-
-        public void EndChat()
-        {
-            
+            this.GetModel<GeminiDataModel>().InitHistory();
+            this.GetModel<CharacterModelDataModel>().CreateChatBotCharacter((model =>
+            {
+                model.AddComponent<ExpressionControl>().vrm10Instance = model.GetComponent<Vrm10Instance>();
+                this.GetModel<GeminiDataModel>().ChatBotAvatar = model;
+                _chatBotView.Display();
+                _chatBotView.Render(this.GetModel<GeminiDataModel>());
+            }));
         }
         
         public override void OnInit(List<ViewBase> view)
         {
             _chatBotView = view[0] as ChatBotView;
+            _chatBotView.send.onClick.AddListener((() =>
+            {
+                var text = _chatBotView.chatInput.text;
+                _chatBotView.chatInput.text = "";
+                _chatBotView.send.interactable = false;
+                _chatBotView.newChat.interactable = false;
+                _chatBotView.chatBotOutput.gameObject.SetActive(false);
+                _chatBotView.SetInputText(text);
+                OnChat(text);
+            }));
+            _chatBotView.newChat.onClick.AddListener((() =>
+            {
+                NewChat();
+            }));
         }
 
         public ViewBase OpenChatBotView()
         {
-            // CODE HERE
-            return null;
+            NewChat();
+            return _chatBotView;
         }
     }
 }

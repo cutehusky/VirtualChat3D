@@ -4,6 +4,7 @@
     "com.devsdaddy.cryptolibrary": "https://github.com/DevsDaddy/UnityCrypto.git?path=/DevsDaddy/Shared/CryptoLibrary/",
     "com.itisnajim.socketiounity": "https://github.com/itisnajim/SocketIOUnity.git",
     "com.jimmycushnie.jimmysunityutilities": "https://github.com/JimmyCushnie/JimmysUnityUtilities.git",
+    "com.mopsicus.uis": "https://github.com/mopsicus/uis.git",
     "com.unity.ai.navigation": "2.0.0",
     "com.unity.cinemachine": "3.0.1",
     "com.unity.ide.rider": "3.0.27",

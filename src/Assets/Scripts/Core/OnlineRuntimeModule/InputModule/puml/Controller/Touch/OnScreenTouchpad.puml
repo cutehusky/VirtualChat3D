@@ -1,0 +1,13 @@
+@startuml
+class OnScreenTouchpad {
+    - _pointerId : int
+    - _pointerCurrentPos : Vector2
+    - onValueChangeTrigger : string
+    + <<override>> OnPointerDown(eventData:PointerEventData) : void
+    + <<override>> OnDrag(eventData:PointerEventData) : void
+    + <<override>> OnPointerUp(eventData:PointerEventData) : void
+    # <<override>> OnEnable() : void
+    - OnDisable() : void
+}
+OnScreenTouchBase <|-- OnScreenTouchpad
+@enduml

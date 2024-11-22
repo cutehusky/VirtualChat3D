@@ -1,0 +1,29 @@
+@startuml
+class GameController {
+    - _gameView : GameView
+    + OnInit(view:GameView) : void
+    + currentPlayerCard : List<Card>
+    + isStarted : NetworkVariable<bool>
+    + countOfPlayer : NetworkVariable<int>
+    + currentPlayerIndex : NetworkVariable<int>
+    + playerId : List<ulong>
+    + StartServerRpc() : void
+    + StartClientRpc(cardList:int[]) : void
+    + StartCheckClientRpc() : void
+    + StartSendCardClientRpc() : void
+    + SendCardServerRpc(card:int) : void
+    + JoinGameServerRpc() : void
+    + HostGameServerRpc() : void
+    + CheckCardServerRpc(isCheck:bool) : void
+    + ShootClientRpc(isDead:bool) : void
+    + WinClientRpc() : void
+}
+enum Card {
+    A,
+    J,
+    Q,
+    Joker,
+}
+NetworkBehaviour <|-- GameController
+GameController +-- Card
+@enduml

@@ -6,6 +6,18 @@ namespace Core.OnlineRuntimeModule.CharacterControl
     public class PlayerExpressionController: NetworkBehaviour
     {
         public Vrm10Instance vrm10Instance;
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetExpressionServerRpc(int v)
+        {
+            
+        }
+
+        [ClientRpc]
+        public void SetExpressionClientRpc(int v)
+        {
+            
+        }
         
         public void Relax()
         {

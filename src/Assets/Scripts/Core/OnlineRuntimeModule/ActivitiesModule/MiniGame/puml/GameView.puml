@@ -1,0 +1,13 @@
+@startuml
+class GameView {
+    + card : List<Image>
+    + check : Button
+    + notCheck : Button
+    + notify : TMP_Text
+    + ActiveSendCard() : void
+    + ActiveCheck() : void
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- GameView
+@enduml

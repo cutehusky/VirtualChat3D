@@ -1,0 +1,17 @@
+@startuml
+class BasicInput {
+    - _playerInput : PlayerInput
+    + IsCurrentDeviceMouse : bool <<get>>
+    # <<override>> Awake() : void
+    - OnApplicationFocus(hasFocus:bool) : void
+    + SetCursorState(isLock:bool) : void
+    + Look(context:InputAction.CallbackContext) : void
+    + Move(context:InputAction.CallbackContext) : void
+    + Jump(context:InputAction.CallbackContext) : void
+    + Crouch(context:InputAction.CallbackContext) : void
+    + Sprint(context:InputAction.CallbackContext) : void
+    + GetArchitecture() : IArchitecture
+}
+"MonoSingleton`1" "<BasicInput>" <|-- BasicInput
+IController <|-- BasicInput
+@enduml

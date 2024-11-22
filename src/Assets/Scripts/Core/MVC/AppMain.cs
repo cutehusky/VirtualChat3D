@@ -108,9 +108,8 @@ namespace Core.MVC
                 MessageView
             });
 
-            _currentView = LoginView;
-            LoginView.Display();
-            LoginView.Render(null);
+            //OpenLoginView();
+            OpenChatBotView();
             UnityThread.initUnityThread();
         }
 
@@ -121,7 +120,8 @@ namespace Core.MVC
 
         public void CloseCurrentView()
         {
-            _currentView.Hide();
+            if (_currentView != null)
+                _currentView.Hide();
         }
 
         public void OpenUserProfileView()

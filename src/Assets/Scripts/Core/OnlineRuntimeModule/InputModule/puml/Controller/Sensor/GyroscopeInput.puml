@@ -1,0 +1,12 @@
+@startuml
+class GyroscopeInput {
+    - triggerName : string
+    - _gyroscope : Gyroscope
+    - Awake() : void
+    - OnDisable() : void
+    - Update() : void
+    + GetArchitecture() : IArchitecture
+}
+MonoBehaviour <|-- GyroscopeInput
+IController <|-- GyroscopeInput
+@enduml

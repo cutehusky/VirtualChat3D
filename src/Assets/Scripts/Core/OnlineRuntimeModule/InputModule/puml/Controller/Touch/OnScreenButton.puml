@@ -1,0 +1,18 @@
+@startuml
+class OnScreenButton {
+    - onClickTrigger : string
+    - onTouchTrigger : string
+    - onLongClickTrigger : string
+    - onPointerUpTrigger : string
+    - onPointerDownTrigger : string
+    - longClickThreshold : float = 1.0f
+    - _onPointerDownTime : float
+    - _clicked : bool
+    - Update() : void
+    + <<override>> OnPointerClick(eventData:PointerEventData) : void
+    + <<override>> OnPointerDown(eventData:PointerEventData) : void
+    + <<override>> OnPointerUp(eventData:PointerEventData) : void
+    - OnDisable() : void
+}
+OnScreenTouchBase <|-- OnScreenButton
+@enduml

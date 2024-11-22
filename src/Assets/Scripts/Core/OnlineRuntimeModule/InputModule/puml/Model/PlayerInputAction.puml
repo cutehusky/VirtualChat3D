@@ -1,0 +1,19 @@
+@startuml
+class PlayerInputAction {
+    + CursorLocked : bool
+    - _vector2Event : Dictionary<string, EasyEvent<Vector2>>
+    - _boolEvent : Dictionary<string, EasyEvent<bool>>
+    - _trigger : Dictionary<string, EasyEvent>
+    + TriggerEvent(name:string, data:Vector2) : void
+    + TriggerEvent(name:string, data:bool) : void
+    + TriggerEvent(name:string) : void
+    - AddVector2Event(name:string) : EasyEvent<Vector2>
+    - AddBoolEvent(name:string) : EasyEvent<bool>
+    - AddTrigger(name:string) : EasyEvent
+    + GetTrigger(name:string) : EasyEvent
+    + GetVector2Event(name:string) : EasyEvent<Vector2>
+    + GetBoolEvent(name:string) : EasyEvent<bool>
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- PlayerInputAction
+@enduml

@@ -1,6 +1,8 @@
 @startuml
 class PlayerExpressionController {
     + vrm10Instance : Vrm10Instance
+    + SetExpressionServerRpc(v:int) : void
+    + SetExpressionClientRpc(v:int) : void
     + Relax() : void
     + Angry() : void
     + Surprised() : void

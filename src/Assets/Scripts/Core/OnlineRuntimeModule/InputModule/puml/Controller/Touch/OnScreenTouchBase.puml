@@ -1,0 +1,20 @@
+@startuml
+class OnScreenTouchBase {
+    - raycastGoThrough : bool
+    - raycastTarget : List<GameObject>
+    # Parent : RectTransform
+    - PassEvent(data:PointerEventData, function:ExecuteEvents.EventFunction<T>) : void
+    + <<virtual>> OnPointerClick(eventData:PointerEventData) : void
+    + <<virtual>> OnPointerDown(eventData:PointerEventData) : void
+    + <<virtual>> OnPointerUp(eventData:PointerEventData) : void
+    + <<virtual>> OnDrag(eventData:PointerEventData) : void
+    # <<virtual>> OnEnable() : void
+    + GetArchitecture() : IArchitecture
+}
+MonoBehaviour <|-- OnScreenTouchBase
+IController <|-- OnScreenTouchBase
+IPointerClickHandler <|-- OnScreenTouchBase
+IPointerDownHandler <|-- OnScreenTouchBase
+IPointerUpHandler <|-- OnScreenTouchBase
+IDragHandler <|-- OnScreenTouchBase
+@enduml

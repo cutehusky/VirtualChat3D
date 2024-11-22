@@ -1,0 +1,18 @@
+@startuml
+class OnScreenJoystick {
+    - onValueChangeTrigger : string
+    - movementRange : float = 100
+    # gJoyStick : GameObject
+    - gJoyStickBackground : GameObject
+    - idleHide : bool = true
+    - _joyStickBackgroundStartPos : Vector2
+    - _pointerCurrentPos : Vector2
+    - _pointerId : int
+    + <<override>> OnPointerDown(eventData:PointerEventData) : void
+    + <<override>> OnDrag(eventData:PointerEventData) : void
+    + <<override>> OnPointerUp(eventData:PointerEventData) : void
+    # <<override>> OnEnable() : void
+    - OnDisable() : void
+}
+OnScreenTouchBase <|-- OnScreenJoystick
+@enduml
