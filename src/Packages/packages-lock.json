@@ -30,12 +30,19 @@
       "dependencies": {},
       "hash": "29734aae1d188d49470ba3e52a8b5d94be1fc49a"
     },
-    "com.mopsicus.uis": {
-      "version": "https://github.com/mopsicus/uis.git",
+    "com.mopsicus.umi": {
+      "version": "https://github.com/mopsicus/umi.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "4e608e3e8e5f85bf05f6c805e58e39a70c85db3e"
+      "hash": "47726eb66590f60617365e051d12a18bd63de005"
+    },
+    "com.nobi.roundedcorners": {
+      "version": "https://github.com/kirevdokimov/Unity-UI-Rounded-Corners.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "33135342e868201eb0d4cef821ecab90caca373e"
     },
     "com.unity.ai.navigation": {
       "version": "2.0.0",
@@ -300,6 +307,15 @@
       "source": "git",
       "dependencies": {},
       "hash": "4d27475bed66d56aca8b7d585b98fe503525e593"
+    },
+    "me.qiankanglai.loopscrollrect": {
+      "version": "https://github.com/qiankanglai/LoopScrollRect.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "ed00b083a02b76091fd946d79b2b3ab6d3f2721f"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

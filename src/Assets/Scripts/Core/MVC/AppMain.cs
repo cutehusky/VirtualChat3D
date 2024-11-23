@@ -16,6 +16,7 @@ using Core.UserAccountModule.View;
 using Firebase;
 using Firebase.Extensions;
 using QFramework;
+using UMI;
 using UnityEngine;
 using Utilities;
 
@@ -47,7 +48,10 @@ namespace Core.MVC
 
         protected override void Awake()
         {
-            // initial all view and controller here.
+            MobileInput.Init();
+            MobileInput.OnKeyboardAction += OnKeyboardAction;
+            MobileInput.OnOrientationChange += OnOrientationChange;
+            
             FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
                 var dependencyStatus = task.Result;
                 if (dependencyStatus == DependencyStatus.Available)
@@ -110,10 +114,21 @@ namespace Core.MVC
 
             //OpenLoginView();
             //OpenChatBotView();
-            OpenModelListView();
+            //OpenModelListView();
+            OpenMessageView();
             UnityThread.initUnityThread();
         }
 
+        void OnOrientationChange(HardwareOrientation orientation) {
+            Debug.Log($"orientation {orientation}");
+        }
+
+        void OnKeyboardAction(bool isShow, int height) {
+            Debug.Log($"Keyboard show: {isShow}");
+            Debug.Log($"Keyboard height {height}");
+        }
+
+        
         public void OpenSignUpView()
         {
             _currentView = UserAuthController.OpenSignUpView();

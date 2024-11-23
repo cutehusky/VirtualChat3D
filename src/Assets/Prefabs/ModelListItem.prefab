@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 1675756479637256897}
   - component: {fileID: 1261264826253781532}
   - component: {fileID: -8313974085333896883}
+  - component: {fileID: 6075806158565752696}
   m_Layer: 5
   m_Name: ModelListItem
   m_TagString: Untagged
@@ -391,6 +392,26 @@ MonoBehaviour:
   preview: {fileID: 1974288465145552227}
   selectAsChatBot: {fileID: 6647731023248979939}
   selectAsCharacter: {fileID: 5501050100072720704}
+--- !u!114 &6075806158565752696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4684313524921960795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 800
+  m_PreferredHeight: 100
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5298160735768820459
 GameObject:
   m_ObjectHideFlags: 0

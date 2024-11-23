@@ -2,21 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.cutehusky.VirtualChat3D">
   <application>
     <!--Used when Application Entry is set to Activity, otherwise remove this activity block-->
-    <activity android:name="com.unity3d.player.UnityPlayerActivity" android:theme="@style/UnityThemeSelector">
+    <activity android:name="com.unity3d.player.UnityPlayerActivity" android:theme="@style/UnityThemeSelector" android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+      <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" />
     </activity>
     <!--Used when Application Entry is set to GameActivity, otherwise remove this activity block-->
-    <activity android:name="com.unity3d.player.UnityPlayerGameActivity" android:theme="@style/BaseUnityGameActivityTheme">
+    <activity android:name="com.unity3d.player.UnityPlayerGameActivity" android:theme="@style/BaseUnityGameActivityTheme" android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
       <meta-data android:name="android.app.lib_name" android:value="game" />
+      <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" />
     </activity>
     <!-- begin VRoidSDK -->
     <activity android:name="net.pixiv.vroidsdk.AuthenticateActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:launchMode="singleTask" android:exported="true">

@@ -55,7 +55,8 @@ namespace Core.MessageModule.Controller
 
         public ViewBase OpenMessageView()
         {
-            // CODE HERE
+            _messageView.Display();
+            _messageView.Render(this.GetModel<MessageDataModel>());
             return null;
         }
     }

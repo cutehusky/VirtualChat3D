@@ -6,7 +6,6 @@ using Core.CharacterCustomizationModule.View;
 using Core.MVC;
 using JimmysUnityUtilities;
 using QFramework;
-using UIS;
 using UnityEngine;
 
 namespace Core.CharacterCustomizationModule.Controller

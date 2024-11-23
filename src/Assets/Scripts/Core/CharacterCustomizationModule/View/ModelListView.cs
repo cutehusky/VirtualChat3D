@@ -2,57 +2,76 @@
 using System.Collections.Generic;
 using Core.CharacterCustomizationModule.Model;
 using Core.MVC;
-using UIS;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Core.CharacterCustomizationModule.View
 {
-    public class ModelListView: ViewBase
+    public class ModelListView: ViewBase,  LoopScrollPrefabSource, LoopScrollDataSource
     {
-        public Scroller list;
         public Button import;
         public Transform previewModelPoint;
         private CharacterModelDataModel _dataModel;
         public Action<int> OnModelPreviewChange;
         public Action<int> OnSelectChatBotModel;
         public Action<int> OnSelectCharacterModel;
+        public LoopScrollRect list;
         public override void Render(ModelBase model)
         {
             _dataModel = model as CharacterModelDataModel;
-            list.OnFill += OnFillItem;
-            list.OnHeight += OnHeightItem;
-            list.InitData( _dataModel.ModelId.Count);
-        }   
+            
+            list.prefabSource = this;
+            list.dataSource = this;
+            list.totalCount = _dataModel.ModelId.Count;
+            list.RefillCells();
+        }  
         
-        int OnHeightItem(int index) {
-            return 100;
+        public override void OnInit()
+        {
+        }
+        
+        public GameObject itemPrefab;
+        Stack<Transform> pool = new Stack<Transform>();
+        public GameObject GetObject(int index)
+        {
+            if (pool.Count == 0)
+            {
+                return Instantiate(itemPrefab);
+            }
+            var candidate = pool.Pop();
+            candidate.gameObject.SetActive(true);
+            return candidate.gameObject;
         }
 
-        void OnFillItem(int index, GameObject item) {
-            item.GetComponent<ModelListItem>().modelId.text = _dataModel.ModelId[index];
-            item.GetComponent<ModelListItem>().preview.onClick.RemoveAllListeners();
-            item.GetComponent<ModelListItem>().preview.onClick.AddListener(() =>
+        public void ReturnObject(Transform trans)
+        {
+            var item = trans.GetComponent<ModelListItem>();
+            item.selectAsCharacter.onClick.RemoveAllListeners();
+            item.selectAsChatBot.onClick.RemoveAllListeners();
+            item.preview.onClick.RemoveAllListeners();
+            trans.gameObject.SetActive(false);
+            trans.SetParent(transform, false);
+            pool.Push(trans);
+        }
+
+        public void ProvideData(Transform trans, int index)
+        {
+            var item = trans.GetComponent<ModelListItem>();
+            item.modelId.text = _dataModel.ModelId[index];
+            item.preview.onClick.AddListener(() =>
             {
                 OnModelPreviewChange(index);
             });
             
-            item.GetComponent<ModelListItem>().selectAsCharacter.onClick.RemoveAllListeners();
-            item.GetComponent<ModelListItem>().selectAsCharacter.onClick.AddListener(() =>
+            item.selectAsCharacter.onClick.AddListener(() =>
             {
                 OnSelectCharacterModel(index);
             });
             
-            item.GetComponent<ModelListItem>().selectAsChatBot.onClick.RemoveAllListeners();
-            item.GetComponent<ModelListItem>().selectAsChatBot.onClick.AddListener(() =>
+            item.selectAsChatBot.onClick.AddListener(() =>
             {
                 OnSelectChatBotModel(index);
             });
-        }
-        
-        public override void OnInit()
-        {
         }
     }
 }
