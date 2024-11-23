@@ -11,10 +11,5 @@ namespace Core.CharacterCustomizationModule.View
         public Button preview;
         public Button selectAsChatBot;
         public Button selectAsCharacter;
-        void ScrollCellIndex(int idx)
-        {
-            
-            gameObject.name = name;
-        }
     }
 }

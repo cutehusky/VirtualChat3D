@@ -73,7 +73,6 @@ namespace Core.ChatBotModule.Controller
                 _chatBotView.chatInput.text = "";
                 _chatBotView.send.interactable = false;
                 _chatBotView.newChat.interactable = false;
-                _chatBotView.chatBotOutput.gameObject.SetActive(false);
                 _chatBotView.SetInputText(text);
                 OnChat(text);
             }));

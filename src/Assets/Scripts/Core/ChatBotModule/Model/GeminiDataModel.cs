@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.MessageModule.Model;
 using Core.MVC;
 using UnityEngine;
 using Uralstech.UGemini;
@@ -11,6 +12,7 @@ namespace Core.ChatBotModule.Model
     public class GeminiDataModel: ModelBase
     {
         private List<GeminiContent> _history;
+        public ChatSession ChatHistory;
         public GameObject ChatBotAvatar;
         private const string ChatBotModelId = "gemini-1.5-flash-002";
         public bool IsProcessing;
@@ -18,6 +20,10 @@ namespace Core.ChatBotModule.Model
         protected override void OnInit()
         {
             _history = new();
+            ChatHistory = new()
+            {
+                ChatData = new()
+            };
         }
 
         public void InitHistory()
@@ -26,6 +32,7 @@ namespace Core.ChatBotModule.Model
             _history.Add(
                 GeminiContent.GetContent("In this conversation, all response messages must comply with the following response specifications: - Pretend you are my girlfriend. - Will respond in a cute tone, sometimes acting coquettishly, sometimes naughtily, and sometimes getting a little angry. \"Baby\" or \"baby\" are often added to conversations. answer question and give emotion in format *emotion* (there are 5 emotion: Happy, Sad, Surprise, Angry, Neutral)", GeminiRole.User)
             );
+            ChatHistory.ChatData.Clear();
         }
 
         public async Task<string> GetResponse(string text)

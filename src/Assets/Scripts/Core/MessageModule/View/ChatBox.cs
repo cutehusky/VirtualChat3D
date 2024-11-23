@@ -1,6 +1,7 @@
 ﻿using LogicUI.FancyTextRendering;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Core.MessageModule.View
 {
@@ -9,5 +10,6 @@ namespace Core.MessageModule.View
         public TMP_Text role;
         public MarkdownRenderer text;
         public TMP_Text time;
+        public Image background;
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Core.ChatBotModule.Controller;
 using Core.ChatBotModule.Model;
+using Core.MessageModule.Model;
 using Core.MessageModule.View;
 using Core.MVC;
 using JimmysUnityUtilities;
@@ -10,16 +13,17 @@ using UnityEngine.UI;
 
 namespace Core.ChatBotModule.View
 {
-    public class ChatBotView: ViewBase
+    public class ChatBotView: ViewBase, LoopScrollPrefabSource, LoopScrollDataSource
     {
         public Button newChat;
         public Transform chatBotModelPoint;
         public ExpressionControl chatBotExpressionControl;
         public TMP_InputField chatInput;
         public Button send;
-        public ChatBox userInput;
-        public ChatBox chatBotOutput;
         public RuntimeAnimatorController animatorController;
+        public LoopScrollRect list;
+        
+        public ChatSession ChatSession;
         public override void Render(ModelBase model)
         {
             var geminiDataModel = model as GeminiDataModel;
@@ -27,27 +31,78 @@ namespace Core.ChatBotModule.View
             chatBotModelPoint.DestroyAllChildren();
             geminiDataModel.ChatBotAvatar.transform.SetParent(chatBotModelPoint, false);
             chatBotExpressionControl = geminiDataModel.ChatBotAvatar.GetComponent<ExpressionControl>();
-            userInput.gameObject.SetActive(false);
-            chatBotOutput.gameObject.SetActive(false);
+            ChatSession = geminiDataModel.ChatHistory;
+            list.prefabSource = this;
+            list.dataSource = this;
+            list.totalCount = 0;
+            list.RefillCells();
         }
 
         public void SetInputText(string text)
         {
-            userInput.gameObject.SetActive(true);
-            userInput.text.Source = text;
-            userInput.role.text = "User";
+            ChatSession.ChatData.Add(
+                new ChatMessage()
+                {
+                    Content = text,
+                    UserId = "User",
+                    Time = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                });
+            list.totalCount++;
+            list.RefillCells();
         }
 
         public void SetOutputText(string text)
         {
-            chatBotOutput.gameObject.SetActive(true);
-            chatBotOutput.text.Source = text;
-            chatBotOutput.role.text = "ChatBot";
+            ChatSession.ChatData.Add(
+                new ChatMessage()
+                {
+                    Content = text,
+                    UserId = "ChatBot",
+                    Time = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                });
+            list.totalCount++;
+            list.RefillCells();
         }
+        
         
         public override void OnInit()
         {
-            
+          
+        }
+        
+        public GameObject itemPrefab;
+        Stack<Transform> pool = new Stack<Transform>();
+        public GameObject GetObject(int index)
+        {
+            if (pool.Count == 0)
+            {
+                return Instantiate(itemPrefab);
+            }
+            var candidate = pool.Pop();
+            candidate.gameObject.SetActive(true);
+            return candidate.gameObject;
+        }
+
+        public void ReturnObject(Transform trans)
+        {
+            trans.gameObject.SetActive(false);
+            trans.SetParent(transform, false);
+            pool.Push(trans);
+        }
+
+        public void ProvideData(Transform trans, int index)
+        {
+            var item = trans.GetComponent<ChatBox>();
+            if (index < ChatSession.ChatData.Count)
+            {
+                item.role.text = ChatSession.ChatData[index].UserId;
+                item.text.Source = ChatSession.ChatData[index].Content;
+                item.time.text = ChatSession.ChatData[index].Time;
+                if (ChatSession.ChatData[index].UserId == "User")
+                    item.background.color = Color.blue;
+                else
+                    item.background.color = Color.red;
+            }
         }
     }
 }
