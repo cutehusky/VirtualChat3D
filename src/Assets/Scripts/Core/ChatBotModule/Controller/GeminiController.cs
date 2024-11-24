@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Core.CharacterCustomizationModule.Model;
 using Core.ChatBotModule.Model;
 using Core.ChatBotModule.View;
+using Core.MessageModule.Model;
 using Core.MVC;
 using QFramework;
 using UnityEngine;
@@ -20,7 +22,7 @@ namespace Core.ChatBotModule.Controller
             Debug.Log(str);
             str = ExpressionControl(str);
             Debug.Log(str);
-            _chatBotView.SetOutputText(str);
+            AddMessage("ChatBot", str);
             _chatBotView.send.interactable = true;
             _chatBotView.newChat.interactable = true;
         }
@@ -73,13 +75,25 @@ namespace Core.ChatBotModule.Controller
                 _chatBotView.chatInput.text = "";
                 _chatBotView.send.interactable = false;
                 _chatBotView.newChat.interactable = false;
-                _chatBotView.SetInputText(text);
+                AddMessage("User", text);
                 OnChat(text);
             }));
             _chatBotView.newChat.onClick.AddListener((() =>
             {
                 NewChat();
             }));
+        }
+        
+        public void AddMessage(string role, string text)
+        {
+            this.GetModel<GeminiDataModel>().ChatHistory.ChatData.Add(
+                new ChatMessage()
+                {
+                    Content = text,
+                    UserId = role,
+                    Time = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                });
+            _chatBotView.RefreshList();
         }
 
         public ViewBase OpenChatBotView()

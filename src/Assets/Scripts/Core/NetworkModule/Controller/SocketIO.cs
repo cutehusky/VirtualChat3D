@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.MVC;
 using Core.NetworkModule.Model;
 using Newtonsoft.Json;
+using Plugins.EditorExtend.ExecutionOrder.Scripts;
 using QFramework;
 using SocketIOClient;
 using SocketIOClient.Newtonsoft.Json;
@@ -12,6 +13,7 @@ using Utilities;
 
 namespace Core.NetworkModule.Controller
 {
+    [ExecuteBefore(typeof(AppMain))]
     public class SocketIO: MonoSingleton<SocketIO>, IController
     {
         [JsonObject]
@@ -25,18 +27,9 @@ namespace Core.NetworkModule.Controller
 
         private float _sendKeyDeltaTime = 0;
         private bool _isSentAESKey = false;
-        private bool _isSentRSAKey = false;
         
         public string ip;
         public float sendKeyTimeout = 10f;
-        
-        public void SendWebSocketMessageRSA(string eventName, string data)
-        {
-            if (_socket is not { Connected: true } || !_isSentRSAKey)
-                return;
-            var encrypted = this.GetModel<EncryptionProvider>().EncryptRSAString(data);
-            _socket.Emit(eventName, encrypted);
-        }
         
         public void SendWebSocketMessageAES(string eventName, string data)
         {
@@ -46,25 +39,33 @@ namespace Core.NetworkModule.Controller
                 this.GetModel<EncryptionProvider>().EncryptAES128ECB(data));
             _socket.Emit(eventName, encrypted);
         }
+        
+        public void SendWebSocketMessage<T>(string eventName, T data)
+        {
+            if (_socket is not { Connected: true })
+                return;
+            _socket.Emit(eventName, data);
+        }
 
         private void SendKey()
         {
             if (_socket is not { Connected: true })
                 return;
-            if (_isSentAESKey && _isSentRSAKey)
+            if (_isSentAESKey)
                 return;
             if (_sendKeyDeltaTime > 0)
             {
                 _sendKeyDeltaTime -= Time.deltaTime;
                 return;
             }
-            if (!_isSentRSAKey) 
-                _socket.Emit("clientRSAPublicKey", 
-                    this.GetModel<EncryptionProvider>().ClientPublicKey);
-            if (!_isSentAESKey)
-                _socket.Emit("clientAESKey", 
+            _socket.Emit("clientAESKey", 
                     this.GetModel<EncryptionProvider>().AESEncrytedKey);
             _sendKeyDeltaTime = sendKeyTimeout;
+        }
+
+        protected override void Awake()
+        {
+            OnInit();
         }
         
         void Update()
@@ -120,17 +121,6 @@ namespace Core.NetworkModule.Controller
             _socket.JsonSerializer = new NewtonsoftJsonSerializer();
             _socket.unityThreadScope = SocketIOUnity.UnityThreadScope.Update; 
             
-            _socket.OnUnityThread("clientRSAPublicKeyRep", (response) =>
-            {
-                var obj = response.GetValue<KeyRepPacket>();
-                var data = this.GetModel<EncryptionProvider>().DecryptRSAString(obj.Value);
-                if (data == "hello from server")
-                {
-                    _isSentRSAKey = true;
-                    Debug.Log($"{DateTime.Now} RSA rep: {data}");
-                }
-            });
-            
             _socket.OnUnityThread("clientAESKeyRep", (response) =>
             {
                 var obj = response.GetValue<KeyRepPacket>();
@@ -144,13 +134,6 @@ namespace Core.NetworkModule.Controller
             
             /*
             // testing
-            socket.OnUnityThread("messageServer2ClientRSA", (response) =>
-            {
-                var obj = response.GetValue<KeyRepPacket>();
-                var data = this.GetModel<EncryptionProvider>().DecryptRSAString(obj.Value);
-                Debug.Log("RSA: " + data);
-            });
-            
             socket.OnUnityThread("messageServer2ClientAES", (response) =>
             {
                 var obj = response.GetValue<KeyRepPacket>();
@@ -163,7 +146,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Connected");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             
@@ -171,7 +153,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Disconnected: reason = {e}");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             
@@ -179,7 +160,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Error: reason = {e}");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             
@@ -187,7 +167,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Reconnecting: attempt = {e}");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             
@@ -195,7 +174,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Reconnect Error: reason = {exception}");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             
@@ -203,7 +181,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Reconnect Failed: reason = {exception}");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             
@@ -211,7 +188,6 @@ namespace Core.NetworkModule.Controller
             {
                 Debug.Log($"{DateTime.Now} Reconnected: attempt = {e}");
                 _isSentAESKey = false;
-                _isSentRSAKey = false;
                 _sendKeyDeltaTime = 0;
             };
             await _socket.ConnectAsync();

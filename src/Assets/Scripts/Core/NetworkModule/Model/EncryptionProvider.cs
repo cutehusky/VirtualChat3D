@@ -45,17 +45,6 @@ namespace Core.NetworkModule.Model
 
         #region RSA
         private RSA.RSAProvider _client2ServerEncryption;
-        private RSA.RSAProvider _server2ClientDecryption;
-        private string _clientPublicKey;
-        public string ClientPublicKey => _clientPublicKey;
-        private void CreateClientRSAKey()
-        {
-            var clientKey = RSA.RSAProvider.GenerateKeyPair(512);
-            _server2ClientDecryption = new RSA.RSAProvider(new RSA.RSAEncryptionOptions() {
-                privateKey = clientKey.Value
-            });
-            _clientPublicKey = clientKey.Key;
-        }
 
         public void SetServerKey(string key)
         {
@@ -63,23 +52,12 @@ namespace Core.NetworkModule.Model
                 publicKey = key,
             });
         }
-
-        public string EncryptRSAString(string data)
-        {
-            return _client2ServerEncryption.EncryptString(data);
-        }
-        
-        public string DecryptRSAString(string data)
-        {
-            return _server2ClientDecryption.DecryptString(data);
-        }
         #endregion
 
         
         protected override void OnInit()
         {
             CreateAESKey();
-            CreateClientRSAKey();
         }
     }
 }

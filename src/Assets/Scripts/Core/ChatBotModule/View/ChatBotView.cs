@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Core.ChatBotModule.Controller;
 using Core.ChatBotModule.Model;
 using Core.MessageModule.Model;
@@ -37,33 +38,12 @@ namespace Core.ChatBotModule.View
             list.totalCount = 0;
             list.RefillCells();
         }
-
-        public void SetInputText(string text)
-        {
-            ChatSession.ChatData.Add(
-                new ChatMessage()
-                {
-                    Content = text,
-                    UserId = "User",
-                    Time = DateTime.Now.ToString(CultureInfo.InvariantCulture)
-                });
-            list.totalCount++;
-            list.RefillCells();
-        }
-
-        public void SetOutputText(string text)
-        {
-            ChatSession.ChatData.Add(
-                new ChatMessage()
-                {
-                    Content = text,
-                    UserId = "ChatBot",
-                    Time = DateTime.Now.ToString(CultureInfo.InvariantCulture)
-                });
-            list.totalCount++;
-            list.RefillCells();
-        }
         
+        public void RefreshList()
+        {
+            list.totalCount = ChatSession.ChatData.Count;
+            list.RefillCells();
+        }
         
         public override void OnInit()
         {

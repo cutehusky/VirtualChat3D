@@ -24,7 +24,13 @@ namespace Core.MessageModule.View
             if (messageDataModel.CurrentChatSession == null)
                 list.totalCount = 0;
             else
-                list.totalCount = messageDataModel.CurrentChatSession.ChatData.Count + messageDataModel.CurrentChatSession.NewChatData.Count ;
+                list.totalCount = messageDataModel.CurrentChatSession.ChatData.Count;
+            list.RefillCells();
+        }
+
+        public void RefreshList()
+        {
+            list.totalCount = ChatSession.ChatData.Count;
             list.RefillCells();
         }
         
@@ -61,13 +67,6 @@ namespace Core.MessageModule.View
                 item.role.text = ChatSession.ChatData[index].UserId;
                 item.text.Source = ChatSession.ChatData[index].Content;
                 item.time.text = ChatSession.ChatData[index].Time;
-            }
-            else
-            {
-                index -= ChatSession.ChatData.Count;
-                item.role.text = ChatSession.NewChatData[index].UserId;
-                item.text.Source = ChatSession.NewChatData[index].Content;
-                item.time.text = ChatSession.NewChatData[index].Time;
             }
         }
     }
