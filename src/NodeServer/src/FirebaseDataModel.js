@@ -20,8 +20,8 @@ class FirebaseDataModel {
             credential: this.#admin.credential.cert(serviceAccount),
             databaseURL: "https://virtualchat3d-default-rtdb.asia-southeast1.firebasedatabase.app"
         });
-        this.#authService = this.#admin.auth()
-        this.#databaseService = this.#admin.database()
+        this.#authService = this.#admin.auth();
+        this.#databaseService = this.#admin.database();
     }
     verifyToken(token) {
         this.#authService.verifyToken(token).then((uid) => {
@@ -31,41 +31,60 @@ class FirebaseDataModel {
         })
     }
     lockUser(userId) {
-        
+        this.#authService.updateUser(userId, {
+            disabled: true
+        });
     }
     unlockUser(userId) {
-
+        this.#authService.updateUser(userId, {
+            disabled: false
+        });
     }
     deleteUser(userId) {
-
+        this.#authService.deleteUser(userId);
+        this.#databaseService.ref(`Account/${userId}`).remove();
     }
     friendRemove(userId, targetId) {
-
+        let cons_id = this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).val();
+        this.#databaseService.ref(`DMessage/${cons_id}`).remove();
+        this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).remove();
+        this.#databaseService.ref(`Account/${targetId}/Friend/${userId}`).remove();
     }
     friendRequest(userId, targetId) {
-
+        this.#databaseService.ref(`Account/${targetId}/FriendRequest`).set({
+            [userId]: 1
+        });
     }
     friendRequestAccept(userId, targetId) {
-
+        this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
+        let consId = this.#databaseService.ref(`DMessage`).push().key;
+        this.#databaseService.ref(`Account/${userId}/Friend/`).set({
+            [targetId]: consId
+        })
+        this.#databaseService.ref(`Account/${targetId}/Friend/`).set({
+            [userId]: consId
+        })
     }
     friendRequestRefuse(userId, targetId) {
-
+        this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
     }
-    getFriendList(userId) {
-
+    getFriendList(socket, userId) {
+        this.#databaseService.ref(`Account/${userId}/FriendList`)
+        .once('value', (data) => {
+            socket.emit('viewFriendReply', data.val());
+        })
     }
     messageWrite(userId, targetId, consId,  messageData) {
-        
-        let msgRef = this.#databaseService.ref(`DMessage/${consId}`)
-        msgRef.push({
+        this.#databaseService.ref(`DMessage/${consId}`)
+        .push({
             from: userId,
             to: targetId,
             msg:  messageData  
-        })
+        });
     }
     getMessage(socket, consId) {
-        let msgRef = this.#databaseService.ref(`/DMessage/${consId}`)
-        msgRef.once('value', (data) => {
+        this.#databaseService.ref(`/DMessage/${consId}`)
+        .once('value', (data) => {
             socket.emit('viewMessageReply', data.val());
         })
     }
