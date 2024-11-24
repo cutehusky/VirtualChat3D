@@ -34,6 +34,9 @@ class NetworkController {
     }
 
     runEvents(socket) {
+        socket.on('fetch', (data) => {
+            this.clientList[data.uid] = socket;
+        }) 
         for (const [eventName, callback] of Object.entries(this.#socketEventDict)) {
             socket.on(eventName, (data) => callback(socket, data));
         }
@@ -46,3 +49,5 @@ class NetworkController {
         this.#socketEventDict[eventName] = callback;
     }   
 }
+
+module.exports = NetworkController

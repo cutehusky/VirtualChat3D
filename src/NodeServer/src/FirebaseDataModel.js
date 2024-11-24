@@ -11,22 +11,60 @@ class FirebaseDataModel {
         }
         return FirebaseDataModel.#instance;
     }
-    constructor(config) {
+    constructor() {
         if(FirebaseDataModel.#instance) {
             throw new Error("illegal instantiation");
         }
         FirebaseDataModel.#instance = this;
         this.#admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
+            credential: this.#admin.credential.cert(serviceAccount),
             databaseURL: "https://virtualchat3d-default-rtdb.asia-southeast1.firebasedatabase.app"
         });
-        this.#authService = getAuth(this.#admin)
+        this.#authService = this.#admin.auth()
+        this.#databaseService = this.#admin.database()
     }
     verifyToken(token) {
         this.#authService.verifyToken(token).then((uid) => {
             return uid;
         }).catch((error) => {
-            return error
+            return error;
         })
     }
+    lockUser(userId) {
+        
+    }
+    unlockUser(userId) {
+
+    }
+    deleteUser(userId) {
+
+    }
+    friendRemove(userId, targetId) {
+
+    }
+    friendRequest(userId, targetId) {
+
+    }
+    friendRequestAccept(userId, targetId) {
+
+    }
+    friendRequestRefuse(userId, targetId) {
+
+    }
+    getFriendList(userId) {
+
+    }
+    messageWrite(userId, targetId, consId,  messageData) {
+        let msgRef = this.#databaseService.ref(`DMessage/${consId}`)
+        msgRef.push({
+            from: userId,
+            to: targetId,
+            msg:  messageData  
+        })
+    }
+    getMessage(messageId) {
+
+    }
 }
+
+module.exports = FirebaseDataModel
