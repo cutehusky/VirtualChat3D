@@ -55,6 +55,7 @@ class FirebaseDataModel {
 
     }
     messageWrite(userId, targetId, consId,  messageData) {
+        
         let msgRef = this.#databaseService.ref(`DMessage/${consId}`)
         msgRef.push({
             from: userId,
@@ -62,8 +63,11 @@ class FirebaseDataModel {
             msg:  messageData  
         })
     }
-    getMessage(messageId) {
-
+    getMessage(socket, consId) {
+        let msgRef = this.#databaseService.ref(`/DMessage/${consId}`)
+        msgRef.once('value', (data) => {
+            socket.emit('viewMessageReply', data.val());
+        })
     }
 }
 

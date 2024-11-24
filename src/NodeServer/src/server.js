@@ -4,3 +4,4 @@ message = require("./MessageController.js")
 
 network = NetworkController.getInstance()
 network.SubscribeEvent('sendMessage', message.processSendMessage);
+network.SubscribeEvent('viewMessage', message.processViewMessage);

@@ -7,11 +7,12 @@ class MessageController {
         if(data.fid in network.clientList) {
             network.clientList[data.fid].emit('receivedMessage', data);
         }
-        fb = Firebase.getInstance();
+        let fb = Firebase.getInstance();
         fb.messageWrite(data.uid, data.fid, data.id_cons, data.msg);
     }
     static processViewMessage(socket, data) {
-        
+        let fb = Firebase.getInstance();
+        fb.getMessage(socket, data.id_cons);
     }
 }
 
