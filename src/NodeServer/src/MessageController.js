@@ -4,11 +4,11 @@ Firebase = require("./FirebaseDataModel.js")
 class MessageController {
     static processSendMessage(socket, data) {
         network = NetworkController.getInstance();
-        data['timestamp'] = Date.now(); 
-        if(data.fid in network.clientList) {
-            socket.emit('sendMessageReply', data);
+        data['timestamp'] = Date.now();
+        if (data.fid in network.clientList) {
             network.clientList[data.fid].emit('receivedMessage', data);
         }
+        socket.emit('sendMessageReply', data);
         let fb = Firebase.getInstance();
         fb.messageWrite(data);
     }

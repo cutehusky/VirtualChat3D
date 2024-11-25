@@ -1,4 +1,6 @@
-﻿namespace Core.MessageModule.Model
+﻿using System;
+
+namespace Core.MessageModule.Model
 {
     public class ChatMessage
     {

@@ -20,10 +20,7 @@ namespace Core.ChatBotModule.Model
         protected override void OnInit()
         {
             _history = new();
-            ChatHistory = new()
-            {
-                ChatData = new()
-            };
+            ChatHistory = new();
         }
 
         public void InitHistory()

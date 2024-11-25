@@ -14,78 +14,113 @@ namespace Core.MessageModule.Controller
     public class MessageController: ControllerBase
     {
         private MessageView _messageView;
-        /// <summary>
-        /// Mark all new message as read
-        /// </summary>
-        /// <param name="userId"></param>
-        public void ReadMessageOfUser()
-        {
-            
-        }
 
         public void SendMessage()
         {
+            var text = _messageView.chatInput.text;
+            if (text.Length <= 0)
+                return;
+            _messageView.chatInput.text = "";
+            
             SocketIO.Instance.SendWebSocketMessage("fetch", new UserVerifyPacket()
             {
-                uid = "0",
+                uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
                 token = ""
-            });
-            SocketIO.Instance.SendWebSocketMessage("sendMessage", new SendMessagePacket
+            });  // for test only
+            
+            SocketIO.Instance.SendWebSocketMessage("sendMessage", new MessagePacket
             {
-                fid = this.GetModel<MessageDataModel>().CurrentChatFriendId,
-                id_cons = this.GetModel<MessageDataModel>().CurrentChatSessionId,
-                msg = _messageView.chatInput.text,
+                fid = this.GetModel<MessageDataModel>().CurrentChatSession.FriendId,
+                id_cons = this.GetModel<MessageDataModel>().CurrentChatSession.ChatSessionId,
+                msg = text,
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });
-            AddMessage(this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
-                _messageView.chatInput.text,
-                DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
 
-        private void AddMessage(string userId, string content, string time)
+        private void AddMessage(string userId, string content, string time, string chatSessionId)
         {
-            this.GetModel<MessageDataModel>().CurrentChatSession.ChatData.Add(new ChatMessage()
+            if (this.GetModel<MessageDataModel>().CurrentChatSession.ChatSessionId == chatSessionId)
             {
-                UserId = userId,
-                Content = content,
-                Time = time
-            });
-            _messageView.RefreshList();
+                this.GetModel<MessageDataModel>().CurrentChatSession.ChatData.Add(new ChatMessage()
+                {
+                    UserId = userId,
+                    Content = content,
+                    Time = time
+                });
+                _messageView.RefreshList();
+            }
         }
-        
-        /// <summary>
-        ///  Receive new message from server
-        /// </summary>
-        public void ReceiveNewMessage(SendMessagePacket packet)
-        {
-            Debug.Log($"Receive packet {packet.fid} {packet.uid} {packet.id_cons} {packet.msg}");
-            AddMessage(packet.fid, packet.msg, DateTime.Now.ToString(CultureInfo.InvariantCulture));
-        }
-           
+            
         /// <summary>
         /// Load all message from server
         /// </summary>
-        public void LoadMessage()
+        public void LoadMessage(string chatSessionId, string friendId)
         {
-            
-        }
-
-
-        public override void OnInit(List<ViewBase> view)
-        {
-            _messageView = view[0] as MessageView;
-            _messageView.send.onClick.AddListener((() =>
+            this.GetModel<MessageDataModel>().CurrentChatSession.ChatSessionId = chatSessionId;
+            this.GetModel<MessageDataModel>().CurrentChatSession.FriendId = friendId;
+            SocketIO.Instance.SendWebSocketMessage("viewMessage",  new ChatSessionPacket()
             {
-                SendMessage();
-            }));
-            SocketIO.Instance.AddUnityCallback("receivedMessage",(res) =>
-            {
-                ReceiveNewMessage(res.GetValue<SendMessagePacket>());
+                uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
+                id_cons = chatSessionId
             });
         }
 
-        public ViewBase OpenMessageView()
+        public void ReadMessage(string chatSessionId)
         {
+            if (this.GetModel<MessageDataModel>().CurrentChatSession.ChatSessionId == chatSessionId)
+            {
+                SocketIO.Instance.SendWebSocketMessage("readMessage", new ChatSessionPacket()
+                {
+                    uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
+                    id_cons = chatSessionId
+                });
+            }
+        }
+        
+        public override void OnInit(List<ViewBase> view)
+        {
+            _messageView = view[0] as MessageView;
+            _messageView.send.onClick.AddListener((SendMessage));
+            SocketIO.Instance.AddUnityCallback("viewMessageReply", (res) =>
+            { 
+                string id_cons = "";
+                Debug.Log("test");
+                var packets = res.GetValue<MessagePacket[]>();
+                foreach (var packet in packets)
+                {
+                    AddMessage(packet.uid,
+                        packet.msg,
+                        DateTimeOffset.FromUnixTimeMilliseconds(packet.timestamp).DateTime
+                            .ToString(CultureInfo.InvariantCulture), packet.id_cons);
+                    id_cons = packet.id_cons;
+                }
+                if (id_cons != "")
+                    ReadMessage(id_cons);
+            });
+            SocketIO.Instance.AddUnityCallback("receivedMessage",(res) =>
+            {
+                var packet = res.GetValue<MessagePacket>();
+                Debug.Log($"Receive packet {packet.fid} {packet.uid} {packet.id_cons} {packet.msg}");
+                AddMessage(packet.uid,
+                    packet.msg,
+                    DateTimeOffset.FromUnixTimeMilliseconds(packet.timestamp).DateTime
+                        .ToString(CultureInfo.InvariantCulture), packet.id_cons);
+                ReadMessage(packet.id_cons);
+            });
+            SocketIO.Instance.AddUnityCallback("sendMessageReply",(res) =>
+            {
+                var packet = res.GetValue<MessagePacket>();
+                Debug.Log($"Receive packet {packet.fid} {packet.uid} {packet.id_cons} {packet.msg}");
+                AddMessage(packet.uid,
+                    packet.msg,
+                    DateTimeOffset.FromUnixTimeMilliseconds(packet.timestamp).DateTime
+                        .ToString(CultureInfo.InvariantCulture), packet.id_cons);
+            });
+        }
+
+        public ViewBase OpenMessageView(string chatSessionId, string friendId)
+        {
+            LoadMessage(chatSessionId, friendId);
             _messageView.Display();
             _messageView.Render(this.GetModel<MessageDataModel>());
             return null;
