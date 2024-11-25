@@ -34,6 +34,7 @@ class NetworkController {
     }
 
     runEvents(socket) {
+        console.log(`client: ${socket.id} connected`);
         socket.on('fetch', (data) => {
             this.clientList[data.uid] = socket;
         }) 

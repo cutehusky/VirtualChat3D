@@ -52,7 +52,7 @@ class FirebaseDataModel {
     }
     friendRequest(userId, targetId) {
         this.#databaseService.ref(`Account/${targetId}/FriendRequest`).set({
-            [userId]: 1
+            [Date.now()]: userId
         });
     }
     friendRequestAccept(userId, targetId) {
@@ -74,13 +74,16 @@ class FirebaseDataModel {
             socket.emit('viewFriendReply', data.val());
         })
     }
-    messageWrite(userId, targetId, consId,  messageData) {
-        this.#databaseService.ref(`DMessage/${consId}`)
-        .push({
-            from: userId,
-            to: targetId,
-            msg:  messageData  
+    messageWrite(data) {
+        this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);
+        this.#databaseService.ref(`DMessage/${data.id_cons}/${data.timestamp}`)
+        .set({
+            uid: data.uid,
+            msg:  data.msg
         });
+    }
+    messageRead(data) {
+        this.#databaseService.ref(`DMessage/${data.id_cons}/${data.uid}_has_new`).set(false);
     }
     getMessage(socket, consId) {
         this.#databaseService.ref(`/DMessage/${consId}`)
