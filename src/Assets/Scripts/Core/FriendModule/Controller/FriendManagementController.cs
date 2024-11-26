@@ -22,6 +22,12 @@ namespace Core.FriendModule.Controller
         {
             _friendListView = view[0] as FriendListView;
             _friendDataModel = this.GetModel<FriendDataModel>();
+            _friendListView.addFriendButton.onClick.AddListener(() =>
+            {
+                var text = _friendListView.userIdSearch.text;
+                SendFriendRequest(text);
+                _friendListView.userIdSearch.text = "";
+            });
             SocketIO.Instance.AddUnityCallback("viewFriendReply", (res) => {
                var packets = res.GetValue<FriendRepPacket[]>();
                 foreach (var packet in packets) {
