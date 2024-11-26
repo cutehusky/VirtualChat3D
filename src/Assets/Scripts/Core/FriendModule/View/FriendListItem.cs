@@ -12,7 +12,7 @@ namespace Core.FriendModule.View
         public TMP_Text description;
         public Image avatar;
         public TMP_Text dateOfBirth;
-        public Button button1; // remove friend/remove friend request
+        public Button button1; // remove friend/remove friend request   
         public Button button2; // for send message/accept friend request
     }
 }

@@ -12,3 +12,16 @@ network.SubscribeEvent('friendRequestAccept', friend.processFriendRequestAccept)
 network.SubscribeEvent('friendRequestRefuse', friend.processFriendRequestRefuse);
 network.SubscribeEvent('processViewFriendList', friend.processViewFriendList);
 network.SubscribeEvent('processRemoveFriend', friend.processRemoveFriend);
+
+
+/* new event need to be implemented
+'viewFriendReply'
+'viewFriendRequestReply'
+'sendFriendRequestReply'
+'friendRequestAcceptReply'
+'friendRequestRefuseReply'
+'processRemoveFriendReply'
+Note:
+'processViewFriendList': only return friends
+'processViewFriendRequestList': only return who send friend request to the current user
+*/
