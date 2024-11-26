@@ -18,6 +18,7 @@ using Firebase.Extensions;
 using QFramework;
 using UMI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utilities;
 
 namespace Core.MVC
@@ -34,8 +35,8 @@ namespace Core.MVC
         public ChatBotView ChatBotView;
         public FriendListView FriendListView;
         public MessageView MessageView;
-
-        private ViewBase _currentView;
+        
+        public ViewBase currentView;
 
         public UserProfileController UserProfileController;
         public UserAuthController UserAuthController;
@@ -115,8 +116,13 @@ namespace Core.MVC
             //OpenLoginView();
             //OpenChatBotView();
             //OpenModelListView();
-            OpenMessageView();
+            Invoke("Test", 3);
             UnityThread.initUnityThread();
+        }
+
+        public void Test() 
+        {
+            OpenMessageView("0", "0");
         }
 
         void OnOrientationChange(HardwareOrientation orientation) {
@@ -131,53 +137,53 @@ namespace Core.MVC
         
         public void OpenSignUpView()
         {
-            _currentView = UserAuthController.OpenSignUpView();
+            currentView = UserAuthController.OpenSignUpView();
         }
 
         public void CloseCurrentView()
         {
-            if (_currentView != null)
-                _currentView.Hide();
+            if (currentView != null)
+                currentView.Hide();
         }
 
         public void OpenUserProfileView()
         {
-            _currentView = UserProfileController.OpenUserProfileView();
+            currentView = UserProfileController.OpenUserProfileView();
         }
 
         public void OpenLoginView()
         {
-            _currentView = UserAuthController.OpenLoginView();
+            currentView = UserAuthController.OpenLoginView();
         }
 
         public void OpenSystemMonitorView()
         {
-            _currentView = SystemInfoController.OpenSystemMonitorView();
+            currentView = SystemInfoController.OpenSystemMonitorView();
         }
 
         public void OpenUserListView()
         {
-            _currentView = UserManagementController.OpenUserListView();
+            currentView = UserManagementController.OpenUserListView();
         }
 
         public void OpenModelListView()
         {
-            _currentView = CharacterCustomizationController.OpenModelListView();
+            currentView = CharacterCustomizationController.OpenModelListView();
         }
 
         public void OpenChatBotView()
         {
-            _currentView = GeminiController.OpenChatBotView();
+            currentView = GeminiController.OpenChatBotView();
         }
 
         public void OpenFriendListView()
         {
-            _currentView = FriendManagementController.OpenFriendListView();
+            currentView = FriendManagementController.OpenFriendListView();
         }
 
-        public void OpenMessageView()
+        public void OpenMessageView(string chatSessionId, string friendId)
         {
-            _currentView = MessageController.OpenMessageView();
+            currentView = MessageController.OpenMessageView(chatSessionId, friendId);
         }
 
 

@@ -7,19 +7,19 @@ PORT = 3000
 class NetworkController {
     static #instance = null;
     static getInstance() {
-        if(NetworkController.#instance === null) {
+        if (NetworkController.#instance === null) {
             new NetworkController(PORT);
         }
         return NetworkController.#instance;
     }
-    
+
     #io;
     #app;
     #server;
     #socketEventDict = {};
     clientList = {};
     constructor(port) {
-        if(NetworkController.#instance) {
+        if (NetworkController.#instance) {
             throw new Error("illegal instantiation");
         }
         NetworkController.#instance = this;
@@ -36,8 +36,9 @@ class NetworkController {
     runEvents(socket) {
         console.log(`client: ${socket.id} connected`);
         socket.on('fetch', (data) => {
+            console.log(data)
             this.clientList[data.uid] = socket;
-        }) 
+        })
         for (const [eventName, callback] of Object.entries(this.#socketEventDict)) {
             socket.on(eventName, (data) => callback(socket, data));
         }
@@ -48,7 +49,7 @@ class NetworkController {
 
     SubscribeEvent(eventName, callback) {
         this.#socketEventDict[eventName] = callback;
-    }   
+    }
 }
 
 module.exports = NetworkController

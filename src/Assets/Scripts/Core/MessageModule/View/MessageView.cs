@@ -13,12 +13,14 @@ namespace Core.MessageModule.View
         public TMP_InputField chatInput;
         public Button send;
         public LoopScrollRect list;
-        public ChatSession ChatSession; 
+        public ChatSession ChatSession;
+        public string friendId;
         
         public override void Render(ModelBase model)
         {
             var messageDataModel = model as MessageDataModel;
             ChatSession = messageDataModel.CurrentChatSession;
+            friendId = messageDataModel.CurrentChatSession.FriendId;
             list.prefabSource = this;
             list.dataSource = this;
             if (messageDataModel.CurrentChatSession == null)
@@ -36,7 +38,7 @@ namespace Core.MessageModule.View
         
         public override void OnInit()
         {
-          
+            
         }
         
         public GameObject itemPrefab;
@@ -67,6 +69,10 @@ namespace Core.MessageModule.View
                 item.role.text = ChatSession.ChatData[index].UserId;
                 item.text.Source = ChatSession.ChatData[index].Content;
                 item.time.text = ChatSession.ChatData[index].Time;
+                if (ChatSession.ChatData[index].UserId != friendId)
+                    item.background.color = Color.blue;
+                else
+                    item.background.color = Color.red;
             }
         }
     }

@@ -1,3 +1,4 @@
+const { Parser } = require("xml2js");
 const serviceAccount = require("../key.json");
 
 class FirebaseDataModel {
@@ -6,13 +7,13 @@ class FirebaseDataModel {
     #authService;
     #databaseService;
     static getInstance() {
-        if(FirebaseDataModel.#instance === null) {
+        if (FirebaseDataModel.#instance === null) {
             new FirebaseDataModel(PORT);
         }
         return FirebaseDataModel.#instance;
     }
     constructor() {
-        if(FirebaseDataModel.#instance) {
+        if (FirebaseDataModel.#instance) {
             throw new Error("illegal instantiation");
         }
         FirebaseDataModel.#instance = this;
@@ -70,26 +71,34 @@ class FirebaseDataModel {
     }
     getFriendList(socket, userId) {
         this.#databaseService.ref(`Account/${userId}/FriendList`)
-        .once('value', (data) => {
-            socket.emit('viewFriendReply', data.val());
-        })
+            .once('value', (data) => {
+                socket.emit('viewFriendReply', data.val());
+            })
     }
     messageWrite(data) {
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.timestamp}`)
-        .set({
-            uid: data.uid,
-            msg:  data.msg
-        });
+            .set({
+                uid: data.uid,
+                msg: data.msg
+            });
     }
     messageRead(data) {
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.uid}_has_new`).set(false);
     }
     getMessage(socket, consId) {
         this.#databaseService.ref(`/DMessage/${consId}`)
-        .once('value', (data) => {
-            socket.emit('viewMessageReply', data.val());
-        })
+            .once('value', (data) => {
+                const result = Object.entries(data.val())
+                    .filter(([_, { uid }]) => uid).map(([timestamp, { msg, uid }]) => ({
+                        timestamp: parseInt(timestamp),
+                        uid: uid,
+                        msg: msg,
+                        id_cons: consId
+                    }));
+                socket.emit('viewMessageReply', result);
+                console.log(result);
+            })
     }
 }
 
