@@ -60,7 +60,7 @@ namespace Core.FriendModule.View
             pool.Push(trans);
         }
 
-        public Action<string> OnMesageSend;
+        public Action<string, string> OpenMessageView;
         public Action<string> OnRemoveFriend;
         public Action<string> OnRequestAccept;
         public Action<string> OnRequestRefuse;
@@ -70,15 +70,17 @@ namespace Core.FriendModule.View
             var item = trans.GetComponent<FriendListItem>();
             if (index < _friendDataModel.FriendList.Count)
             {
-                item.userId.text = _friendDataModel.FriendList[index].UserId;
+                //item.userId.text = _friendDataModel.FriendList[index].UserId;
                 item.username.text = _friendDataModel.FriendList[index].Username;
-                item.description.text = _friendDataModel.FriendList[index].Description;
-                item.dateOfBirth.text = _friendDataModel.FriendList[index].DateOfBirth.ToString(CultureInfo.InvariantCulture);
+                //item.description.text = _friendDataModel.FriendList[index].Description;
+                //item.dateOfBirth.text = _friendDataModel.FriendList[index].DateOfBirth.ToString(CultureInfo.InvariantCulture);
                 if (_friendDataModel.FriendList[index].IsAccepted)
                 {
                     item.button2.onClick.AddListener(() =>
                     {
-                        OnMesageSend(_friendDataModel.FriendList[index].UserId);
+                        OpenMessageView(
+                            _friendDataModel.FriendList[index].ChatSessionId,
+                            _friendDataModel.FriendList[index].UserId);
                     });
                     item.button1.onClick.AddListener(() =>
                     {

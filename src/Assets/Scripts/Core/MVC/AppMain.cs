@@ -116,13 +116,14 @@ namespace Core.MVC
             //OpenLoginView();
             //OpenChatBotView();
             //OpenModelListView();
-            Invoke("Test", 3);
+            Invoke("Test", 3); 
             UnityThread.initUnityThread();
         }
 
         public void Test() 
         {
-            OpenMessageView("0", "0");
+            //OpenMessageView("0", "0");
+            OpenFriendListView();
         }
 
         void OnOrientationChange(HardwareOrientation orientation) {

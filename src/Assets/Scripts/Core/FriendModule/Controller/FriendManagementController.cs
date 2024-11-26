@@ -16,18 +16,24 @@ namespace Core.FriendModule.Controller
     public class FriendManagementController : ControllerBase
     {
         private FriendListView _friendListView;
-        private FriendDataModel _friendDataModel;
 
         public override void OnInit(List<ViewBase> view)
         {
             _friendListView = view[0] as FriendListView;
-            _friendDataModel = this.GetModel<FriendDataModel>();
             _friendListView.addFriendButton.onClick.AddListener(() =>
             {
                 var text = _friendListView.userIdSearch.text;
                 SendFriendRequest(text);
                 _friendListView.userIdSearch.text = "";
             });
+            _friendListView.OpenMessageView += (chatSession,fid) =>
+            {
+                AppMain.Instance.OpenMessageView(chatSession,fid);
+            };
+            _friendListView.OnRemoveFriend += RemoveFriend;
+            _friendListView.OnRequestAccept += AcceptFriendRequest;
+            _friendListView.OnRequestRefuse += RefuseFriendRequest;
+            
             SocketIO.Instance.AddUnityCallback("viewFriendReply", (res) => {
                var packets = res.GetValue<FriendRepPacket[]>();
                 foreach (var packet in packets) {
@@ -129,13 +135,6 @@ namespace Core.FriendModule.Controller
 
         public ViewBase OpenFriendListView()
         {
-            // Ensure the FriendListView is properly initialized
-            if (_friendListView == null)
-            {
-                Debug.LogError("FriendListView is not initialized.");
-                return null;
-            }
-
             LoadFriendList();
             _friendListView.Display();
             _friendListView.Render(this.GetModel<FriendDataModel>());

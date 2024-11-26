@@ -115,7 +115,7 @@ namespace Core.UserAccountModule.Controller
             });
             _signUpView.signUp.onClick.AddListener(SignUp);
             _userProfileView = view[2] as UserProfileView;
-            _userProfileView.signOut.onClick.AddListener(SignOut);
+            //_userProfileView.signOut.onClick.AddListener(SignOut);
         }
     }
 }
