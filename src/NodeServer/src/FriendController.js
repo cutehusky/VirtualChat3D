@@ -5,8 +5,8 @@ class FriendController {
     static processFriendRequest(socket, data) {
         network = NetworkController.getInstance();
         data['timestamp'] = Date.now();
+        socket.emit('friendRequestReply', data);
         if(data.fid in network.clientList) {
-            socket.emit('friendRequestReply', data);
             network.clientList[data.fid].emit('receivedFriendRequest', data);
         }
         let fb = Firebase.getInstance();
