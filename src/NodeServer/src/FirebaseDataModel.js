@@ -94,6 +94,29 @@ class FirebaseDataModel {
             });
         })        
     }
+    getFriendRequest(socket, userId) {
+        this.#databaseService.ref(`Account/${userId}/FriendRequest`)
+        .once('value', (data) => {
+            let res = Object.keys(data.val()).map(fid => ({
+                uid: fid
+            }));
+            promises = []
+            for(let item of res) {
+                promises.push(
+                    this.#databaseService.ref(`Account/${item['uid']}`)
+                    .once('value', (friend) => {
+                        let val = friend.val();
+                        item['username'] = val['username'];
+                        item['birthday'] = val['birthday'];
+                        item['description'] = val['description'];
+                    })
+                )
+            }
+            Promise.all(promises).then(() => {
+                socket.emit('viewFriendRequestReply', res);
+            });
+        })        
+    }
     messageWrite(data) {
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.timestamp}`)

@@ -11,6 +11,7 @@ network.SubscribeEvent('sendFriendRequest', friend.processFriendRequest);
 network.SubscribeEvent('friendRequestAccept', friend.processFriendRequestAccept);
 network.SubscribeEvent('friendRequestRefuse', friend.processFriendRequestRefuse);
 network.SubscribeEvent('processViewFriendList', friend.processViewFriendList);
+network.SubscribeEvent('processViewFriendRequestList', friend.processViewFriendRequest);
 network.SubscribeEvent('processRemoveFriend', friend.processRemoveFriend);
 
 

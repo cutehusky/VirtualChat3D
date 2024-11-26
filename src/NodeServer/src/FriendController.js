@@ -4,7 +4,6 @@ Firebase = require("./FirebaseDataModel.js")
 class FriendController {
     static processFriendRequest(socket, data) {
         network = NetworkController.getInstance();
-        data['timestamp'] = Date.now();
         socket.emit('friendRequestReply', data);
         if(data.fid in network.clientList) {
             network.clientList[data.fid].emit('receivedFriendRequest', data);
@@ -31,6 +30,10 @@ class FriendController {
     static processViewFriendList(socket, data) {
         let fb = Firebase.getInstance();
         fb.getFriendList(socket, data.uid);
+    }
+    static processViewFriendRequest(socket, data) {
+        let fb = Firebase.getInstance();
+        fb.getFriendRequest(socket, data.uid);
     }
     static processRemoveFriend(socket, data) {
         let fb = Firebase.getInstance();
