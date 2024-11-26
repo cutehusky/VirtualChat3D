@@ -20,6 +20,7 @@ class AdminController {
         }
         let fb = Firebase.getInstance();
         fb.lockUser(data.uid);
+        network.clientList[data.uid].disconnect();
     }
     static processUnlockUser(socket, data) {
         network = NetworkController.getInstance();
@@ -44,6 +45,7 @@ class AdminController {
         }
         let fb = Firebase.getInstance();
         fb.deleteUser(data.uid);
+        network.clientList[data.uid].disconnect();
     }
     static processViewSystemInfo(socket, data) {
         
