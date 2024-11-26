@@ -1,6 +1,14 @@
 NetworkController = require("./NetworkController.js")
 Firebase = require("./FirebaseDataModel.js")
 
+/*
+Data format:
+{
+    uid: string,
+    fid: string
+}
+*/
+
 class FriendController {
     static processFriendRequest(socket, data) {
         network = NetworkController.getInstance();
