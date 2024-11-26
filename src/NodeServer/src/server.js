@@ -2,6 +2,7 @@ NetworkController = require("./NetworkController.js")
 fb = require("./FirebaseDataModel.js")
 message = require("./MessageController.js")
 friend = require("./FriendController.js")
+admin = require("./AdminController.js")
 
 network = NetworkController.getInstance()
 network.SubscribeEvent('sendMessage', message.processSendMessage);
@@ -13,7 +14,9 @@ network.SubscribeEvent('friendRequestRefuse', friend.processFriendRequestRefuse)
 network.SubscribeEvent('processViewFriendList', friend.processViewFriendList);
 network.SubscribeEvent('processViewFriendRequestList', friend.processViewFriendRequest);
 network.SubscribeEvent('processRemoveFriend', friend.processRemoveFriend);
-
+network.SubscribeEvent('processLockUser', admin.processLockUser);
+network.SubscribeEvent('processUnlockUser', admin.processUnlockUser);
+network.SubscribeEvent('processRemoveUser', admin.processRemoveUser);
 
 /* new event need to be implemented
 'viewFriendReply'
