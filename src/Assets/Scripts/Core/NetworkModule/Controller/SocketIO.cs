@@ -182,7 +182,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Reconnect Failed: reason = {exception}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
-            };
+            }; 
             
             _socket.OnReconnected += (sender, e) =>
             {

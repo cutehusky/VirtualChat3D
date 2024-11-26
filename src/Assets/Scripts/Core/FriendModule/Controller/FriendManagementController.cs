@@ -93,7 +93,18 @@ namespace Core.FriendModule.Controller
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });
-
+            for (int i = 0; i < 20; i++)
+            {
+                this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
+                {
+                    ChatSessionId = "0",
+                    IsAccepted = true,
+                    UserId = i.ToString(),
+                    Username = i.ToString(),
+                    DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(123456789).DateTime,
+                    Description = "testing",
+                });
+            }
         }
 
         public void SendFriendRequest(string targetUserId)
@@ -135,6 +146,7 @@ namespace Core.FriendModule.Controller
 
         public ViewBase OpenFriendListView()
         {
+            AppMain.Instance.CloseCurrentView();
             LoadFriendList();
             _friendListView.Display();
             _friendListView.Render(this.GetModel<FriendDataModel>());

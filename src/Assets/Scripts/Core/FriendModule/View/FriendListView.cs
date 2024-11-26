@@ -18,6 +18,8 @@ namespace Core.FriendModule.View
         public TMP_InputField userIdSearch;
         public Button addFriendButton;
         public FriendDataModel _friendDataModel;
+        public Button back;
+
         public override void Render(ModelBase model)
         {
             _friendDataModel = model as FriendDataModel;

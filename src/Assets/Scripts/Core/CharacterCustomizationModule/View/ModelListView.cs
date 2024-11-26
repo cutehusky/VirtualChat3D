@@ -16,6 +16,8 @@ namespace Core.CharacterCustomizationModule.View
         public Action<int> OnSelectChatBotModel;
         public Action<int> OnSelectCharacterModel;
         public LoopScrollRect list;
+        public Button back;
+        
         public override void Render(ModelBase model)
         {
             _dataModel = model as CharacterModelDataModel;

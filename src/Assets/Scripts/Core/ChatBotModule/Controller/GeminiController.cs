@@ -98,6 +98,7 @@ namespace Core.ChatBotModule.Controller
 
         public ViewBase OpenChatBotView()
         {
+            AppMain.Instance.CloseCurrentView();
             NewChat();
             return _chatBotView;
         }

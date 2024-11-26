@@ -15,12 +15,15 @@ namespace Core.MessageModule.View
         public LoopScrollRect list;
         public ChatSession ChatSession;
         public string friendId;
+        public Button back;
+        public TMP_Text friendName;
         
         public override void Render(ModelBase model)
         {
             var messageDataModel = model as MessageDataModel;
             ChatSession = messageDataModel.CurrentChatSession;
             friendId = messageDataModel.CurrentChatSession.FriendId;
+            friendName.text = friendId;
             list.prefabSource = this;
             list.dataSource = this;
             if (messageDataModel.CurrentChatSession == null)
@@ -69,10 +72,14 @@ namespace Core.MessageModule.View
                 item.role.text = ChatSession.ChatData[index].UserId;
                 item.text.Source = ChatSession.ChatData[index].Content;
                 item.time.text = ChatSession.ChatData[index].Time;
-                if (ChatSession.ChatData[index].UserId != friendId)
+                if (ChatSession.ChatData[index].UserId != friendId) {
                     item.background.color = Color.blue;
-                else
+                    item.roundedCorners.r = new Vector4(40,0,40,40);
+                }else {
                     item.background.color = Color.red;
+                    item.roundedCorners.r = new Vector4(0,40,40,40);
+                } 
+                item.roundedCorners.Refresh();
             }
         }
     }

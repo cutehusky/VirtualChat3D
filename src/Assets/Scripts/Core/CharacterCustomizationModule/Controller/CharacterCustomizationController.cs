@@ -69,10 +69,11 @@ namespace Core.CharacterCustomizationModule.Controller
 
         public ViewBase OpenModelListView()
         {
+            AppMain.Instance.CloseCurrentView();
             this.GetModel<CharacterModelDataModel>().LoadModelList();
             _modelListView.Display();
             _modelListView.Render(this.GetModel<CharacterModelDataModel>());
-            return null;
+            return _modelListView;
         }
     }
 }

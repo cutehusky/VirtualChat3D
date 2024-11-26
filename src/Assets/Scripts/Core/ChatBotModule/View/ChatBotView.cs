@@ -23,6 +23,7 @@ namespace Core.ChatBotModule.View
         public Button send;
         public RuntimeAnimatorController animatorController;
         public LoopScrollRect list;
+        public Button back;
         
         public ChatSession ChatSession;
         public override void Render(ModelBase model)
@@ -79,9 +80,16 @@ namespace Core.ChatBotModule.View
                 item.text.Source = ChatSession.ChatData[index].Content;
                 item.time.text = ChatSession.ChatData[index].Time;
                 if (ChatSession.ChatData[index].UserId == "User")
+                {
                     item.background.color = Color.blue;
+                    item.roundedCorners.r = new Vector4(40,0,40,40);
+                }
                 else
+                {
                     item.background.color = Color.red;
+                    item.roundedCorners.r = new Vector4(0,40,40,40);
+                } 
+                item.roundedCorners.Refresh();
             }
         }
     }

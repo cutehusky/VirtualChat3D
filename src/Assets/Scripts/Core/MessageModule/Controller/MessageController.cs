@@ -81,6 +81,10 @@ namespace Core.MessageModule.Controller
         {
             _messageView = view[0] as MessageView;
             _messageView.send.onClick.AddListener((SendMessage));
+            _messageView.back.onClick.AddListener(() =>
+            {
+                AppMain.Instance.OpenFriendListView();
+            });
             SocketIO.Instance.AddUnityCallback("viewMessageReply", (res) =>
             { 
                 string id_cons = "";
@@ -120,10 +124,11 @@ namespace Core.MessageModule.Controller
 
         public ViewBase OpenMessageView(string chatSessionId, string friendId)
         {
+            AppMain.Instance.CloseCurrentView();
             LoadMessage(chatSessionId, friendId);
             _messageView.Display();
             _messageView.Render(this.GetModel<MessageDataModel>());
-            return null;
+            return _messageView;
         }
     }
 }

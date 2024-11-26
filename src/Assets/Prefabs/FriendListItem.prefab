@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: -5198980325362645488}
   - component: {fileID: -3858419647201229569}
   m_Layer: 5
-  m_Name: FriendListView
+  m_Name: FriendListItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 800
+  m_PreferredWidth: 1080
   m_PreferredHeight: 100
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
