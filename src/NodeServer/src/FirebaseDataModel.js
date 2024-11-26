@@ -71,9 +71,28 @@ class FirebaseDataModel {
     }
     getFriendList(socket, userId) {
         this.#databaseService.ref(`Account/${userId}/FriendList`)
-            .once('value', (data) => {
-                socket.emit('viewFriendReply', data.val());
-            })
+        .once('value', (data) => {
+            let res = Object.entries(data.val()).map(([fid, id_cons]) => ({
+                uid: fid,
+                id_cons: id_cons,
+            }));
+
+            promises = []
+            for(item in res) {
+                promises.push(
+                    this.#databaseService.ref(`Account/${item['uid']}`)
+                    .once('value', (friend) => {
+                        let val = friend.val();
+                        item['username'] = val['username'];
+                        item['birthday'] = val['birthday'];
+                        item['description'] = val['description'];
+                    })
+                )
+            }
+            Promise.all(promises).then(() => {
+                socket.emit('viewFriendReply', res);
+            });
+        })        
     }
     messageWrite(data) {
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);
