@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Core.FriendModule.View;
 using Core.MVC;
 using Core.FriendModule.Model;
 using QFramework;
-using UnityEngine;
-using TMPro;
 using Core.NetworkModule.Controller;
 using Assets.Scripts.Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
@@ -93,18 +90,18 @@ namespace Core.FriendModule.Controller
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });
-            for (int i = 0; i < 20; i++)
-            {
-                this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
-                {
-                    ChatSessionId = "0",
-                    IsAccepted = true,
-                    UserId = i.ToString(),
-                    Username = i.ToString(),
-                    DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(123456789).DateTime,
-                    Description = "testing",
-                });
-            }
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
+            //    {
+            //        ChatSessionId = "0",
+            //        IsAccepted = true,
+            //        UserId = i.ToString(),
+            //        Username = i.ToString(),
+            //        DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(123456789).DateTime,
+            //        Description = "testing",
+            //    });
+            //}
         }
 
         public void SendFriendRequest(string targetUserId)

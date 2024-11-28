@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Core.AdminModule.Model;
 using Core.FriendModule;
+using Core.MVC;
 using Core.UserAccountModule.Model;
 using QFramework;
 
 namespace Core.AdminModule.Model
 {
-    public class UserAccountDataModel: AbstractModel
+    public class UserAccountDataModel: ModelBase
     {
-        public List<UserAccountData> UserList;
+        public List<UserData> UserList;
         
         protected override void OnInit()
         {
