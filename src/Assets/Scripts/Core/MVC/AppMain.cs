@@ -113,10 +113,10 @@ namespace Core.MVC
                 MessageView
             });
 
-            //OpenLoginView();
+            OpenSignUpView();
             //OpenChatBotView();
             //OpenModelListView();
-            Invoke("Test", 3); 
+            //Invoke("Test", 3); 
             UnityThread.initUnityThread();
         }
 

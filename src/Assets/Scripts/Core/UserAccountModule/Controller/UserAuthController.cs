@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core.MVC;
+using Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
 using Core.UserAccountModule.View;
+using Firebase.Extensions;
+using Newtonsoft.Json;
 using QFramework;
 using UnityEngine;
 
@@ -32,32 +35,28 @@ namespace Core.UserAccountModule.Controller
 
         public void SignUp()
         {
-            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.text, _signUpView.password.text).ContinueWith(task =>
+            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.text, _signUpView.password.text).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
-                    UnityThread.executeInUpdate(() =>
-                    {
-                        _signUpView.SetNotice("Sign up was canceled by Firebase.");
-                    });
-
+                    _signUpView.SetNotice("Sign up was canceled by Firebase.");
                     return;
                 }
                 if (task.IsFaulted)
                 {
-                    UnityThread.executeInUpdate(() =>
-                    {
-                        _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception);
-                    });
+                    _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception);
                     return;
                 }
-                UnityThread.executeInUpdate(()=>
-                {
-                    _signUpView.SetNotice("Firebase user created successfully");
-                });
+                _signUpView.SetNotice("Firebase user created successfully");
+                SocketIO.Instance.SendWebSocketMessage("createUser", new signupPacket() { uid = task.Result.User.UserId });
             });
         }
 
+        [JsonObject]
+        public class signupPacket
+        {
+            public string uid;
+        }
         public void ResetPassword()
         {
             Debug.Log($"reset password with email: {_loginView.email.text}");
