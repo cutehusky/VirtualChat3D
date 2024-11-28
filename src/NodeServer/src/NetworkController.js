@@ -1,6 +1,7 @@
 const { Server } = require('socket.io');
 const express = require('express');
 const { createServer } = require('node:http');
+Firebase = require("./FirebaseDataModel.js")
 
 PORT = 3000
 
@@ -36,8 +37,8 @@ class NetworkController {
     runEvents(socket) {
         console.log(`client: ${socket.id} connected`);
         socket.on('fetch', (data) => {
-            console.log(data)
-            this.clientList[data.uid] = socket;
+            let uid = Firebase.getInstance().verifyToken(data.token);
+            this.clientList[uid] = socket;
         })
         for (const [eventName, callback] of Object.entries(this.#socketEventDict)) {
             socket.on(eventName, (data) => callback(socket, data));

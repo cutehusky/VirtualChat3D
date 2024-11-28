@@ -44,7 +44,7 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-                    _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception);
+                    _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception.Message);
                     return;
                 }
                 _signUpView.SetNotice("Firebase user created successfully");
@@ -66,29 +66,21 @@ namespace Core.UserAccountModule.Controller
         public void Login()
         {
             Debug.Log($"Login with email: {_loginView.email.text} pass: {_loginView.password.text}");
-            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(_loginView.email.text, _loginView.password.text).ContinueWith(task =>
+            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(_loginView.email.text, _loginView.password.text).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
-                    UnityThread.executeInUpdate(() =>
-                    {
-                        _loginView.SetNotice("Login was canceled by Firebase.");
-                    });
+                    _loginView.SetNotice("Login was canceled by Firebase.");
                     return;
                 }
                 if (task.IsFaulted)
                 {
-                    UnityThread.executeInUpdate(() =>
-                    {
-                        _loginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
-                    });
+                    _loginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
                     return;
                 }
-                UnityThread.executeInUpdate(() =>
-                {
-                    _loginView.SetNotice("Firebase user signed in successfully");
-                    AppMain.Instance.OpenUserProfileView();
-                });
+                _loginView.SetNotice("Firebase user signed in successfully");
+                Firebase.Auth.AuthResult result = task.Result;
+                this.GetModel<UserProfileDataModel>().fetchProfile(this.GetModel<FirebaseAuthModel>(), () => { AppMain.Instance.OpenUserProfileView(); }, () => { });
             });
         }
 

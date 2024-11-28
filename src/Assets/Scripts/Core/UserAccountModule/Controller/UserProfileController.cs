@@ -3,6 +3,7 @@ using Core.MVC;
 using Core.UserAccountModule.Model;
 using Core.UserAccountModule.View;
 using QFramework;
+using UnityEngine;
 
 namespace Core.UserAccountModule.Controller
 {
@@ -14,6 +15,7 @@ namespace Core.UserAccountModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             _userProfileView.Display();
+            Debug.Log(this.GetModel<UserProfileDataModel>().UserProfileData.Username);
             _userProfileView.Render(this.GetModel<UserProfileDataModel>());
             return _userProfileView;
         }
