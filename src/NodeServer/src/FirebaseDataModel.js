@@ -31,6 +31,11 @@ class FirebaseDataModel {
             return error;
         })
     }
+    createUser(userId) {
+        this.#databaseService.ref(`Account/${userId}/username`).set(userId);
+        this.#databaseService.ref(`Account/${userId}/description`).set("");
+        this.#databaseService.ref(`Account/${userId}/birthday`).set(Date.now());
+    }
     lockUser(userId) {
         this.#authService.updateUser(userId, {
             disabled: true
@@ -42,6 +47,12 @@ class FirebaseDataModel {
         });
     }
     deleteUser(userId) {
+        let frRef = this.#databaseService.ref(`Account/${userId}/Friend`);
+        if (frRef != null) {
+            for (id in Object.keys(frRef.val())) {
+                this.#databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
+            }
+        }
         this.#authService.deleteUser(userId);
         this.#databaseService.ref(`Account/${userId}`).remove();
     }
@@ -69,53 +80,73 @@ class FirebaseDataModel {
     friendRequestRefuse(userId, targetId) {
         this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
     }
+    getUserList(socket) {
+        this.#databaseService.ref(`Account`)
+            .once('value', (data) => {
+                let res = Object.entries(data.val()).map(([uid, { birthday, description, __, _, username }]) => ({
+                    uid: uid,
+                    birhtday: birthday,
+                    description: description,
+                    username: username
+                }));
+                socket.emit('getUserListReply', res);
+            });
+    }
     getFriendList(socket, userId) {
         this.#databaseService.ref(`Account/${userId}/FriendList`)
-        .once('value', (data) => {
-            let res = Object.entries(data.val()).map(([fid, id_cons]) => ({
-                uid: fid,
-                id_cons: id_cons,
-            }));
+            .once('value', (data) => {
+                if (data == null) {
+                    socket.emit('viewFriendReply', []);
+                    return;
+                }
+                let res = Object.entries(data.val()).map(([fid, id_cons]) => ({
+                    uid: fid,
+                    id_cons: id_cons,
+                }));
+                promises = []
+                for (item in res) {
+                    promises.push(
+                        this.#databaseService.ref(`Account/${item['uid']}`)
+                            .once('value', (friend) => {
+                                let val = friend.val();
+                                item['username'] = val['username'];
+                                item['birthday'] = val['birthday'];
+                                item['description'] = val['description'];
+                            })
+                    )
 
-            promises = []
-            for(item in res) {
-                promises.push(
-                    this.#databaseService.ref(`Account/${item['uid']}`)
-                    .once('value', (friend) => {
-                        let val = friend.val();
-                        item['username'] = val['username'];
-                        item['birthday'] = val['birthday'];
-                        item['description'] = val['description'];
-                    })
-                )
-            }
-            Promise.all(promises).then(() => {
-                socket.emit('viewFriendReply', res);
-            });
-        })        
+                }
+                Promise.all(promises).then(() => {
+                    socket.emit('viewFriendReply', res);
+                });
+            })
     }
     getFriendRequest(socket, userId) {
         this.#databaseService.ref(`Account/${userId}/FriendRequest`)
-        .once('value', (data) => {
-            let res = Object.keys(data.val()).map(fid => ({
-                uid: fid
-            }));
-            promises = []
-            for(let item of res) {
-                promises.push(
-                    this.#databaseService.ref(`Account/${item['uid']}`)
-                    .once('value', (friend) => {
-                        let val = friend.val();
-                        item['username'] = val['username'];
-                        item['birthday'] = val['birthday'];
-                        item['description'] = val['description'];
-                    })
-                )
-            }
-            Promise.all(promises).then(() => {
-                socket.emit('viewFriendRequestReply', res);
-            });
-        })        
+            .once('value', (data) => {
+                if (data == null) {
+                    socket.emit('viewFriendRequestReply', []);
+                    return;
+                }
+                let res = Object.keys(data.val()).map(fid => ({
+                    uid: fid
+                }));
+                promises = []
+                for (let item of res) {
+                    promises.push(
+                        this.#databaseService.ref(`Account/${item['uid']}`)
+                            .once('value', (friend) => {
+                                let val = friend.val();
+                                item['username'] = val['username'];
+                                item['birthday'] = val['birthday'];
+                                item['description'] = val['description'];
+                            })
+                    )
+                }
+                Promise.all(promises).then(() => {
+                    socket.emit('viewFriendRequestReply', res);
+                });
+            })
     }
     messageWrite(data) {
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);

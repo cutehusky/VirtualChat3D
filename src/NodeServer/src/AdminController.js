@@ -47,8 +47,16 @@ class AdminController {
         fb.deleteUser(data.uid);
         network.clientList[data.uid].disconnect();
     }
+    static processGetUserList(socket, data) {
+        let fb = Firebase.getInstance();
+        fb.getUserList(socket);
+    }
+    static processCreateUser(socket, data) {
+        let fb = Firebase.getInstance();
+        fb.createUser(data.uid);
+    }
     static processViewSystemInfo(socket, data) {
-        
+
     }
 }
 
