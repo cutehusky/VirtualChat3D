@@ -93,9 +93,9 @@ class FirebaseDataModel {
             });
     }
     getFriendList(socket, userId) {
-        this.#databaseService.ref(`Account/${userId}/FriendList`)
+        this.#databaseService.ref(`Account/${userId}/friendList`)
             .once('value', (data) => {
-                if (data == null) {
+                if (data.val() == null) {
                     socket.emit('viewFriendReply', []);
                     return;
                 }
@@ -103,19 +103,20 @@ class FirebaseDataModel {
                     uid: fid,
                     id_cons: id_cons,
                 }));
-                promises = []
-                for (item in res) {
+                let promises = []
+                for (let item in res) {
                     promises.push(
-                        this.#databaseService.ref(`Account/${item['uid']}`)
+                        this.#databaseService.ref(`Account/${res[item]['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
-                                item['username'] = val['username'];
-                                item['birthday'] = val['birthday'];
-                                item['description'] = val['description'];
+                                res[item]['username'] = val['username'];
+                                res[item]['birthday'] = val['birthday'];
+                                res[item]['description'] = val['description'];
                             })
                     )
 
                 }
+                console.log('trying....')
                 Promise.all(promises).then(() => {
                     socket.emit('viewFriendReply', res);
                 });
@@ -124,22 +125,22 @@ class FirebaseDataModel {
     getFriendRequest(socket, userId) {
         this.#databaseService.ref(`Account/${userId}/FriendRequest`)
             .once('value', (data) => {
-                if (data == null) {
+                if (data.val() == null) {
                     socket.emit('viewFriendRequestReply', []);
                     return;
                 }
                 let res = Object.keys(data.val()).map(fid => ({
                     uid: fid
                 }));
-                promises = []
+                let promises = []
                 for (let item of res) {
                     promises.push(
-                        this.#databaseService.ref(`Account/${item['uid']}`)
+                        this.#databaseService.ref(`Account/${res[item]['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
-                                item['username'] = val['username'];
-                                item['birthday'] = val['birthday'];
-                                item['description'] = val['description'];
+                                res[item]['username'] = val['username'];
+                                res[item]['birthday'] = val['birthday'];
+                                res[item]['description'] = val['description'];
                             })
                     )
                 }
