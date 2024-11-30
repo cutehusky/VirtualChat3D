@@ -35,6 +35,10 @@ namespace Core.UserAccountModule.Controller
 
         public void SignUp()
         {
+            if (_signUpView.password.text != _signUpView.re_password.text)
+            {
+                return;
+            }
             this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.text, _signUpView.password.text).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
@@ -66,7 +70,9 @@ namespace Core.UserAccountModule.Controller
         public void Login()
         {
             Debug.Log($"Login with email: {_loginView.email.text} pass: {_loginView.password.text}");
-            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(_loginView.email.text, _loginView.password.text).ContinueWithOnMainThread(task =>
+            this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(
+                _loginView.email.text, 
+                _loginView.password.text).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
@@ -80,7 +86,8 @@ namespace Core.UserAccountModule.Controller
                 }
                 _loginView.SetNotice("Firebase user signed in successfully");
                 Firebase.Auth.AuthResult result = task.Result;
-                this.GetModel<UserProfileDataModel>().fetchProfile(this.GetModel<FirebaseAuthModel>(), () => { AppMain.Instance.OpenUserProfileView(); }, () => { });
+                this.GetModel<UserProfileDataModel>().FetchProfile(this.GetModel<FirebaseAuthModel>().Auth, 
+                    () => { AppMain.Instance.OpenUserProfileView(); }, () => { });
             });
         }
 
@@ -92,6 +99,7 @@ namespace Core.UserAccountModule.Controller
 
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _loginView = view[0] as LoginView;
             _loginView.signUp.onClick.AddListener(() =>
             {
@@ -106,7 +114,7 @@ namespace Core.UserAccountModule.Controller
             });
             _signUpView.signUp.onClick.AddListener(SignUp);
             _userProfileView = view[2] as UserProfileView;
-            //_userProfileView.signOut.onClick.AddListener(SignOut);
+            _userProfileView.signOut.onClick.AddListener(SignOut);
         }
     }
 }

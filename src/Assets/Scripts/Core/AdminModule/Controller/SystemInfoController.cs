@@ -14,6 +14,7 @@ namespace Core.AdminModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
+            //base.OnInit(view);
             _systemMonitorView = view[0] as SystemMonitorView;
         }
 

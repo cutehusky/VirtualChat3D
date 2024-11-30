@@ -26,18 +26,27 @@ namespace Core.UserAccountModule.View
         {
             email.text = "";
             password.text = "";
+            notice.text = "";
         }
 
         public void SetNotice(string notice)
         {
             this.notice.text = notice;
-            Hide();
-            Display();
-            
         }
 
         public override void OnInit()
         {
+            email.onValueChanged.AddListener((s) =>
+            {
+                if (s.Length == 0)
+                {
+                    email.textComponent.color = Color.green;
+                    return;
+                }
+
+                email.textComponent.color = EmailCheck(s) ? Color.green : Color.red;
+            });
+            
             login.onClick.AddListener(() =>
             {
                 if (email.text == "" || password.text == "")

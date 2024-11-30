@@ -12,7 +12,8 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
         public Button join;
         public override void Render(ModelBase model)
         {
-            
+            ip.text = "";
+            port.text = "";
         }
 
         public override void OnInit()

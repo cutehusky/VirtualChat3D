@@ -68,6 +68,7 @@ namespace Core.ChatBotModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _chatBotView = view[0] as ChatBotView;
             _chatBotView.send.onClick.AddListener((() =>
             {
@@ -82,6 +83,10 @@ namespace Core.ChatBotModule.Controller
             {
                 NewChat();
             }));
+            _chatBotView.back.onClick.AddListener(() =>
+            {
+                AppMain.Instance.OpenHostRoomView();
+            });
         }
         
         public void AddMessage(string role, string text)

@@ -12,16 +12,12 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
     {
         public TMP_InputField ip;
         public TMP_InputField port;
-        public Toggle accessType;
-        public Button create;
-        
-        public RectTransform roomListScrollViewParent;
-        public GameObject listItemTemplate;
-        public List<RoomListItem> items; 
+        public Button host;
         
         public override void Render(ModelBase model)
         {
-            
+            ip.text = "localhost";
+            port.text = "8888";
         }
 
         public override void OnInit()

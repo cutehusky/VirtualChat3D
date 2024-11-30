@@ -3,6 +3,7 @@ using Core.MVC;
 using QFramework;
 using UnityEngine;
 using Firebase;
+using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using static Unity.Networking.Transport.Utilities.ReliableUtility;
@@ -11,11 +12,10 @@ namespace Core.UserAccountModule.Model
 {
     public class UserProfileDataModel: ModelBase
     {
-        public UserAccountData UserProfileData = new();
-        public void fetchProfile(FirebaseAuthModel auth, Action onSuccess, Action onFailure)
+        public readonly UserAccountData UserProfileData = new();
+        public void FetchProfile(FirebaseAuth auth, Action onSuccess, Action onFailure)
         {
-            DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-            FirebaseDatabase.DefaultInstance.GetReference($"Account/{auth.Auth.CurrentUser.UserId}")
+            FirebaseDatabase.DefaultInstance.GetReference($"Account/{auth.CurrentUser.UserId}")
                 .GetValueAsync().ContinueWithOnMainThread(task =>
                 {
                     if (task.IsFaulted)
@@ -26,10 +26,13 @@ namespace Core.UserAccountModule.Model
                     {
                         DataSnapshot snapshot = task.Result;
 
-                        this.UserProfileData.Username = snapshot.Child("username").GetValue(false) as string;
-                        this.UserProfileData.DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds((long)snapshot.Child("birthday").GetValue(false)).DateTime;
-                        this.UserProfileData.Description = snapshot.Child("description").GetValue(true) as string;
-                        this.UserProfileData.UserId = auth.Auth.CurrentUser.UserId;
+                        UserProfileData.Username = snapshot.Child("username").GetValue(false) as string;
+                        UserProfileData.DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds((long)snapshot.Child("birthday").GetValue(false)).DateTime;
+                        UserProfileData.Description = snapshot.Child("description").GetValue(true) as string;
+                        UserProfileData.UserId = auth.CurrentUser.UserId;
+                        UserProfileData.Email = auth.CurrentUser.Email;
+                        Debug.Log(UserProfileData.UserId);
+                        Debug.Log(UserProfileData.Username);
                         onSuccess();
                     }
                 });

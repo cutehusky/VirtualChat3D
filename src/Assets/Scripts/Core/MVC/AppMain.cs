@@ -10,6 +10,8 @@ using Core.FriendModule.Controller;
 using Core.FriendModule.View;
 using Core.MessageModule.Controller;
 using Core.MessageModule.View;
+using Core.OnlineRuntimeModule.RoomManagementModule.Controller;
+using Core.OnlineRuntimeModule.RoomManagementModule.View;
 using Core.UserAccountModule.Controller;
 using Core.UserAccountModule.Model;
 using Core.UserAccountModule.View;
@@ -19,6 +21,7 @@ using QFramework;
 using UMI;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Utilities;
 
 namespace Core.MVC
@@ -35,6 +38,8 @@ namespace Core.MVC
         public ChatBotView ChatBotView;
         public FriendListView FriendListView;
         public MessageView MessageView;
+        public HostRoomView hostRoomView;
+        public JoinRoomView joinRoomView;
         
         public ViewBase currentView;
 
@@ -46,6 +51,21 @@ namespace Core.MVC
         public GeminiController GeminiController;
         public FriendManagementController FriendManagementController;
         public MessageController MessageController;
+        public RoomManager RoomManager;
+
+        public CanvasScaler canvasScaler;
+
+        public void SetHorizontal()
+        {
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+            canvasScaler.referenceResolution = new Vector2(1920, 1080);
+        }
+
+        public void SetVertical()
+        {
+            Screen.orientation = ScreenOrientation.Portrait;
+            canvasScaler.referenceResolution = new Vector2(1080, 1920);
+        }
 
         protected override void Awake()
         {
@@ -112,13 +132,18 @@ namespace Core.MVC
             {
                 MessageView
             });
+            RoomManager = new();
+            RoomManager.OnInit(new List<ViewBase>()
+            {
+                hostRoomView, joinRoomView
+            });
 
             OpenSignUpView();
-            //OpenChatBotView();
+            //OpenChatBotView(); 
             //OpenModelListView();
-            //Invoke("Test", 3); 
-            UnityThread.initUnityThread();
-        }
+            ////Invoke("Test", 3); 
+            //UnityThread.initUnityThread();
+        } 
 
         public void Test() 
         {
@@ -138,9 +163,22 @@ namespace Core.MVC
         
         public void OpenSignUpView()
         {
+            SetVertical();
             currentView = UserAuthController.OpenSignUpView();
         }
 
+        public void OpenHostRoomView()
+        {
+            SetVertical();
+            currentView = RoomManager.OpenHostRoomView();
+        }
+
+        public void OpenJoinRoomView()
+        {
+            SetVertical();
+            currentView = RoomManager.OpenJoinRoomView();
+        }
+        
         public void CloseCurrentView()
         {
             if (currentView != null)
@@ -149,41 +187,49 @@ namespace Core.MVC
 
         public void OpenUserProfileView()
         {
+            SetVertical();
             currentView = UserProfileController.OpenUserProfileView();
         }
 
         public void OpenLoginView()
         {
+            SetVertical();
             currentView = UserAuthController.OpenLoginView();
         }
 
         public void OpenSystemMonitorView()
         {
-            currentView = SystemInfoController.OpenSystemMonitorView();
+            SetVertical();
+            currentView = SystemInfoController.OpenSystemMonitorView(); 
         }
 
         public void OpenUserListView()
         {
+            SetVertical();
             currentView = UserManagementController.OpenUserListView();
         }
 
         public void OpenModelListView()
         {
+            SetHorizontal();
             currentView = CharacterCustomizationController.OpenModelListView();
         }
 
         public void OpenChatBotView()
         {
+            SetHorizontal();
             currentView = GeminiController.OpenChatBotView();
         }
 
         public void OpenFriendListView()
         {
+            SetVertical();
             currentView = FriendManagementController.OpenFriendListView();
         }
 
         public void OpenMessageView(string chatSessionId, string friendId)
         {
+            SetVertical();
             currentView = MessageController.OpenMessageView(chatSessionId, friendId);
         }
 

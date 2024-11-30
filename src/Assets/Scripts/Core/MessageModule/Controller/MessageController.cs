@@ -79,6 +79,7 @@ namespace Core.MessageModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _messageView = view[0] as MessageView;
             _messageView.send.onClick.AddListener((SendMessage));
             _messageView.back.onClick.AddListener(() =>

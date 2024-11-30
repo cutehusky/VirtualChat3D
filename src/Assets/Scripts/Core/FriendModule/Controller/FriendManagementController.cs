@@ -16,6 +16,7 @@ namespace Core.FriendModule.Controller
 
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _friendListView = view[0] as FriendListView;
             _friendListView.addFriendButton.onClick.AddListener(() =>
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.UI;
 using UnityEngine;
 using Utilities;
 
@@ -10,6 +11,9 @@ namespace Core.MVC
     /// </summary>
     public abstract class ViewBase: MonoBehaviour
     {
+        public Footer footer;
+        public Header header;
+        
         public abstract void Render(ModelBase model);
 
         public void Display()

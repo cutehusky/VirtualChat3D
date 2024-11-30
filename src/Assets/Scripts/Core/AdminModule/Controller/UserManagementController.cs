@@ -48,8 +48,8 @@ namespace Core.AdminModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _userListView = view[0] as UserListView;
-            
         }
 
         public ViewBase OpenUserListView()

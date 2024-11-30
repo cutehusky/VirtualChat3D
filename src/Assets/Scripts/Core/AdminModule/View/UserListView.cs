@@ -17,7 +17,6 @@ namespace Core.AdminModule.View
     {
         public TMP_InputField userIdSearch;
         public LoopScrollRect list;
-        public Button back;
         public Button searchUserButton;
         public UserAccountDataModel _userAccountDataModel;
         public override void Render(ModelBase model)

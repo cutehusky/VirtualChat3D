@@ -51,6 +51,7 @@ namespace Core.CharacterCustomizationModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _modelListView = view[0] as ModelListView;
             _modelListView.import.onClick.AddListener((LoadModelFromExternal));
             _modelListView.OnModelPreviewChange += (i) =>
@@ -65,6 +66,10 @@ namespace Core.CharacterCustomizationModule.Controller
             {
                 SelectChatBotModel(this.GetModel<CharacterModelDataModel>().ModelId[i]);
             };
+            _modelListView.back.onClick.AddListener(() =>
+            {
+                AppMain.Instance.OpenUserProfileView();
+            });
         }
 
         public ViewBase OpenModelListView()

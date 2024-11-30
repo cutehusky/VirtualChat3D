@@ -15,7 +15,6 @@ namespace Core.UserAccountModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             _userProfileView.Display();
-            Debug.Log(this.GetModel<UserProfileDataModel>().UserProfileData.Username);
             _userProfileView.Render(this.GetModel<UserProfileDataModel>());
             return _userProfileView;
         }
@@ -47,7 +46,20 @@ namespace Core.UserAccountModule.Controller
         
         public override void OnInit(List<ViewBase> view)
         {
+            base.OnInit(view);
             _userProfileView = (UserProfileView) view[0];
+            _userProfileView.reset.onClick.AddListener(() =>
+            {
+
+            });
+            _userProfileView.save.onClick.AddListener(() =>
+            {
+                
+            });
+            _userProfileView.resetPassword.onClick.AddListener(() =>
+            {
+                
+            });
         }
     }
 }
