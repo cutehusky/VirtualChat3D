@@ -13,6 +13,9 @@ namespace Core.MVC
     {
         public Footer footer;
         public Header header;
+
+
+        public virtual void MoveUpWhenOpenKeyboard(float height) {}
         
         public abstract void Render(ModelBase model);
 

@@ -54,6 +54,7 @@ namespace Core.MVC
         public RoomManager RoomManager;
 
         public CanvasScaler canvasScaler;
+        public RectTransform canvas;
 
         public void SetHorizontal()
         {
@@ -82,14 +83,18 @@ namespace Core.MVC
                     this.GetModel<FirebaseRealTimeDatabaseModel>().InitFirebase();
                     this.GetModel<FirebaseAuthModel>().InitFirebase();
                     this.GetModel<FirebaseStorageModel>().InitFirebase();
-                }
+                    OnInit();
+                }  
                 else
                 {
                     Debug.LogError(System.String.Format(
                         "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 }
             });
+        }
 
+        public void OnInit()
+        {
             UserAuthController = new();
             UserAuthController.OnInit(new List<ViewBase>()
             {
@@ -138,12 +143,13 @@ namespace Core.MVC
                 hostRoomView, joinRoomView
             });
 
+            Debug.Log("opening signup view");
             OpenSignUpView();
             //OpenChatBotView(); 
             //OpenModelListView();
             ////Invoke("Test", 3); 
             //UnityThread.initUnityThread();
-        } 
+        }
 
         public void Test() 
         {
@@ -155,58 +161,74 @@ namespace Core.MVC
             Debug.Log($"orientation {orientation}");
         }
 
+        private float _keyboardHeight = 0;
         void OnKeyboardAction(bool isShow, int height) {
             Debug.Log($"Keyboard show: {isShow}");
             Debug.Log($"Keyboard height {height}");
+            var ratio = (float)Screen.height / canvas.sizeDelta.y / MobileInput.GetScreenScale();
+            Debug.Log(ratio);
+            _keyboardHeight = height / ratio;
+            Debug.Log($"_keyboardHeight {_keyboardHeight}");
+            if (currentView)
+                currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
-
         
         public void OpenSignUpView()
         {
             SetVertical();
             currentView = UserAuthController.OpenSignUpView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenHostRoomView()
         {
             SetVertical();
             currentView = RoomManager.OpenHostRoomView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenJoinRoomView()
         {
             SetVertical();
             currentView = RoomManager.OpenJoinRoomView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
         
         public void CloseCurrentView()
         {
             if (currentView != null)
+            {
                 currentView.Hide();
+                currentView.MoveUpWhenOpenKeyboard(0);
+            }
         }
 
         public void OpenUserProfileView()
         {
             SetVertical();
             currentView = UserProfileController.OpenUserProfileView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenLoginView()
         {
             SetVertical();
             currentView = UserAuthController.OpenLoginView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenSystemMonitorView()
         {
             SetVertical();
             currentView = SystemInfoController.OpenSystemMonitorView(); 
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenUserListView()
         {
             SetVertical();
             currentView = UserManagementController.OpenUserListView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenModelListView()
@@ -225,12 +247,14 @@ namespace Core.MVC
         {
             SetVertical();
             currentView = FriendManagementController.OpenFriendListView();
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
         public void OpenMessageView(string chatSessionId, string friendId)
         {
             SetVertical();
             currentView = MessageController.OpenMessageView(chatSessionId, friendId);
+            currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
 

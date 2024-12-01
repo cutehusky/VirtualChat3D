@@ -7,6 +7,7 @@ using Core.FriendModule.Model;
 using Core.FriendModule.View;
 using Core.MVC;
 using TMPro;
+using UMI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -15,7 +16,10 @@ namespace Core.AdminModule.View
 {
     public class UserListView: ViewBase, LoopScrollPrefabSource, LoopScrollDataSource
     {
-        public TMP_InputField userIdSearch;
+        public MobileInputField userIdSearch;
+        public TMP_InputField TMP_userIdSearch;
+        public RectTransform inputRect;
+        public RectTransform listRect;
         public LoopScrollRect list;
         public Button searchUserButton;
         public UserAccountDataModel _userAccountDataModel;
@@ -31,14 +35,29 @@ namespace Core.AdminModule.View
             list.RefillCells();
         }
 
+        public override void MoveUpWhenOpenKeyboard(float height)
+        {
+            var inputOffset = (height > 0) ? height : _inputOffset;
+            inputRect.offsetMax = new Vector2(inputRect.offsetMax.x, inputOffset + inputRect.sizeDelta.y);
+            inputRect.offsetMin = new Vector2(inputRect.offsetMin.x, inputOffset);
+            var listOffset = (height > 0) ? inputRect.sizeDelta.y + height : _listOffset;
+            listRect.offsetMin = new Vector2(listRect.offsetMin.x, listOffset);
+            if (height == 0)
+                TMP_userIdSearch.DeactivateInputField();
+        }
+
         public void RefreshList()
         {
             list.totalCount = _userAccountDataModel.UserList.Count;
             list.RefillCells();
         }
 
+        private float _listOffset;
+        private float _inputOffset;
         public override void OnInit()
         {
+            _listOffset = listRect.offsetMin.y;
+            _inputOffset = inputRect.offsetMin.y;
         }
 
         public GameObject itemPrefab;

@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Core.MVC;
 using TMPro;
+using UMI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,10 @@ namespace Core.UserAccountModule.View
 {
     public class LoginView : ViewBase
     {
-        public TMP_InputField email;
-        public TMP_InputField password;
+        public MobileInputField email;
+        public MobileInputField password;
+        public TMP_InputField TMP_email;
+        public TMP_InputField TMP_password;
         public TMP_Text notice;
         public Button resetPassword;
         public Button login;
@@ -24,8 +27,12 @@ namespace Core.UserAccountModule.View
 
         public override void Render(ModelBase model)
         {
-            email.text = "";
-            password.text = "";
+            email.Text = "";
+            password.Text = "";
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
+            TMP_password.text = "";
+            TMP_email.text = "";
+#endif
             notice.text = "";
         }
 
@@ -36,20 +43,19 @@ namespace Core.UserAccountModule.View
 
         public override void OnInit()
         {
-            email.onValueChanged.AddListener((s) =>
+            TMP_email.onValueChanged.AddListener((s) =>
             {
                 if (s.Length == 0)
                 {
-                    email.textComponent.color = Color.green;
+                    email.SetTextColor(Color.green);
                     return;
                 }
-
-                email.textComponent.color = EmailCheck(s) ? Color.green : Color.red;
+                email.SetTextColor(EmailCheck(s) ? Color.green : Color.red);
             });
             
             login.onClick.AddListener(() =>
             {
-                if (email.text == "" || password.text == "")
+                if (email.Text == "" || password.Text == "")
                     notice.text = "Please fill in email and password!";
             });
         }

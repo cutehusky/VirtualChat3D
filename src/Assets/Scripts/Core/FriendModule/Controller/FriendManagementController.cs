@@ -20,9 +20,12 @@ namespace Core.FriendModule.Controller
             _friendListView = view[0] as FriendListView;
             _friendListView.addFriendButton.onClick.AddListener(() =>
             {
-                var text = _friendListView.userIdSearch.text;
+                var text = _friendListView.userIdSearch.Text;
                 SendFriendRequest(text);
-                _friendListView.userIdSearch.text = "";
+                _friendListView.userIdSearch.Text = "";
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
+                _friendListView.TMP_userIdSearch.text = "";
+#endif
             });
             _friendListView.OpenMessageView += (chatSession,fid) =>
             {

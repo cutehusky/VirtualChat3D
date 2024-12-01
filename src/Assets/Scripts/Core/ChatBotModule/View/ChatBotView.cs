@@ -9,6 +9,7 @@ using Core.MessageModule.View;
 using Core.MVC;
 using JimmysUnityUtilities;
 using TMPro;
+using UMI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,8 @@ namespace Core.ChatBotModule.View
         public Button newChat;
         public Transform chatBotModelPoint;
         public ExpressionControl chatBotExpressionControl;
-        public TMP_InputField chatInput;
+        public MobileInputField chatInput;
+        public TMP_InputField TMP_chatInput;
         public Button send;
         public RuntimeAnimatorController animatorController;
         public LoopScrollRect list;

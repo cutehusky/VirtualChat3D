@@ -6,6 +6,7 @@ using Core.MessageModule.Model;
 using Core.MessageModule.View;
 using Core.MVC;
 using TMPro;
+using UMI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -15,9 +16,12 @@ namespace Core.FriendModule.View
     public class FriendListView: ViewBase, LoopScrollPrefabSource, LoopScrollDataSource
     {
         public LoopScrollRect list;
-        public TMP_InputField userIdSearch;
+        public MobileInputField userIdSearch;
+        public TMP_InputField TMP_userIdSearch;
         public Button addFriendButton;
         public FriendDataModel _friendDataModel;
+        public RectTransform inputRect;
+        public RectTransform listRect;
 
         public override void Render(ModelBase model)
         {
@@ -36,9 +40,24 @@ namespace Core.FriendModule.View
             list.totalCount = _friendDataModel.FriendList.Count;
             list.RefillCells();
         }
-
+        
+        private float _listOffset;
+        private float _inputOffset;
         public override void OnInit()
         {
+            _listOffset = listRect.offsetMin.y;
+            _inputOffset = inputRect.offsetMin.y;
+        }
+        
+        public override void MoveUpWhenOpenKeyboard(float height)
+        {
+            var inputOffset = (height > 0) ? height : _inputOffset;
+            inputRect.offsetMax = new Vector2(inputRect.offsetMax.x, inputOffset + inputRect.sizeDelta.y);
+            inputRect.offsetMin = new Vector2(inputRect.offsetMin.x, inputOffset);
+            var listOffset = (height > 0) ? inputRect.sizeDelta.y + height : _listOffset;
+            listRect.offsetMin = new Vector2(listRect.offsetMin.x, listOffset);
+            if (height == 0)
+                TMP_userIdSearch.DeactivateInputField();
         }
 
         public GameObject itemPrefab;

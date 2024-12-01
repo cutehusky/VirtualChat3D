@@ -17,10 +17,13 @@ namespace Core.MessageModule.Controller
 
         public void SendMessage()
         {
-            var text = _messageView.chatInput.text;
+            var text = _messageView.chatInput.Text;
             if (text.Length <= 0)
                 return;
-            _messageView.chatInput.text = "";
+            _messageView.chatInput.Text = "";
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
+            _messageView.TMP_chatInput.text = "";
+#endif
             
             SocketIO.Instance.SendWebSocketMessage("fetch", new UserVerifyPacket()
             {

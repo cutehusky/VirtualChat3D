@@ -72,8 +72,11 @@ namespace Core.ChatBotModule.Controller
             _chatBotView = view[0] as ChatBotView;
             _chatBotView.send.onClick.AddListener((() =>
             {
-                var text = _chatBotView.chatInput.text;
-                _chatBotView.chatInput.text = "";
+                var text = _chatBotView.chatInput.Text;
+                _chatBotView.chatInput.Text = "";
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
+                _chatBotView.TMP_chatInput.text = "";
+#endif
                 _chatBotView.send.interactable = false;
                 _chatBotView.newChat.interactable = false;
                 AddMessage("User", text);

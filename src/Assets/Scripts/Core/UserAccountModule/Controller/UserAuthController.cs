@@ -35,11 +35,11 @@ namespace Core.UserAccountModule.Controller
 
         public void SignUp()
         {
-            if (_signUpView.password.text != _signUpView.re_password.text)
+            if (_signUpView.password.Text != _signUpView.re_password.Text)
             {
                 return;
             }
-            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.text, _signUpView.password.text).ContinueWithOnMainThread(task =>
+            this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.Text, _signUpView.password.Text).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
@@ -63,17 +63,17 @@ namespace Core.UserAccountModule.Controller
         }
         public void ResetPassword()
         {
-            Debug.Log($"reset password with email: {_loginView.email.text}");
+            Debug.Log($"reset password with email: {_loginView.email.Text}");
 
         }
         
         public void Login()
         {
-            Debug.Log($"Login with email: {_loginView.email.text} pass: {_loginView.password.text}");
+            Debug.Log($"Login with email: {_loginView.email.Text} pass: {_loginView.password.Text}");
             this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(
-                _loginView.email.text, 
-                _loginView.password.text).ContinueWithOnMainThread(task =>
-            {
+                _loginView.email.Text, 
+                _loginView.password.Text).ContinueWithOnMainThread(task =>
+            { 
                 if (task.IsCanceled)
                 {
                     _loginView.SetNotice("Login was canceled by Firebase.");

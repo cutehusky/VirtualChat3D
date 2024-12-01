@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 3889684937859861133}
   - component: {fileID: 501325293666910334}
   - component: {fileID: 3425421012071082589}
+  - component: {fileID: 4727042397180814}
   m_Layer: 5
   m_Name: input
   m_TagString: Untagged
@@ -359,8 +360,8 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_RichText: 1
   m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_OnFocusSelectAll: 1
-  m_ResetOnDeActivation: 1
+  m_OnFocusSelectAll: 0
+  m_ResetOnDeActivation: 0
   m_KeepTextSelectionVisible: 0
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 0
@@ -380,8 +381,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb30198aa32dd140b5750692dd48104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 9
   image: {fileID: 3889684937859861133}
+--- !u!114 &4727042397180814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325579670824180053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2edfa40255e77404ebfd2bdd16815c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CustomFont: default
+  KeyboardLanguage: default
+  BackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  IsManualHideControl: 0
+  IsWithDoneButton: 0
+  IsWithClearButton: 0
+  ReturnKey: 0
+  OnReturnPressedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2952420423857488746
 GameObject:
   m_ObjectHideFlags: 0
