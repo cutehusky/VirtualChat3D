@@ -85,10 +85,11 @@ class FirebaseDataModel {
             .once('value', (data) => {
                 let res = Object.entries(data.val()).map(([uid, { birthday, description, __, _, username }]) => ({
                     uid: uid,
-                    birhtday: birthday,
+                    birthday: birthday,
                     description: description,
                     username: username
                 }));
+                console.log(`sent${res}`)
                 socket.emit('getUserListReply', res);
             });
     }
