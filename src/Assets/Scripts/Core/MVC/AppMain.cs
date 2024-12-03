@@ -143,6 +143,7 @@ namespace Core.MVC
                 hostRoomView, joinRoomView
             });
 
+            Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
             Debug.Log("opening signup view");
             OpenSignUpView();
             //OpenChatBotView(); 

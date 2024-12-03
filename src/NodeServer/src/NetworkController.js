@@ -39,6 +39,7 @@ class NetworkController {
         socket.on('fetch', (data) => {
             let uid = Firebase.getInstance().verifyToken(data.token);
             this.clientList[uid] = socket;
+            Firebase.getInstance().adminChecker(socket, uid);  
         })
         for (const [eventName, callback] of Object.entries(this.#socketEventDict)) {
             socket.on(eventName, (data) => callback(socket, data));

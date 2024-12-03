@@ -97,8 +97,10 @@ class FirebaseDataModel {
         this.#databaseService.ref(`Account/${userId}`).remove();
     }
     friendRemove(userId, targetId) {
-        let cons_id = this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).val();
-        this.#databaseService.ref(`DMessage/${cons_id}`).remove();
+        this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`)
+        .once('value',(cons_id) => {
+            this.#databaseService.ref(`DMessage/${cons_id.val()}`).remove();
+        });
         this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).remove();
         this.#databaseService.ref(`Account/${targetId}/Friend/${userId}`).remove();
     }
@@ -109,13 +111,17 @@ class FirebaseDataModel {
     }
     friendRequestAccept(userId, targetId) {
         this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
-        let consId = this.#databaseService.ref(`DMessage`).push().key;
+        let consId = this.#databaseService.ref(`DMessage`).push({
+            [`${userId}_has_new`]: false,
+            [`${targetId}_has_new`]: false
+        }).key;
         this.#databaseService.ref(`Account/${userId}/Friend/`).set({
             [targetId]: consId
         })
         this.#databaseService.ref(`Account/${targetId}/Friend/`).set({
             [userId]: consId
         })
+        this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);
     }
     friendRequestRefuse(userId, targetId) {
         this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
@@ -134,7 +140,7 @@ class FirebaseDataModel {
             });
     }
     getFriendList(socket, userId) {
-        this.#databaseService.ref(`Account/${userId}/friendList`)
+        this.#databaseService.ref(`Account/${userId}/Friend`)
             .once('value', (data) => {
                 if (data.val() == null) {
                     socket.emit('viewFriendReply', []);
@@ -204,16 +210,29 @@ class FirebaseDataModel {
     getMessage(socket, consId) {
         this.#databaseService.ref(`/DMessage/${consId}`)
             .once('value', (data) => {
-                const result = Object.entries(data.val())
-                    .filter(([_, { uid }]) => uid).map(([timestamp, { msg, uid }]) => ({
+                let result = Object.entries(data.val())
+                    .filter(([_, { uid }]) => uid);
+                if(result == null) {
+                    result = [];
+                }
+                else {
+                    result = result.map(([timestamp, { msg, uid }]) => ({
                         timestamp: parseInt(timestamp),
                         uid: uid,
                         msg: msg,
                         id_cons: consId
                     }));
+                }
                 socket.emit('viewMessageReply', result);
                 console.log(result);
             })
+    }
+    adminChecker(socket, uid) {
+        this.#databaseService.ref(`Admin/${uid}`).once('value', (data) => {
+            socket.emit('fetchAdminReply', {
+                res: (data.val() != null)
+            });
+        });
     }
 }
 
