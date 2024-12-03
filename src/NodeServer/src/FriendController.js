@@ -17,7 +17,7 @@ class FriendController {
             network.clientList[data.fid].emit('receivedFriendRequest', data);
         }
         let fb = Firebase.getInstance();
-        fb.friendRequestWrite(data);
+        fb.friendRequest(data.uid, data.fid);
     }
     static processFriendRequestAccept(socket, data) {
         network = NetworkController.getInstance();

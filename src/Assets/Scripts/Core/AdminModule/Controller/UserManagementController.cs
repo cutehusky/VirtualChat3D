@@ -9,6 +9,9 @@ using System;
 using Core.UserAccountModule.Model;
 using Core.FriendModule.Model;
 using Core.FriendModule.View;
+using Assets.Scripts.Core.AdminModule.Model;
+using UnityEngine;
+using static Unity.Networking.Transport.Utilities.ReliableUtility;
 
 
 namespace Core.AdminModule.Controller
@@ -50,6 +53,21 @@ namespace Core.AdminModule.Controller
         {
             base.OnInit(view);
             _userListView = view[0] as UserListView;
+            SocketIO.Instance.AddUnityCallback("getUserListReply", (res) =>
+            {
+                this.GetModel<UserAccountDataModel>().UserList.Clear();
+                var data = res.GetValue<FriendRepPacket[]>();
+                foreach (var item in data) {
+                    this.GetModel<UserAccountDataModel>().UserList.Add(new UserData()
+                    {
+                        UserId = item.uid,
+                        DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(item.birthday).DateTime,
+                        Description = item.description,
+                        Username = item.username
+                    });
+                }
+                _userListView.RefreshList();
+            });
         }
 
         public ViewBase OpenUserListView()

@@ -37,11 +37,11 @@ namespace Core.FriendModule.Controller
             
             SocketIO.Instance.AddUnityCallback("viewFriendReply", (res) => {
                var packets = res.GetValue<FriendRepPacket[]>();
+                this.GetModel<FriendDataModel>().FriendList.Clear();
                 foreach (var packet in packets) {
                     this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
                     {
                         ChatSessionId = packet.id_cons,
-                        IsAccepted = true,
                         UserId = packet.uid,
                         Username = packet.username,
                         DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(packet.birthday).DateTime,
@@ -53,12 +53,12 @@ namespace Core.FriendModule.Controller
             });
             SocketIO.Instance.AddUnityCallback("viewFriendRequestReply", (res) => {
                 var packets = res.GetValue<FriendRepPacket[]>();
+                this.GetModel<FriendDataModel>().RequestList.Clear();
                 foreach (var packet in packets)
                 {
-                    this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
+                    this.GetModel<FriendDataModel>().RequestList.Add(new FriendData()
                     {
                         ChatSessionId = packet.id_cons,
-                        IsAccepted = false,
                         UserId = packet.uid,
                         Username = packet.username,
                         DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(packet.birthday).DateTime,
