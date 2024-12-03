@@ -64,7 +64,7 @@ class FirebaseDataModel {
     }
     friendRequest(userId, targetId) {
         this.#databaseService.ref(`Account/${targetId}/FriendRequest`).set({
-            [Date.now()]: userId
+            [userId]: userId
         });
     }
     friendRequestAccept(userId, targetId) {
@@ -130,18 +130,18 @@ class FirebaseDataModel {
                     socket.emit('viewFriendRequestReply', []);
                     return;
                 }
-                let res = Object.keys(data.val()).map(fid => ({
+                let res = Object.values(data.val()).map((fid) => ({
                     uid: fid
                 }));
                 let promises = []
                 for (let item of res) {
                     promises.push(
-                        this.#databaseService.ref(`Account/${res[item]['uid']}`)
+                        this.#databaseService.ref(`Account/${item['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
-                                res[item]['username'] = val['username'];
-                                res[item]['birthday'] = val['birthday'];
-                                res[item]['description'] = val['description'];
+                                item['username'] = val['username'];
+                                item['birthday'] = val['birthday'];
+                                item['description'] = val['description'];
                             })
                     )
                 }
