@@ -22,6 +22,10 @@ namespace Core.FriendModule.View
         public FriendDataModel _friendDataModel;
         public RectTransform inputRect;
         public RectTransform listRect;
+        public Sprite buttonRemoveIcon;
+        public Sprite buttonRefuseIcon;
+        public Sprite buttonMessageIcon;
+        public Sprite buttonAcceptIcon;
 
         public override void Render(ModelBase model)
         {
@@ -31,7 +35,7 @@ namespace Core.FriendModule.View
             if (_friendDataModel.FriendList == null)
                 list.totalCount = 0;
             else
-                list.totalCount = _friendDataModel.FriendList.Count;
+                list.totalCount = _friendDataModel.FriendList.Count + _friendDataModel.RequestList.Count;
             list.RefillCells();
         }
 
@@ -94,30 +98,32 @@ namespace Core.FriendModule.View
                 item.username.text = _friendDataModel.FriendList[index].Username;
                 //item.description.text = _friendDataModel.FriendList[index].Description;
                 //item.dateOfBirth.text = _friendDataModel.FriendList[index].DateOfBirth.ToString(CultureInfo.InvariantCulture);
-                if (_friendDataModel.FriendList[index].IsAccepted)
+                item.button1Icon.sprite = buttonRemoveIcon;
+                item.button2Icon.sprite = buttonMessageIcon;
+                item.button2.onClick.AddListener(() =>
                 {
-                    item.button2.onClick.AddListener(() =>
-                    {
-                        OpenMessageView(
-                            _friendDataModel.FriendList[index].ChatSessionId,
-                            _friendDataModel.FriendList[index].UserId);
-                    });
-                    item.button1.onClick.AddListener(() =>
-                    {
-                        OnRemoveFriend(_friendDataModel.FriendList[index].UserId);
-                    });
-                }
-                else
+                    OpenMessageView(
+                        _friendDataModel.FriendList[index].ChatSessionId,
+                        _friendDataModel.FriendList[index].UserId);
+                });
+                item.button1.onClick.AddListener(() =>
                 {
-                    item.button2.onClick.AddListener(() =>
-                     {
-                         OnRequestRefuse(_friendDataModel.FriendList[index].UserId);
-                     });
-                    item.button1.onClick.AddListener(() =>
-                    {
-                        OnRequestAccept(_friendDataModel.FriendList[index].UserId);
-                    });
-                }
+                    OnRemoveFriend(_friendDataModel.FriendList[index].UserId);
+                });
+            }
+            else
+            {
+                item.button1Icon.sprite = buttonAcceptIcon;
+                item.button2Icon.sprite = buttonRefuseIcon;
+                item.username.text = _friendDataModel.RequestList[index - _friendDataModel.RequestList.Count].Username;
+                item.button2.onClick.AddListener(() =>
+                {
+                    OnRequestRefuse(_friendDataModel.RequestList[index - _friendDataModel.RequestList.Count].UserId);
+                });
+                item.button1.onClick.AddListener(() =>
+                {
+                    OnRequestAccept(_friendDataModel.RequestList[index - _friendDataModel.RequestList.Count].UserId);
+                });
             }
         }
      }
