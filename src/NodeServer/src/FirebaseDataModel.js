@@ -1,4 +1,5 @@
 const { Parser } = require("xml2js");
+const { google } = require('googleapis');
 const serviceAccount = require("../key.json");
 
 class FirebaseDataModel {
@@ -31,6 +32,45 @@ class FirebaseDataModel {
             return error;
         })
     }
+
+    viewSystemInfo() {
+        const auth = new google.auth.GoogleAuth({
+            keyFile: './virtualchat3d-firebase-adminsdk-udkda-0810e8cd7a.json',
+            scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
+        });
+    
+        const analyticsData = google.analyticsdata({
+            version: 'v1beta',
+            auth,
+        });
+    
+        const propertyId = 'properties/462826853';
+    
+        return analyticsData.properties
+            .runReport({
+                property: propertyId,
+                requestBody: {
+                    dimensions: [{ name: 'country' }],
+                    metrics: [{ name: 'activeUsers' }],
+                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                },
+            })
+            .then((response) => {
+                const formattedData = response.data.rows.map(row => ({
+                    country: row.dimensionValues[0].value,
+                    activeUsers: parseInt(row.metricValues[0].value, 10),
+                }));
+    
+                console.log('Formatted User Insights:', formattedData);
+                return formattedData;
+            })
+            .catch((error) => {
+                console.error('Error fetching user metrics:', error);
+                throw error;
+            });
+    }
+    
+
     createUser(userId) {
         this.#databaseService.ref(`Account/${userId}/username`).set(userId);
         this.#databaseService.ref(`Account/${userId}/description`).set("");
