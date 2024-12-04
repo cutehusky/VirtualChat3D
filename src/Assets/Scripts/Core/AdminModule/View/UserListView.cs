@@ -57,6 +57,8 @@ namespace Core.AdminModule.View
 
         public GameObject itemPrefab;
         Stack<Transform> pool = new Stack<Transform>();
+        public Sprite lockIcon;
+        public Sprite unlockIcon;
         public GameObject GetObject(int index)
         {
             if (pool.Count == 0)
@@ -70,6 +72,9 @@ namespace Core.AdminModule.View
 
         public void ReturnObject(Transform trans)
         {
+            var item = trans.GetComponent<UserListItem>();
+            item.button1.onClick.RemoveAllListeners();
+            item.button2.onClick.RemoveAllListeners();
             trans.gameObject.SetActive(false);
             trans.SetParent(transform, false);
             pool.Push(trans);
@@ -84,7 +89,8 @@ namespace Core.AdminModule.View
             var item = trans.GetComponent<UserListItem>();
             if (index < _userAccountDataModel.UserList.Count)
             {
-                
+                item.button1.onClick.RemoveAllListeners();
+                item.button2.onClick.RemoveAllListeners();
                 item.username.text = _userAccountDataModel.UserList[index].Username;
                 
                 item.button2.onClick.AddListener(() =>
@@ -94,12 +100,14 @@ namespace Core.AdminModule.View
 
                 if (_userAccountDataModel.UserList[index].IsLock)
                 {
+                    item.button1Icon.sprite = unlockIcon;
                     item.button1.onClick.AddListener(() =>
                     {
                         OnUnlockUser(_userAccountDataModel.UserList[index].UserId);
                     });
                 } else
                 {
+                    item.button1Icon.sprite = lockIcon;
                     item.button1.onClick.AddListener(() =>
                     {
                         OnLockUser(_userAccountDataModel.UserList[index].UserId);

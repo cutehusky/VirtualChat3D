@@ -13,5 +13,6 @@ namespace Core.AdminModule.View
         public TMP_Text dateOfBirth;
         public Button button1; // lock/unlock
         public Button button2; // remove
+        public Image button1Icon; 
     }
 }

@@ -53,6 +53,21 @@ namespace Core.AdminModule.Controller
         {
             base.OnInit(view);
             _userListView = view[0] as UserListView;
+            _userListView.OnLockUser += LockUser;
+            _userListView.OnUnlockUser += UnlockUser;
+            _userListView.OnRemoveUser += RemoveUser;
+            SocketIO.Instance.AddUnityCallback("lockUserReply", (res) =>
+            {
+                LoadUserList();
+            });
+            SocketIO.Instance.AddUnityCallback("unlockUserReply", (res) =>
+            {
+                LoadUserList();
+            });
+            SocketIO.Instance.AddUnityCallback("removeUserReply", (res) =>
+            {
+                LoadUserList();
+            });
             SocketIO.Instance.AddUnityCallback("getUserListReply", (res) =>
             {
                 this.GetModel<UserAccountDataModel>().UserList.Clear();

@@ -76,25 +76,27 @@ class FirebaseDataModel {
         this.#databaseService.ref(`Account/${userId}/description`).set("");
         this.#databaseService.ref(`Account/${userId}/birthday`).set(Date.now());
     }
-    lockUser(userId) {
-        this.#authService.updateUser(userId, {
+
+    async lockUser(userId) {
+        await this.#authService.updateUser(userId, {
             disabled: true
         });
     }
-    unlockUser(userId) {
-        this.#authService.updateUser(userId, {
+    async unlockUser(userId) {
+        await this.#authService.updateUser(userId, {
             disabled: false
         });
     }
-    deleteUser(userId) {
+    async deleteUser(userId) {
         let frRef = this.#databaseService.ref(`Account/${userId}/Friend`);
-        if (frRef != null) {
-            for (id in Object.keys(frRef.val())) {
-                this.#databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
-            }
+        const frSnapshot = await frRef.get();
+        if (frSnapshot.exists()) {
+            const friendIds = Object.keys(frSnapshot.val());
+            for (const id of friendIds)
+                await this.#databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
         }
-        this.#authService.deleteUser(userId);
-        this.#databaseService.ref(`Account/${userId}`).remove();
+        await this.#authService.deleteUser(userId);
+        await this.#databaseService.ref(`Account/${userId}`).remove();
     }
     async friendRemove(userId, targetId) {
         await this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`)

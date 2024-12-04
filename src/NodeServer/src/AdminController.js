@@ -9,44 +9,56 @@ Data format:
 */
 
 class AdminController {
-    static processLockUser(socket, data) {
+    static async processLockUser(socket, data) {
         network = NetworkController.getInstance();
-        if (data.uid in network.clientList) {
-            network.clientList[data.uid].emit('lockUser', data);
-            for (let key in network.clientList) {
-                if (key !== data.uid)
-                    network.clientList[key].emit('hideLockUser', data);
-            }
-        }
+        console.log("lock user " + data.uid);
         let fb = Firebase.getInstance();
-        fb.lockUser(data.uid);
-        network.clientList[data.uid].disconnect();
+        await fb.lockUser(data.uid);
+        if (data.uid in network.clientList) {
+            network.clientList[data.uid].emit('logout', null);
+            network.clientList[data.uid].disconnect();
+            delete network.clientList[data.uid];
+            /*
+            for (let key in network.clientList) {
+                if (key != data.uid)
+                network.clientList[key].emit('hideLockUser', data);
+            }
+            */
+        }
+        socket.emit("lockUserReply", null);
     }
-    static processUnlockUser(socket, data) {
+    static async processUnlockUser(socket, data) {
         network = NetworkController.getInstance();
+        console.log("unlock user " + data.uid);
+        let fb = Firebase.getInstance();
+        await fb.unlockUser(data.uid);
         if (data.uid in network.clientList) {
-            network.clientList[data.uid].emit('unlockUser', data);
+            /*
             for (let key in network.clientList) {
                 if (key !== data.uid)
-                    network.clientList[key].emit('unhideUnlockUser', data);
+                network.clientList[key].emit('unhideUnlockUser', data);
             }
+            */
         }
-        console.log("lock user " + data.uid)
-        let fb = Firebase.getInstance();
-        fb.unlockUser(data.uid);
+        socket.emit("unlockUserReply", null);
     }
-    static processRemoveUser(socket, data) {
+    static async processRemoveUser(socket, data) {
         network = NetworkController.getInstance();
+        console.log("remove user " + data.uid);
+        let fb = Firebase.getInstance();
+        await fb.deleteUser(data.uid);
         if (data.uid in network.clientList) {
-            network.clientList[data.uid].emit('removeUser', data);
+            network.clientList[data.uid].emit('logout', null);
+            network.clientList[data.uid].disconnect();
+            delete network.clientList[data.uid];
+            /*
             for (let key in network.clientList) {
                 if (key !== data.uid)
-                    network.clientList[key].emit('hideRemoveUser', data);
+                network.clientList[key].emit('hideRemoveUser', data);
             }
+            */
         }
-        let fb = Firebase.getInstance();
-        fb.deleteUser(data.uid);
-        network.clientList[data.uid].disconnect();
+        socket.emit("removeUserReply", null);
     }
     static processGetUserList(socket, data) {
         let fb = Firebase.getInstance();
