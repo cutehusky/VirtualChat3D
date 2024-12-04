@@ -12,7 +12,7 @@ namespace Core.UserAccountModule.Model
 {
     public class UserProfileDataModel: ModelBase
     {
-        public readonly UserAccountData UserProfileData = new();
+        public UserAccountData UserProfileData = new();
         public void FetchProfile(FirebaseAuth auth, Action onSuccess, Action onFailure)
         {
             FirebaseDatabase.DefaultInstance.GetReference($"Account/{auth.CurrentUser.UserId}")

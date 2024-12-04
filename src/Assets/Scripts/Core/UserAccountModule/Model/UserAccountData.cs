@@ -10,7 +10,7 @@ namespace Core.UserAccountModule.Model
         public string Username;
         public DateTime DateOfBirth;
         public string Email;
-        public string UserId;
+        public string UserId = "";
         //public bool IsOnline;
     }
 }

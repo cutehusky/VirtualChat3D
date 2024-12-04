@@ -5,6 +5,11 @@ namespace Core.MVC
 {
     public abstract class ControllerBase: IController
     {
+        public virtual void Update()
+        {
+            
+        }
+        
         /// <summary>
         /// Bind input action.
         /// </summary>

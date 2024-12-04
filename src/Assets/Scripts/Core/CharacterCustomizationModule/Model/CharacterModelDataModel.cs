@@ -13,7 +13,7 @@ namespace Core.CharacterCustomizationModule.Model
     public class CharacterModelDataModel: ModelBase
     {
         public List<string> ModelId;
-        public string ChatRoomSelectModelId;
+        public string ChatRoomSelectModelId = "FoxGirl.vrm_";
         public string ChatBotSelectModelId = "FoxGirl.vrm_";
         private static SynchronizationContext s_context;
         public const string ModelPath = "/Model/";
@@ -36,6 +36,14 @@ namespace Core.CharacterCustomizationModule.Model
         public void CreateCharacter(string modelId, Action<GameObject> onVrmModelLoaded)
         {
             LoadModelFromPath(modelId, onVrmModelLoaded);
+        }
+        
+        public void CreateRoomCharacter(Action<GameObject, string> onVrmModelLoaded)
+        {
+            LoadModelFromPath(ChatRoomSelectModelId,(vrm) =>
+            {
+                onVrmModelLoaded(vrm, ChatRoomSelectModelId);
+            });
         }
         
         public void CreateChatBotCharacter(Action<GameObject> onVrmModelLoaded)

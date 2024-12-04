@@ -7,6 +7,8 @@ namespace Core.UserAccountModule.Model
     public class FirebaseAuthModel: FirebaseModelBase
     {
         public Firebase.Auth.FirebaseAuth Auth;
+
+        public bool IsSentToken = false;
         
         public override void InitFirebase() {
             Auth =  Firebase.Auth.FirebaseAuth.DefaultInstance;

@@ -7,6 +7,7 @@ using Core.NetworkModule.Controller;
 using Assets.Scripts.Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
 using System;
+using UnityEngine;
 
 namespace Core.FriendModule.Controller
 {
@@ -31,6 +32,7 @@ namespace Core.FriendModule.Controller
             {
                 AppMain.Instance.OpenMessageView(chatSession,fid);
             };
+            
             _friendListView.OnRemoveFriend += RemoveFriend;
             _friendListView.OnRequestAccept += AcceptFriendRequest;
             _friendListView.OnRequestRefuse += RefuseFriendRequest;
@@ -39,24 +41,24 @@ namespace Core.FriendModule.Controller
                var packets = res.GetValue<FriendRepPacket[]>();
                 this.GetModel<FriendDataModel>().FriendList.Clear();
                 foreach (var packet in packets) {
-                    this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
+                    this.GetModel<FriendDataModel>().FriendList.Add(packet.uid,new FriendData()
                     {
                         ChatSessionId = packet.id_cons,
                         UserId = packet.uid,
                         Username = packet.username,
                         DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(packet.birthday).DateTime,
                         Description = packet.description,
-
                     });
-
                 }
+                _friendListView.RefreshList(); 
             });
+            
             SocketIO.Instance.AddUnityCallback("viewFriendRequestReply", (res) => {
                 var packets = res.GetValue<FriendRepPacket[]>();
                 this.GetModel<FriendDataModel>().RequestList.Clear();
                 foreach (var packet in packets)
                 {
-                    this.GetModel<FriendDataModel>().RequestList.Add(new FriendData()
+                    this.GetModel<FriendDataModel>().RequestList.Add(packet.uid, new FriendData()
                     {
                         ChatSessionId = packet.id_cons,
                         UserId = packet.uid,
@@ -65,20 +67,32 @@ namespace Core.FriendModule.Controller
                         Description = packet.description,
                     });
                 }
+                _friendListView.RefreshList(); 
             });
-            SocketIO.Instance.AddUnityCallback("sendFriendRequestReply", (res) => {
-                var packets = res.GetValue<FriendRepPacket>();
+            
+            SocketIO.Instance.AddUnityCallback("friendRequestReply", (res) => {
+                var packets = res.GetValue<FriendPacket>();
             });
+            
+            SocketIO.Instance.AddUnityCallback("receivedFriendRequest", (res) => {
+                LoadFriendList();
+            });
+             
             SocketIO.Instance.AddUnityCallback("friendRequestAcceptReply", (res) => {
-                var packets = res.GetValue<FriendRepPacket>();
+                LoadFriendList();
             });
+            
             SocketIO.Instance.AddUnityCallback("friendRequestRefuseReply", (res) => {
-                var packets = res.GetValue<FriendRepPacket>();
+                LoadFriendList();
             });
-            SocketIO.Instance.AddUnityCallback("processRemoveFriendReply", (res) => {
-                var packets = res.GetValue<FriendRepPacket>();
+            
+            SocketIO.Instance.AddUnityCallback("friendRemoveReply", (res) => {
+                LoadFriendList();
             });
-
+            
+            SocketIO.Instance.AddUnityCallback("friendRemove", (res) => {
+                LoadFriendList();
+            });
         }
 
 
@@ -94,18 +108,7 @@ namespace Core.FriendModule.Controller
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    this.GetModel<FriendDataModel>().FriendList.Add(new FriendData()
-            //    {
-            //        ChatSessionId = "0",
-            //        IsAccepted = true,
-            //        UserId = i.ToString(),
-            //        Username = i.ToString(),
-            //        DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(123456789).DateTime,
-            //        Description = "testing",
-            //    });
-            //}
+            _friendListView.RefreshList(); 
         }
 
         public void SendFriendRequest(string targetUserId)

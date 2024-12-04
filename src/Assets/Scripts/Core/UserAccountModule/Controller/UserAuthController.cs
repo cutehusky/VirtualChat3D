@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Core.NetworkModule.Controller;
 using Core.MVC;
 using Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
@@ -64,9 +64,28 @@ namespace Core.UserAccountModule.Controller
         public void ResetPassword()
         {
             Debug.Log($"reset password with email: {_loginView.email.Text}");
-
         }
+
         
+        public float SendTokenDeltaTime = 0;
+        public readonly float SendTokenTimeout = 3;
+        public override void Update()
+        {
+            if (this.GetModel<FirebaseAuthModel>().IsSentToken 
+                || this.GetModel<UserProfileDataModel>().UserProfileData.UserId == "")
+                return;
+            if (SendTokenDeltaTime > 0)
+            {
+                SendTokenDeltaTime -= Time.deltaTime;
+                return;
+            }
+            SocketIO.Instance.SendWebSocketMessage("fetch", new UserVerifyPacket()
+            {
+                uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
+            }); 
+            SendTokenDeltaTime = SendTokenTimeout;
+        }
+
         public void Login()
         {
             Debug.Log($"Login with email: {_loginView.email.Text} pass: {_loginView.password.Text}");
@@ -85,7 +104,8 @@ namespace Core.UserAccountModule.Controller
                     return;
                 }
                 _loginView.SetNotice("Firebase user signed in successfully");
-                Firebase.Auth.AuthResult result = task.Result;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
+                SendTokenDeltaTime = 0;
                 this.GetModel<UserProfileDataModel>().FetchProfile(this.GetModel<FirebaseAuthModel>().Auth, 
                     () => { AppMain.Instance.OpenUserProfileView(); }, () => { });
             });
@@ -94,6 +114,13 @@ namespace Core.UserAccountModule.Controller
         public void SignOut()
         {
             // clear data
+            this.GetModel<UserProfileDataModel>().UserProfileData = new();
+            this.GetModel<FirebaseAuthModel>().IsSentToken = false;
+            SendTokenDeltaTime = 0;
+            SocketIO.Instance.SendWebSocketMessage("clear", new AdminManageUserPacket()
+            {
+                uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
+            });
             AppMain.Instance.OpenLoginView();
         }
 
@@ -115,6 +142,20 @@ namespace Core.UserAccountModule.Controller
             _signUpView.signUp.onClick.AddListener(SignUp);
             _userProfileView = view[2] as UserProfileView;
             _userProfileView.signOut.onClick.AddListener(SignOut);
+            SocketIO.Instance.AddUnityCallback("fetchReply", (res) =>
+            {
+                var data = res.GetValue<UserVerifyPacket>();
+                if (data.uid == this.GetModel<UserProfileDataModel>().UserProfileData.UserId)
+                {
+                    this.GetModel<FirebaseAuthModel>().IsSentToken = true;
+                    return;
+                }
+                SignOut();
+            });
+            SocketIO.Instance.AddUnityCallback("logout", (res) =>
+            {
+                SignOut();
+            });
         }
     }
 }

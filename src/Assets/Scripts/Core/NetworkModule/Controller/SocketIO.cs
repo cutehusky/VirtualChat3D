@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Core.MVC;
 using Core.NetworkModule.Model;
+using Core.UserAccountModule.Model;
 using Newtonsoft.Json;
 using Plugins.EditorExtend.ExecutionOrder.Scripts;
 using QFramework;
@@ -65,6 +66,7 @@ namespace Core.NetworkModule.Controller
 
         protected override void Awake()
         {
+            base.Awake();
             OnInit();
         }
         
@@ -130,7 +132,7 @@ namespace Core.NetworkModule.Controller
                     _isSentAESKey = true;
                     Debug.Log($"{DateTime.Now} AES rep: {data}");
                 } 
-            });
+            }); 
             
             /*
             // testing
@@ -147,6 +149,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Connected");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
             
             _socket.OnDisconnected += async (sender, e) =>
@@ -154,6 +157,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Disconnected: reason = {e}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
             
             _socket.OnError += async (sender, e) =>
@@ -161,6 +165,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Error: reason = {e}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
             
             _socket.OnReconnectAttempt += (sender, e) =>
@@ -168,6 +173,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Reconnecting: attempt = {e}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
             
             _socket.OnReconnectError += (sender, exception) =>
@@ -175,6 +181,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Reconnect Error: reason = {exception}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
             
             _socket.OnReconnectFailed += (sender, exception) =>
@@ -182,6 +189,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Reconnect Failed: reason = {exception}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             }; 
             
             _socket.OnReconnected += (sender, e) =>
@@ -189,6 +197,7 @@ namespace Core.NetworkModule.Controller
                 Debug.Log($"{DateTime.Now} Reconnected: attempt = {e}");
                 _isSentAESKey = false;
                 _sendKeyDeltaTime = 0;
+                this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
             await _socket.ConnectAsync();
         }

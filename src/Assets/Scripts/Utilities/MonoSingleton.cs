@@ -34,7 +34,7 @@ namespace Utilities
         protected virtual void Awake()
         {
             _instance = this as TDerived;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this);
         }
     }
 }

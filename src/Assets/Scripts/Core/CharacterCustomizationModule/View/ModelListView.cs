@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.CharacterCustomizationModule.Model;
 using Core.MVC;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Core.CharacterCustomizationModule.View
@@ -10,14 +11,28 @@ namespace Core.CharacterCustomizationModule.View
     public class ModelListView: ViewBase,  LoopScrollPrefabSource, LoopScrollDataSource
     {
         public Button import;
-        public Transform previewModelPoint;
         private CharacterModelDataModel _dataModel;
         public Action<int> OnModelPreviewChange;
         public Action<int> OnSelectChatBotModel;
         public Action<int> OnSelectCharacterModel;
         public LoopScrollRect list;
         public Button back;
-        
+        public Transform previewModelPoint;
+        public Transform cameraPoint;
+        public Transform camera;
+
+        public void OnEnable()
+        {
+            previewModelPoint.gameObject.SetActive(true);
+            camera.transform.position = cameraPoint.transform.position;
+            camera.transform.rotation = cameraPoint.transform.rotation;
+        }
+
+        public void OnDisable()
+        {
+            previewModelPoint.gameObject.SetActive(false);
+        }
+
         public override void Render(ModelBase model)
         {
             _dataModel = model as CharacterModelDataModel;

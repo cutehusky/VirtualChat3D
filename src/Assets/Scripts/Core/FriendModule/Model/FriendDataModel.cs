@@ -6,8 +6,8 @@ namespace Core.FriendModule.Model
 {
     public class FriendDataModel: ModelBase
     {
-        public List<FriendData> FriendList;
-        public List<FriendData> RequestList;
+        public Dictionary<string, FriendData> FriendList;
+        public Dictionary<string, FriendData> RequestList;
         protected override void OnInit()
         {
             FriendList = new();

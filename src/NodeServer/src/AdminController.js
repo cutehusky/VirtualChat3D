@@ -31,6 +31,7 @@ class AdminController {
                     network.clientList[key].emit('unhideUnlockUser', data);
             }
         }
+        console.log("lock user " + data.uid)
         let fb = Firebase.getInstance();
         fb.unlockUser(data.uid);
     }

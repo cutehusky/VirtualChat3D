@@ -25,12 +25,6 @@ namespace Core.MessageModule.Controller
             _messageView.TMP_chatInput.text = "";
 #endif
             
-            SocketIO.Instance.SendWebSocketMessage("fetch", new UserVerifyPacket()
-            {
-                uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
-                token = ""
-            });  // for test only
-            
             SocketIO.Instance.SendWebSocketMessage("sendMessage", new MessagePacket
             {
                 fid = this.GetModel<MessageDataModel>().CurrentChatSession.FriendId,
@@ -50,6 +44,7 @@ namespace Core.MessageModule.Controller
                     Content = content,
                     Time = time
                 });
+                ReadMessage(chatSessionId);
                 _messageView.RefreshList();
             }
         }
@@ -61,6 +56,7 @@ namespace Core.MessageModule.Controller
         {
             this.GetModel<MessageDataModel>().CurrentChatSession.ChatSessionId = chatSessionId;
             this.GetModel<MessageDataModel>().CurrentChatSession.FriendId = friendId;
+            this.GetModel<MessageDataModel>().CurrentChatSession.ChatData.Clear();
             SocketIO.Instance.SendWebSocketMessage("viewMessage",  new ChatSessionPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
@@ -92,7 +88,6 @@ namespace Core.MessageModule.Controller
             SocketIO.Instance.AddUnityCallback("viewMessageReply", (res) =>
             { 
                 string id_cons = "";
-                Debug.Log("test");
                 var packets = res.GetValue<MessagePacket[]>();
                 foreach (var packet in packets)
                 {
@@ -113,7 +108,6 @@ namespace Core.MessageModule.Controller
                     packet.msg,
                     DateTimeOffset.FromUnixTimeMilliseconds(packet.timestamp).DateTime
                         .ToString(CultureInfo.InvariantCulture), packet.id_cons);
-                ReadMessage(packet.id_cons);
             });
             SocketIO.Instance.AddUnityCallback("sendMessageReply",(res) =>
             {

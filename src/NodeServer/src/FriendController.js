@@ -10,30 +10,32 @@ Data format:
 */
 
 class FriendController {
-    static processFriendRequest(socket, data) {
+    static async processFriendRequest(socket, data) {
         network = NetworkController.getInstance();
+        let fb = Firebase.getInstance();
+        await fb.friendRequest(data.uid, data.fid);
+        if (data.fid in network.clientList) {
+            network.clientList[data.fid].emit('receivedFriendRequest', null);
+        }
         socket.emit('friendRequestReply', data);
-        if(data.fid in network.clientList) {
-            network.clientList[data.fid].emit('receivedFriendRequest', data);
-        }
-        let fb = Firebase.getInstance();
-        fb.friendRequest(data.uid, data.fid);
     }
-    static processFriendRequestAccept(socket, data) {
+    static async processFriendRequestAccept(socket, data) {
         network = NetworkController.getInstance();
-        if (data.fid in network.clientList) {
-            network.clientList[data.fid].emit('friendRequestAccept', data);
-        }
         let fb = Firebase.getInstance();
-        fb.friendRequestAccept(data.uid, data.fid);
+        await fb.friendRequestAccept(data.uid, data.fid);
+        if (data.fid in network.clientList) {
+            network.clientList[data.fid].emit('friendRequestAcceptReply', data);
+        }
+        socket.emit('friendRequestAcceptReply', null);
     }
-    static processFriendRequestRefuse(socket, data) {
+    static async processFriendRequestRefuse(socket, data) {
         network = NetworkController.getInstance();
-        if (data.fid in network.clientList) {
-            network.clientList[data.fid].emit('friendRequestRefuse', data);
-        }
         let fb = Firebase.getInstance();
-        fb.friendRequestRefuse(data.uid, data.fid);
+        await fb.friendRequestRefuse(data.uid, data.fid);
+        if (data.fid in network.clientList) {
+            network.clientList[data.fid].emit('friendRequestRefuseReply', null);
+        }
+        socket.emit('friendRequestRefuseReply', null);
     }
     static processViewFriendList(socket, data) {
         let fb = Firebase.getInstance();
@@ -43,12 +45,13 @@ class FriendController {
         let fb = Firebase.getInstance();
         fb.getFriendRequest(socket, data.uid);
     }
-    static processRemoveFriend(socket, data) {
+    static async processRemoveFriend(socket, data) {
         let fb = Firebase.getInstance();
+        await fb.friendRemove(data.uid, data.fid);
         if (data.fid in network.clientList) {
-            network.clientList[data.fid].emit('friendRemove', data);
+            network.clientList[data.fid].emit('friendRemove', null);
         }
-        fb.friendRemove(data.uid, data.fid);
+        socket.emit('friendRemoveReply', null);
     }
 }
 

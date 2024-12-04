@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Core.AdminModule.Model;
-using Core.AdminModule.View;
-using Core.FriendModule.Model;
-using Core.FriendModule.View;
 using Core.MVC;
 using TMPro;
 using UMI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Core.AdminModule.View

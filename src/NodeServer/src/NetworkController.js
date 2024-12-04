@@ -37,15 +37,38 @@ class NetworkController {
     runEvents(socket) {
         console.log(`client: ${socket.id} connected`);
         socket.on('fetch', (data) => {
-            let uid = Firebase.getInstance().verifyToken(data.token);
-            this.clientList[uid] = socket;
-            Firebase.getInstance().adminChecker(socket, uid);  
+            //let uid = Firebase.getInstance().verifyToken(data.token);
+            console.log(`fetched uid from ${data.uid}`);
+
+            if (this.clientList[data.uid])
+                this.clientList[data.uid].emit("logout", null);
+
+            for (const uid of Object.keys(this.clientList)) {
+                if (this.clientList[uid].id == socket.id) {
+                    delete this.clientList[uid];
+                    break;
+                }
+            }
+
+            this.clientList[data.uid] = socket;
+            Firebase.getInstance().adminChecker(socket, data.uid);
+            socket.emit('fetchReply', data);
+        })
+        socket.on('clear', (data) => {
+            //let uid = Firebase.getInstance().verifyToken(data.token);
+            delete this.clientList[data.uid];
         })
         for (const [eventName, callback] of Object.entries(this.#socketEventDict)) {
             socket.on(eventName, (data) => callback(socket, data));
         }
         socket.on('disconnect', () => {
             console.log(`client: ${socket.id} disconnected`);
+            for (const uid of Object.keys(this.clientList)) {
+                if (this.clientList[uid].id == socket.id) {
+                    delete this.clientList[uid];
+                    break;
+                }
+            }
         })
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.AdminModule.Controller;
 using Core.AdminModule.View;
 using Core.CharacterCustomizationModule.Controller;
@@ -10,6 +11,7 @@ using Core.FriendModule.Controller;
 using Core.FriendModule.View;
 using Core.MessageModule.Controller;
 using Core.MessageModule.View;
+using Core.OnlineRuntimeModule.CharacterControl;
 using Core.OnlineRuntimeModule.RoomManagementModule.Controller;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
 using Core.UserAccountModule.Controller;
@@ -19,6 +21,7 @@ using Firebase;
 using Firebase.Extensions;
 using QFramework;
 using UMI;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -40,6 +43,8 @@ namespace Core.MVC
         public MessageView MessageView;
         public HostRoomView hostRoomView;
         public JoinRoomView joinRoomView;
+        public CharacterControlView characterControlView;
+        public JoinedUserListView joinedUserListView;
         
         public ViewBase currentView;
 
@@ -52,9 +57,13 @@ namespace Core.MVC
         public FriendManagementController FriendManagementController;
         public MessageController MessageController;
         public RoomManager RoomManager;
+        public ConnectionManager ConnectionManager;
 
         public CanvasScaler canvasScaler;
         public RectTransform canvas;
+        
+        public UnityTransport unityTransport;
+
 
         public void SetHorizontal()
         {
@@ -70,6 +79,7 @@ namespace Core.MVC
 
         protected override void Awake()
         {
+            base.Awake();
             MobileInput.Init();
             MobileInput.OnKeyboardAction += OnKeyboardAction;
             MobileInput.OnOrientationChange += OnOrientationChange;
@@ -142,20 +152,14 @@ namespace Core.MVC
             {
                 hostRoomView, joinRoomView
             });
+            ConnectionManager = new();
+            ConnectionManager.OnInit(new List<ViewBase>()
+            {
+                hostRoomView, joinRoomView, characterControlView, joinedUserListView
+            });
 
-            Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-            Debug.Log("opening signup view");
-            OpenSignUpView();
-            //OpenChatBotView(); 
-            //OpenModelListView();
-            ////Invoke("Test", 3); 
-            //UnityThread.initUnityThread();
-        }
-
-        public void Test() 
-        {
-            //OpenMessageView("0", "0");
-            OpenFriendListView();
+            //Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+            OpenLoginView();
         }
 
         void OnOrientationChange(HardwareOrientation orientation) {
@@ -186,6 +190,14 @@ namespace Core.MVC
             SetVertical();
             currentView = RoomManager.OpenHostRoomView();
             currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
+        }
+
+        public void OpenCharacterControlView()
+        {
+            CloseCurrentView();
+            SetHorizontal();
+            characterControlView.Display();
+            currentView = characterControlView;
         }
 
         public void OpenJoinRoomView()
@@ -258,6 +270,11 @@ namespace Core.MVC
             currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
+        public void Update()
+        {
+            if (UserAuthController != null)
+                UserAuthController.Update();
+        }
 
         public IArchitecture GetArchitecture()
         {

@@ -93,9 +93,11 @@ namespace Core.MessageModule.View
                 if (ChatSession.ChatData[index].UserId != friendId) {
                     item.background.color = Color.blue;
                     item.roundedCorners.r = new Vector4(40,0,40,40);
+                    item.role.alignment = TextAlignmentOptions.Left;
                 }else {
                     item.background.color = Color.red;
                     item.roundedCorners.r = new Vector4(0,40,40,40);
+                    item.role.alignment = TextAlignmentOptions.Right;
                 } 
                 item.roundedCorners.Refresh();
             }

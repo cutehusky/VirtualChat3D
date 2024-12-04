@@ -26,6 +26,8 @@ namespace Core.ChatBotModule.View
         public RuntimeAnimatorController animatorController;
         public LoopScrollRect list;
         public Button back;
+        public Transform cameraPoint;
+        public Transform camera;
         
         public ChatSession ChatSession;
         public override void Render(ModelBase model)
@@ -42,6 +44,18 @@ namespace Core.ChatBotModule.View
             list.RefillCells();
         }
         
+        public void OnEnable()
+        {
+            chatBotModelPoint.gameObject.SetActive(true);
+            camera.transform.position = cameraPoint.transform.position;
+            camera.transform.rotation = cameraPoint.transform.rotation;
+        }
+
+        public void OnDisable()
+        {
+            chatBotModelPoint.gameObject.SetActive(false); 
+        }
+
         public void RefreshList()
         {
             list.totalCount = ChatSession.ChatData.Count;
@@ -85,11 +99,13 @@ namespace Core.ChatBotModule.View
                 {
                     item.background.color = Color.blue;
                     item.roundedCorners.r = new Vector4(40,0,40,40);
+                    item.role.alignment = TextAlignmentOptions.Left;
                 }
                 else
                 {
                     item.background.color = Color.red;
                     item.roundedCorners.r = new Vector4(0,40,40,40);
+                    item.role.alignment = TextAlignmentOptions.Right;
                 } 
                 item.roundedCorners.Refresh();
             }

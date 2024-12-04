@@ -38,14 +38,14 @@ class FirebaseDataModel {
             keyFile: './virtualchat3d-firebase-adminsdk-udkda-0810e8cd7a.json',
             scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
         });
-    
+
         const analyticsData = google.analyticsdata({
             version: 'v1beta',
             auth,
         });
-    
+
         const propertyId = 'properties/462826853';
-    
+
         return analyticsData.properties
             .runReport({
                 property: propertyId,
@@ -60,7 +60,7 @@ class FirebaseDataModel {
                     country: row.dimensionValues[0].value,
                     activeUsers: parseInt(row.metricValues[0].value, 10),
                 }));
-    
+
                 console.log('Formatted User Insights:', formattedData);
                 return formattedData;
             })
@@ -69,7 +69,7 @@ class FirebaseDataModel {
                 throw error;
             });
     }
-    
+
 
     createUser(userId) {
         this.#databaseService.ref(`Account/${userId}/username`).set(userId);
@@ -96,35 +96,36 @@ class FirebaseDataModel {
         this.#authService.deleteUser(userId);
         this.#databaseService.ref(`Account/${userId}`).remove();
     }
-    friendRemove(userId, targetId) {
-        this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`)
-        .once('value',(cons_id) => {
-            this.#databaseService.ref(`DMessage/${cons_id.val()}`).remove();
-        });
-        this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).remove();
-        this.#databaseService.ref(`Account/${targetId}/Friend/${userId}`).remove();
+    async friendRemove(userId, targetId) {
+        await this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`)
+            .once('value', (cons_id) => {
+                this.#databaseService.ref(`DMessage/${cons_id.val()}`).remove();
+            });
+        await this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).remove();
+        await this.#databaseService.ref(`Account/${targetId}/Friend/${userId}`).remove();
     }
-    friendRequest(userId, targetId) {
-        this.#databaseService.ref(`Account/${targetId}/FriendRequest`).set({
+    async friendRequest(userId, targetId) {
+        await this.#databaseService.ref(`Account/${targetId}/FriendRequest`).set({
             [userId]: userId
         });
     }
-    friendRequestAccept(userId, targetId) {
-        this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
-        let consId = this.#databaseService.ref(`DMessage`).push({
+    async friendRequestAccept(userId, targetId) {
+        await this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
+        let consId = (await this.#databaseService.ref(`DMessage`).push({
             [`${userId}_has_new`]: false,
             [`${targetId}_has_new`]: false
-        }).key;
-        this.#databaseService.ref(`Account/${userId}/Friend/`).set({
+        })).key;
+        await this.#databaseService.ref(`Account/${userId}/Friend/`).set({
             [targetId]: consId
         })
-        this.#databaseService.ref(`Account/${targetId}/Friend/`).set({
+        await this.#databaseService.ref(`Account/${targetId}/Friend/`).set({
             [userId]: consId
         })
-        this.#databaseService.ref(`DMessage/${data.id_cons}/${data.fid}_has_new`).set(true);
+        await this.#databaseService.ref(`DMessage/${consId}/${targetId}_has_new`).set(true);
+        await this.#databaseService.ref(`DMessage/${consId}/${userId}_has_new`).set(true);
     }
-    friendRequestRefuse(userId, targetId) {
-        this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
+    async friendRequestRefuse(userId, targetId) {
+        await this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
     }
     getUserList(socket) {
         this.#databaseService.ref(`Account`)
@@ -143,6 +144,7 @@ class FirebaseDataModel {
         this.#databaseService.ref(`Account/${userId}/Friend`)
             .once('value', (data) => {
                 if (data.val() == null) {
+                    console.log('testing 2');
                     socket.emit('viewFriendReply', []);
                     return;
                 }
@@ -163,7 +165,7 @@ class FirebaseDataModel {
                     )
 
                 }
-                console.log('trying....')
+                console.log('trying....');
                 Promise.all(promises).then(() => {
                     socket.emit('viewFriendReply', res);
                 });
@@ -210,9 +212,12 @@ class FirebaseDataModel {
     getMessage(socket, consId) {
         this.#databaseService.ref(`/DMessage/${consId}`)
             .once('value', (data) => {
+                if (data.val() == null) {
+                    result = [];
+                }
                 let result = Object.entries(data.val())
                     .filter(([_, { uid }]) => uid);
-                if(result == null) {
+                if (result == null) {
                     result = [];
                 }
                 else {
