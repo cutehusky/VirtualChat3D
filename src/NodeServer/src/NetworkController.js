@@ -19,6 +19,7 @@ class NetworkController {
     #server;
     #socketEventDict = {};
     clientList = {};
+    clientProcess = {};
     constructor(port) {
         if (NetworkController.#instance) {
             throw new Error("illegal instantiation");
@@ -50,9 +51,10 @@ class NetworkController {
                 }
             }
 
-            this.clientList[data.uid] = socket;
-            Firebase.getInstance().adminChecker(socket, data.uid);
+            //Firebase.getInstance().adminChecker(socket, data.uid);
             socket.emit('fetchReply', data);
+            this.clientList[data.uid] = socket;
+            this.clientProcess[socket.id] = false;
         })
         socket.on('clear', (data) => {
             //let uid = Firebase.getInstance().verifyToken(data.token);
@@ -73,7 +75,13 @@ class NetworkController {
     }
 
     SubscribeEvent(eventName, callback) {
-        this.#socketEventDict[eventName] = callback;
+        this.#socketEventDict[eventName] = (socket, data) => {
+            if(this.clientProcess[socket.id] == false) {
+                this.clientProcess[socket.id] = true;
+                callback(socket, data);
+                this.clientProcess[socket.id] = false;
+            }
+        }
     }
 }
 
