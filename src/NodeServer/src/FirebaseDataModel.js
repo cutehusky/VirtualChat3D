@@ -92,8 +92,10 @@ class FirebaseDataModel {
         const frSnapshot = await frRef.get();
         if (frSnapshot.exists()) {
             const friendIds = Object.keys(frSnapshot.val());
-            for (const id of friendIds)
+            for (const id of friendIds){
                 await this.#databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
+                await this.#databaseService.ref(`DMessages/${friendIds[id]}`).remove();
+            }
         }
         await this.#authService.deleteUser(userId);
         await this.#databaseService.ref(`Account/${userId}`).remove();
