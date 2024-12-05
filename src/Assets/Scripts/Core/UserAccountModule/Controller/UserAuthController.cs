@@ -8,6 +8,10 @@ using Firebase.Extensions;
 using Newtonsoft.Json;
 using QFramework;
 using UnityEngine;
+using Firebase.Auth;
+using Firebase;
+using System;
+
 
 namespace Core.UserAccountModule.Controller
 {
@@ -32,11 +36,65 @@ namespace Core.UserAccountModule.Controller
             _loginView.Render(null);
             return _loginView;
         }
+        //private string GetFriendlyErrorMessage(AggregateException exception)
+        //{
+        //    foreach (var innerException in exception.Flatten().InnerExceptions)
+        //    {
+        //        if (innerException is FirebaseException firebaseEx)
+        //        {
+        //            switch (firebaseEx.ErrorCode)
+        //            {
+        //                case AuthErrorCodes.EmailAlreadyInUse:
+        //                    return "Email is already in use.";
+        //                case AuthErrorCodes.InvalidEmail:
+        //                    return "Invalid email format.";
+        //                case AuthErrorCodes.WeakPassword:
+        //                    return "Password is too weak.";
+        //                case AuthErrorCodes.NetworkRequestFailed:
+        //                    return "Network error, please try again.";
+        //                default:
+        //                    return "Unexpected error occurred.";
+        //            }
+        //        }
+        //    }
+        //    return "An unknown error occurred.";
+        //}
+
+        private string convertException(string exception)
+        {
+            if (exception == null)
+            {
+                return null;
+            }
+            else if (exception.Contains("The user account has been disabled by an administrator"))
+            {
+                return "Your account has been disabled by an administrator!";
+            }
+            else if (exception.Contains("The given password is invalid"))
+            {
+                return "The given password is invalid";
+            }
+            else if (exception.Contains("The email address is already in use by another account"))
+            {
+                return "The email address is already in use by another account.";
+            }
+            else if (exception.Contains("An internal error has occurred"))
+            {
+                return "Wrong Email or Password";
+            }
+            else if (exception.Contains("We have blocked all requests from this device due to unusual activity. Try again later."))
+            {
+                return "We have blocked all requests from this device due to unusual activity. Try again later.";
+            }
+            return exception;  // Debug for more errors in the future.
+        }
+
 
         public void SignUp()
         {
             if (_signUpView.password.Text != _signUpView.re_password.Text)
             {
+                _signUpView.SetNotice("The password confirm is not the same with the password");
                 return;
             }
             this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.Text, _signUpView.password.Text).ContinueWithOnMainThread(task =>
@@ -48,7 +106,9 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-                    _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception.Message);
+                    _signUpView.SetNotice(convertException(task.Exception.Message.ToString()));
+                    //Debug.Log(task.Exception.Message.ToString());
+                    //Debug.Log(task.Exception.ToString());
                     return;
                 }
                 _signUpView.SetNotice("Firebase user created successfully");
@@ -100,7 +160,10 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-                    _loginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
+
+                    _loginView.SetNotice(convertException(task.Exception.Message.ToString()));
+                    //Debug.Log(task.Exception.InnerException);
+                    //Debug.Log(task.Exception.ToString());
                     return;
                 }
                 _loginView.SetNotice("Firebase user signed in successfully");
