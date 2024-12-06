@@ -92,10 +92,7 @@ namespace Core.UserAccountModule.Controller
         // wait 2s till turn to Log in view
         private IEnumerator TransitionToLoginViewAfterDelay()
         {
-            yield return new WaitForSeconds(2); // Wait for 3 seconds
-
-            // Close the sign-up view
-            AppMain.Instance.CloseCurrentView();
+            yield return new WaitForSeconds(2); // Wait for 2 seconds
 
             // Open the login view
             AppMain.Instance.OpenLoginView();
