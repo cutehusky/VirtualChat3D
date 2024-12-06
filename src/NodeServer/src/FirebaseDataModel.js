@@ -92,8 +92,10 @@ class FirebaseDataModel {
         const frSnapshot = await frRef.get();
         if (frSnapshot.exists()) {
             const friendIds = Object.keys(frSnapshot.val());
-            for (const id of friendIds)
+            for (const id of friendIds){
                 await this.#databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
+                await this.#databaseService.ref(`DMessages/${friendIds[id]}`).remove();
+            }
         }
         await this.#authService.deleteUser(userId);
         await this.#databaseService.ref(`Account/${userId}`).remove();
@@ -101,6 +103,7 @@ class FirebaseDataModel {
     async friendRemove(userId, targetId) {
         await this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`)
             .once('value', (cons_id) => {
+                console.log(cons_id.val());
                 this.#databaseService.ref(`DMessage/${cons_id.val()}`).remove();
             });
         await this.#databaseService.ref(`Account/${userId}/Friend/${targetId}`).remove();
@@ -131,13 +134,18 @@ class FirebaseDataModel {
     }
     getUserList(socket) {
         this.#databaseService.ref(`Account`)
-            .once('value', (data) => {
+            .once('value', async (data) => {
                 let res = Object.entries(data.val()).map(([uid, { birthday, description, __, _, username }]) => ({
                     uid: uid,
                     birthday: birthday,
                     description: description,
                     username: username
                 }));
+                for(let i in res) {
+                    await this.#authService.getUser(res[i]['uid']).then((user) => {
+                        res[i]['status'] = !user.disabled;
+                    });
+                }
                 console.log(`sent${res}`)
                 socket.emit('getUserListReply', res);
             });
@@ -167,7 +175,6 @@ class FirebaseDataModel {
                     )
 
                 }
-                console.log('trying....');
                 Promise.all(promises).then(() => {
                     socket.emit('viewFriendReply', res);
                 });

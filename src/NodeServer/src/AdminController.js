@@ -17,6 +17,7 @@ class AdminController {
         if (data.uid in network.clientList) {
             network.clientList[data.uid].emit('logout', null);
             network.clientList[data.uid].disconnect();
+            delete network.clientProcess[network.clientList[data.uid].id];
             delete network.clientList[data.uid];
             /*
             for (let key in network.clientList) {
@@ -50,6 +51,7 @@ class AdminController {
         if (data.uid in network.clientList) {
             network.clientList[data.uid].emit('logout', null);
             network.clientList[data.uid].disconnect();
+            delete network.clientProcess[network.clientList[data.uid].id];
             delete network.clientList[data.uid];
             /*
             for (let key in network.clientList) {

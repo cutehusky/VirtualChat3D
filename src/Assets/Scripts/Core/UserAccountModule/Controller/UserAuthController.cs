@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Assets.Scripts.Core.NetworkModule.Controller;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Core.MVC;
 using Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
@@ -8,6 +8,7 @@ using Firebase.Extensions;
 using Newtonsoft.Json;
 using QFramework;
 using UnityEngine;
+
 
 namespace Core.UserAccountModule.Controller
 {
@@ -32,11 +33,75 @@ namespace Core.UserAccountModule.Controller
             _loginView.Render(null);
             return _loginView;
         }
+        //private string GetFriendlyErrorMessage(AggregateException exception)
+        //{
+        //    foreach (var innerException in exception.Flatten().InnerExceptions)
+        //    {
+        //        if (innerException is FirebaseException firebaseEx)
+        //        {
+        //            switch (firebaseEx.ErrorCode)
+        //            {
+        //                case AuthErrorCodes.EmailAlreadyInUse:
+        //                    return "Email is already in use.";
+        //                case AuthErrorCodes.InvalidEmail:
+        //                    return "Invalid email format.";
+        //                case AuthErrorCodes.WeakPassword:
+        //                    return "Password is too weak.";
+        //                case AuthErrorCodes.NetworkRequestFailed:
+        //                    return "Network error, please try again.";
+        //                default:
+        //                    return "Unexpected error occurred.";
+        //            }
+        //        }
+        //    }
+        //    return "An unknown error occurred.";
+        //}
 
+        private string ConvertException(string exception)
+        {
+            if (exception == null)
+            {
+                return null;
+            }
+
+            if (exception.Contains("The user account has been disabled by an administrator"))
+            {
+                return "Your account has been disabled by an administrator!";
+            }
+
+            if (exception.Contains("The given password is invalid"))
+            {
+                return "The given password is invalid";
+            }
+            if (exception.Contains("The email address is already in use by another account"))
+            {
+                return "The email address is already in use by another account.";
+            }
+            if (exception.Contains("An internal error has occurred"))
+            {
+                return "Wrong Email or Password";
+            }
+            if (exception.Contains("We have blocked all requests from this device due to unusual activity. Try again later."))
+            {
+                return "We have blocked all requests from this device due to unusual activity. Try again later.";
+            }
+
+            return exception;  // Debug for more errors in the future.
+        }
+
+        // wait 2s till turn to Log in view
+        private IEnumerator TransitionToLoginViewAfterDelay()
+        {
+            yield return new WaitForSeconds(2); // Wait for 2 seconds
+
+            // Open the login view
+            AppMain.Instance.OpenLoginView();
+        }
         public void SignUp()
         {
             if (_signUpView.password.Text != _signUpView.re_password.Text)
             {
+                _signUpView.SetNotice("The password confirm is not the same with the password");
                 return;
             }
             this.GetModel<FirebaseAuthModel>().Auth.CreateUserWithEmailAndPasswordAsync(_signUpView.email.Text, _signUpView.password.Text).ContinueWithOnMainThread(task =>
@@ -48,19 +113,19 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-                    _signUpView.SetNotice("Sign up encountered a Firebase error: " + task.Exception.Message);
+                    _signUpView.SetNotice(task.Exception != null
+                        ? ConvertException(task.Exception.Message.ToString())
+                        : "An unknown error occurred.");
+                    //Debug.Log(task.Exception.Message.ToString());
+                    //Debug.Log(task.Exception.ToString());
                     return;
                 }
-                _signUpView.SetNotice("Firebase user created successfully");
-                SocketIO.Instance.SendWebSocketMessage("createUser", new signupPacket() { uid = task.Result.User.UserId });
+                _signUpView.SetNoticeSuccess("Sign up successfully, turn to Log in screen in a few seconds");
+                SocketIO.Instance.SendWebSocketMessage("createUser", new SignUpReqPacket() { uid = task.Result.User.UserId });
+                AppMain.Instance.StartCoroutine(TransitionToLoginViewAfterDelay());
             });
         }
-
-        [JsonObject]
-        public class signupPacket
-        {
-            public string uid;
-        }
+        
         public void ResetPassword()
         {
             Debug.Log($"reset password with email: {_loginView.email.Text}");
@@ -88,7 +153,6 @@ namespace Core.UserAccountModule.Controller
 
         public void Login()
         {
-            Debug.Log($"Login with email: {_loginView.email.Text} pass: {_loginView.password.Text}");
             this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(
                 _loginView.email.Text, 
                 _loginView.password.Text).ContinueWithOnMainThread(task =>
@@ -100,14 +164,17 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-                    _loginView.SetNotice("Login encountered a Firebase error: " + task.Exception);
-                    return;
+                    _loginView.SetNotice(task.Exception != null
+                        ? ConvertException(task.Exception.Message.ToString())
+                        : "An unknown error occurred.");
+                    //Debug.Log(task.Exception.InnerException);
+                    //Debug.Log(task.Exception.ToString());
+                    return; 
                 }
-                _loginView.SetNotice("Firebase user signed in successfully");
                 this.GetModel<FirebaseAuthModel>().IsSentToken = false;
                 SendTokenDeltaTime = 0;
-                this.GetModel<UserProfileDataModel>().FetchProfile(this.GetModel<FirebaseAuthModel>().Auth, 
-                    () => { AppMain.Instance.OpenUserProfileView(); }, () => { });
+                this.GetModel<UserProfileDataModel>().FetchProfile(this.GetModel<FirebaseAuthModel>().Auth,
+                    () => { AppMain.Instance.OpenHostRoomView(); ; }, () => { SignOut(); });
             });
         }
 
@@ -117,7 +184,7 @@ namespace Core.UserAccountModule.Controller
             this.GetModel<UserProfileDataModel>().UserProfileData = new();
             this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             SendTokenDeltaTime = 0;
-            SocketIO.Instance.SendWebSocketMessage("clear", new AdminManageUserPacket()
+            SocketIO.Instance.SendWebSocketMessage("clear", new AdminReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });

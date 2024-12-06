@@ -4,7 +4,6 @@ using Core.MVC;
 using Core.FriendModule.Model;
 using QFramework;
 using Core.NetworkModule.Controller;
-using Assets.Scripts.Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
 using System;
 using UnityEngine;
@@ -38,7 +37,7 @@ namespace Core.FriendModule.Controller
             _friendListView.OnRequestRefuse += RefuseFriendRequest;
             
             SocketIO.Instance.AddUnityCallback("viewFriendReply", (res) => {
-               var packets = res.GetValue<FriendRepPacket[]>();
+               var packets = res.GetValue<UserDataPacket[]>();
                 this.GetModel<FriendDataModel>().FriendList.Clear();
                 foreach (var packet in packets) {
                     this.GetModel<FriendDataModel>().FriendList.Add(packet.uid,new FriendData()
@@ -54,7 +53,7 @@ namespace Core.FriendModule.Controller
             });
             
             SocketIO.Instance.AddUnityCallback("viewFriendRequestReply", (res) => {
-                var packets = res.GetValue<FriendRepPacket[]>();
+                var packets = res.GetValue<UserDataPacket[]>();
                 this.GetModel<FriendDataModel>().RequestList.Clear();
                 foreach (var packet in packets)
                 {
@@ -71,7 +70,7 @@ namespace Core.FriendModule.Controller
             });
             
             SocketIO.Instance.AddUnityCallback("friendRequestReply", (res) => {
-                var packets = res.GetValue<FriendPacket>();
+                var packets = res.GetValue<FriendReqPacket>();
             });
             
             SocketIO.Instance.AddUnityCallback("receivedFriendRequest", (res) => {
@@ -99,12 +98,12 @@ namespace Core.FriendModule.Controller
         public void LoadFriendList()
         {
             this.GetModel<FriendDataModel>().FriendList.Clear();
-            SocketIO.Instance.SendWebSocketMessage("processViewFriendList", new FriendPacket()
+            SocketIO.Instance.SendWebSocketMessage("processViewFriendList", new FriendReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });
 
-            SocketIO.Instance.SendWebSocketMessage("processViewFriendRequestList", new FriendPacket()
+            SocketIO.Instance.SendWebSocketMessage("processViewFriendRequestList", new FriendReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });
@@ -113,7 +112,7 @@ namespace Core.FriendModule.Controller
 
         public void SendFriendRequest(string targetUserId)
         {
-            SocketIO.Instance.SendWebSocketMessage("sendFriendRequest", new FriendPacket()
+            SocketIO.Instance.SendWebSocketMessage("sendFriendRequest", new FriendReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
                 fid = targetUserId
@@ -122,7 +121,7 @@ namespace Core.FriendModule.Controller
 
         public void AcceptFriendRequest(string requesterId)
         {
-            SocketIO.Instance.SendWebSocketMessage("friendRequestAccept", new FriendPacket()
+            SocketIO.Instance.SendWebSocketMessage("friendRequestAccept", new FriendReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
                 fid = requesterId
@@ -131,7 +130,7 @@ namespace Core.FriendModule.Controller
 
         public void RefuseFriendRequest(string requesterId)
         {
-            SocketIO.Instance.SendWebSocketMessage("friendRequestRefuse", new FriendPacket()
+            SocketIO.Instance.SendWebSocketMessage("friendRequestRefuse", new FriendReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
                 fid = requesterId
@@ -141,7 +140,7 @@ namespace Core.FriendModule.Controller
 
         public void RemoveFriend(string friendId)
         {
-            SocketIO.Instance.SendWebSocketMessage("processRemoveFriend", new FriendPacket()
+            SocketIO.Instance.SendWebSocketMessage("processRemoveFriend", new FriendReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
                 fid = friendId
