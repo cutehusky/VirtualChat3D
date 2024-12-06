@@ -6,6 +6,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
     public class CharacterControlView: ViewBase
     {
         public Button outRoom;
+        public Button openUserList;
       
         public override void Render(ModelBase model)
         {
