@@ -40,6 +40,10 @@ namespace Core.UserAccountModule.View
         {
             this.notice.text = $"<color=red>{notice}</color>";
         }
+        public void SetNoticeSuccess(string notice)
+        {
+            this.notice.text = $"<color=green>{notice}</color>";
+        }
 
         public override void OnInit()
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Core.MVC;
 using Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
@@ -88,7 +89,17 @@ namespace Core.UserAccountModule.Controller
             return exception;  // Debug for more errors in the future.
         }
 
+        // wait 2s till turn to Log in view
+        private IEnumerator TransitionToLoginViewAfterDelay()
+        {
+            yield return new WaitForSeconds(2); // Wait for 3 seconds
 
+            // Close the sign-up view
+            AppMain.Instance.CloseCurrentView();
+
+            // Open the login view
+            AppMain.Instance.OpenLoginView();
+        }
         public void SignUp()
         {
             if (_signUpView.password.Text != _signUpView.re_password.Text)
@@ -112,8 +123,9 @@ namespace Core.UserAccountModule.Controller
                     //Debug.Log(task.Exception.ToString());
                     return;
                 }
-                _signUpView.SetNotice("Firebase user created successfully");
+                _signUpView.SetNoticeSuccess("Sign up successfully, turn to Log in screen in a few seconds");
                 SocketIO.Instance.SendWebSocketMessage("createUser", new SignUpReqPacket() { uid = task.Result.User.UserId });
+                AppMain.Instance.StartCoroutine(TransitionToLoginViewAfterDelay());
             });
         }
         
@@ -144,7 +156,6 @@ namespace Core.UserAccountModule.Controller
 
         public void Login()
         {
-            Debug.Log($"Login with email: {_loginView.email.Text} pass: {_loginView.password.Text}");
             this.GetModel<FirebaseAuthModel>().Auth.SignInWithEmailAndPasswordAsync(
                 _loginView.email.Text, 
                 _loginView.password.Text).ContinueWithOnMainThread(task =>
@@ -163,11 +174,10 @@ namespace Core.UserAccountModule.Controller
                     //Debug.Log(task.Exception.ToString());
                     return; 
                 }
-                _loginView.SetNotice("Firebase user signed in successfully");
                 this.GetModel<FirebaseAuthModel>().IsSentToken = false;
                 SendTokenDeltaTime = 0;
-                this.GetModel<UserProfileDataModel>().FetchProfile(this.GetModel<FirebaseAuthModel>().Auth, 
-                    () => { AppMain.Instance.OpenUserProfileView(); }, () => { });
+                this.GetModel<UserProfileDataModel>().FetchProfile(this.GetModel<FirebaseAuthModel>().Auth,
+                    () => { AppMain.Instance.OpenHostRoomView(); ; }, () => { SignOut(); });
             });
         }
 
