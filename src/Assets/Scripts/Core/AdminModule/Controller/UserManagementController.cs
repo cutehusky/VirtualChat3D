@@ -4,7 +4,6 @@ using Core.MVC;
 using QFramework;
 using Core.AdminModule.Model;
 using Core.NetworkModule.Controller;
-using Assets.Scripts.Core.NetworkModule.Controller;
 using System;
 using Core.UserAccountModule.Model;
 using Core.FriendModule.Model;
@@ -21,7 +20,7 @@ namespace Core.AdminModule.Controller
         private UserListView _userListView;
         public void RemoveUser(string userId)
         {
-            SocketIO.Instance.SendWebSocketMessage("processRemoveUser", new AdminManageUserPacket()
+            SocketIO.Instance.SendWebSocketMessage("processRemoveUser", new AdminReqPacket()
             {
                 uid = userId
             });
@@ -29,7 +28,7 @@ namespace Core.AdminModule.Controller
         
         public void LockUser(string userId)
         {
-            SocketIO.Instance.SendWebSocketMessage("processLockUser", new AdminManageUserPacket()
+            SocketIO.Instance.SendWebSocketMessage("processLockUser", new AdminReqPacket()
             {
                 uid = userId
             });
@@ -37,7 +36,7 @@ namespace Core.AdminModule.Controller
 
         public void UnlockUser(string userId)
         {
-            SocketIO.Instance.SendWebSocketMessage("processUnlockUser", new AdminManageUserPacket()
+            SocketIO.Instance.SendWebSocketMessage("processUnlockUser", new AdminReqPacket()
             {
                 uid = userId
             });
@@ -71,15 +70,16 @@ namespace Core.AdminModule.Controller
             SocketIO.Instance.AddUnityCallback("getUserListReply", (res) =>
             {
                 this.GetModel<UserAccountDataModel>().UserList.Clear();
-                var data = res.GetValue<FriendRepPacket[]>();
+                var data = res.GetValue<UserDataPacket[]>();
                 foreach (var item in data) {
                     this.GetModel<UserAccountDataModel>().UserList.Add(new UserData()
                     {
                         UserId = item.uid,
                         DateOfBirth = DateTimeOffset.FromUnixTimeMilliseconds(item.birthday).DateTime,
                         Description = item.description,
-                        Username = item.username
-                    });
+                        Username = item.username,
+                        IsLock = !item.status
+                    }); 
                 }
                 _userListView.RefreshList();
             });

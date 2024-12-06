@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Core.NetworkModule.Controller;
 using Core.MVC;
 using Core.NetworkModule.Controller;
 using Core.UserAccountModule.Model;
@@ -8,9 +7,6 @@ using Firebase.Extensions;
 using Newtonsoft.Json;
 using QFramework;
 using UnityEngine;
-using Firebase.Auth;
-using Firebase;
-using System;
 
 
 namespace Core.UserAccountModule.Controller
@@ -60,32 +56,35 @@ namespace Core.UserAccountModule.Controller
         //    return "An unknown error occurred.";
         //}
 
-        private string convertException(string exception)
+        private string ConvertException(string exception)
         {
             if (exception == null)
             {
                 return null;
             }
-            else if (exception.Contains("The user account has been disabled by an administrator"))
+
+            if (exception.Contains("The user account has been disabled by an administrator"))
             {
                 return "Your account has been disabled by an administrator!";
             }
-            else if (exception.Contains("The given password is invalid"))
+
+            if (exception.Contains("The given password is invalid"))
             {
                 return "The given password is invalid";
             }
-            else if (exception.Contains("The email address is already in use by another account"))
+            if (exception.Contains("The email address is already in use by another account"))
             {
                 return "The email address is already in use by another account.";
             }
-            else if (exception.Contains("An internal error has occurred"))
+            if (exception.Contains("An internal error has occurred"))
             {
                 return "Wrong Email or Password";
             }
-            else if (exception.Contains("We have blocked all requests from this device due to unusual activity. Try again later."))
+            if (exception.Contains("We have blocked all requests from this device due to unusual activity. Try again later."))
             {
                 return "We have blocked all requests from this device due to unusual activity. Try again later.";
             }
+
             return exception;  // Debug for more errors in the future.
         }
 
@@ -106,21 +105,18 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-                    _signUpView.SetNotice(convertException(task.Exception.Message.ToString()));
+                    _signUpView.SetNotice(task.Exception != null
+                        ? ConvertException(task.Exception.Message.ToString())
+                        : "An unknown error occurred.");
                     //Debug.Log(task.Exception.Message.ToString());
                     //Debug.Log(task.Exception.ToString());
                     return;
                 }
                 _signUpView.SetNotice("Firebase user created successfully");
-                SocketIO.Instance.SendWebSocketMessage("createUser", new signupPacket() { uid = task.Result.User.UserId });
+                SocketIO.Instance.SendWebSocketMessage("createUser", new SignUpReqPacket() { uid = task.Result.User.UserId });
             });
         }
-
-        [JsonObject]
-        public class signupPacket
-        {
-            public string uid;
-        }
+        
         public void ResetPassword()
         {
             Debug.Log($"reset password with email: {_loginView.email.Text}");
@@ -160,11 +156,12 @@ namespace Core.UserAccountModule.Controller
                 }
                 if (task.IsFaulted)
                 {
-
-                    _loginView.SetNotice(convertException(task.Exception.Message.ToString()));
+                    _loginView.SetNotice(task.Exception != null
+                        ? ConvertException(task.Exception.Message.ToString())
+                        : "An unknown error occurred.");
                     //Debug.Log(task.Exception.InnerException);
                     //Debug.Log(task.Exception.ToString());
-                    return;
+                    return; 
                 }
                 _loginView.SetNotice("Firebase user signed in successfully");
                 this.GetModel<FirebaseAuthModel>().IsSentToken = false;
@@ -180,7 +177,7 @@ namespace Core.UserAccountModule.Controller
             this.GetModel<UserProfileDataModel>().UserProfileData = new();
             this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             SendTokenDeltaTime = 0;
-            SocketIO.Instance.SendWebSocketMessage("clear", new AdminManageUserPacket()
+            SocketIO.Instance.SendWebSocketMessage("clear", new AdminReqPacket()
             {
                 uid = this.GetModel<UserProfileDataModel>().UserProfileData.UserId
             });

@@ -13,6 +13,7 @@ using Core.MessageModule.Controller;
 using Core.MessageModule.View;
 using Core.OnlineRuntimeModule.CharacterControl;
 using Core.OnlineRuntimeModule.RoomManagementModule.Controller;
+using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
 using Core.UserAccountModule.Controller;
 using Core.UserAccountModule.Model;
@@ -156,8 +157,9 @@ namespace Core.MVC
             ConnectionManager.OnInit(new List<ViewBase>()
             {
                 hostRoomView, joinRoomView, characterControlView, joinedUserListView
-            });
-
+            }); 
+            joinedUserListView.Render(this.GetModel<RoomDataModel>());
+            
             //Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
             OpenLoginView();
         }
@@ -197,6 +199,7 @@ namespace Core.MVC
             CloseCurrentView();
             SetHorizontal();
             characterControlView.Display();
+            characterControlView.Render(null);
             currentView = characterControlView;
         }
 
