@@ -2,7 +2,9 @@
 using Core.MVC;
 using Core.UserAccountModule.Model;
 using Firebase;
+using Firebase.Extensions;
 using Firebase.Database;
+using UnityEngine;
 
 namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
 {
@@ -17,9 +19,9 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
             
         }  
 
-        public void FetchRoomsList()
+        public void FetchRoomsList(string UserId)
         {
-            FirebaseDatabase.DefaultInstance.GetReference($"Account/{UserProfileDataModel.UserProfileData.UserId}/Rooms")
+            FirebaseDatabase.DefaultInstance.GetReference($"Account/{UserId}/Rooms")
                 .GetValueAsync().ContinueWithOnMainThread(task =>
                 {
                     if (task.IsFaulted)
@@ -41,10 +43,10 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                 });
         }
 
-        public void DeleteRoom(string roomId)
+        public void DeleteRoom(string UserId, string roomId)
         {
             FirebaseDatabase.DefaultInstance
-                .GetReference($"Account/{UserProfileDataModel.UserProfileData.UserId}/Rooms/{roomId}")
+                .GetReference($"Account/{UserId}/Rooms/{roomId}")
                 .RemoveValueAsync()
                 .ContinueWithOnMainThread(task =>
                 {
@@ -60,13 +62,20 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                 });
         }
 
-        public void CreateRoom()
+        public void CreateRoom(string UserId, bool isPrivate)
         {
             RoomData roomData = new RoomData();
-            roomData.AccessType = EAccessType.Public;
+            if (isPrivate)
+            {
+                roomData.AccessType = EAccessType.Friend;
+            }
+            else
+            {
+                roomData.AccessType = EAccessType.Anyone;
+            }
 
             var newRoomRef = FirebaseDatabase.DefaultInstance.
-            GetReference($"Account/{UserProfileDataModel.UserProfileData.UserId}/Rooms").Push();
+            GetReference($"Account/{UserId}/Rooms").Push();
 
             string roomId = newRoomRef.Key;
 
@@ -76,7 +85,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
             {
                 if (task.IsCompletedSuccessfully)
                 {
-                    FetchRoomsList();
+                    FetchRoomsList(UserId);
                     RoomsData.Add(roomData);
                     Debug.Log($"Room {roomId} created successfully.");
                 }
