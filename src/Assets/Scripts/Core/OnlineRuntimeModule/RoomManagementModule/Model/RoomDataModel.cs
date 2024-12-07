@@ -28,6 +28,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                     }
                     else if (task.IsCompleted)
                     {
+                        RoomsData.Clear();
                         DataSnapshot snapshot = task.Result;
                         foreach (DataSnapshot roomSnapshot in snapshot.Children)
                         {
