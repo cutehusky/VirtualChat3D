@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using Core.MVC;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
+using Core.UserAccountModule.Model;
+using Firebase;
+using Firebase.Database;
 
 namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
 {
@@ -37,9 +40,23 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
 
         public void DeleteRoom(string roomId)
         {
-            
+            FirebaseDatabase.DefaultInstance
+                .GetReference($"Account/{UserProfileDataModel.UserProfileData.UserId}/Rooms/{roomId}")
+                .RemoveValueAsync()
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompletedSuccessfully)
+                    {
+                        RoomsData.RemoveAll(room => room.RoomId == roomId);
+                        Debug.Log($"Room {roomId} deleted successfully.");
+                    }
+                    else if (task.IsFaulted)
+                    {
+                        Debug.LogError($"Failed to delete room {roomId}: {task.Exception}");
+                    }
+                });
         }
-        
+
         public void LoadRoomsData()
         {
             
