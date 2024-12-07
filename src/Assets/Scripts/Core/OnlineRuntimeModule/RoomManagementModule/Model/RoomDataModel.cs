@@ -40,5 +40,51 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                     }
                 });
         }
+
+        public void DeleteRoom(string roomId)
+        {
+            FirebaseDatabase.DefaultInstance
+                .GetReference($"Account/{UserProfileDataModel.UserProfileData.UserId}/Rooms/{roomId}")
+                .RemoveValueAsync()
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompletedSuccessfully)
+                    {
+                        RoomsData.RemoveAll(room => room.RoomId == roomId);
+                        Debug.Log($"Room {roomId} deleted successfully.");
+                    }
+                    else if (task.IsFaulted)
+                    {
+                        Debug.LogError($"Failed to delete room {roomId}: {task.Exception}");
+                    }
+                });
+        }
+
+        public void CreateRoom()
+        {
+            RoomData roomData = new RoomData();
+            roomData.AccessType = EAccessType.Public;
+
+            var newRoomRef = FirebaseDatabase.DefaultInstance.
+            GetReference($"Account/{UserProfileDataModel.UserProfileData.UserId}/Rooms").Push();
+
+            string roomId = newRoomRef.Key;
+
+            roomData.RoomId = roomId;
+            
+            newRoomRef.SetRawJsonValueAsync(JsonUtility.ToJson(roomData)).ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompletedSuccessfully)
+                {
+                    FetchRoomsList();
+                    RoomsData.Add(roomData);
+                    Debug.Log($"Room {roomId} created successfully.");
+                }
+                else if (task.IsFaulted)
+                {
+                    Debug.LogError($"Failed to create room {roomId}: {task.Exception}");
+                }
+            });
+        }
     }
 }
