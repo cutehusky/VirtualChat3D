@@ -28,7 +28,6 @@ namespace Core.CharacterCustomizationModule.Model
                 {
                     string fileName = Path.GetFileName(filePath);
                     ModelId.Add(fileName);
-                    Debug.Log(fileName);
                 }
             }
         }
