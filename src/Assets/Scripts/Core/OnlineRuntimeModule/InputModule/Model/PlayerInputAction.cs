@@ -14,29 +14,12 @@ namespace Core.OnlineRuntimeModule.InputModule.Model
         /// whether current cursor locked
         /// </summary>
         public bool CursorLocked;
-        private Dictionary<string, string> _inputGroup; // name - group name
-        private Dictionary<string, bool> _inputGroupState; // group name - state (enable/disable)
         private Dictionary<string, EasyEvent<Vector2>> _vector2Event;
         private Dictionary<string, EasyEvent<bool>> _boolEvent;
         private Dictionary<string, EasyEvent> _trigger;
-       
-        public void SetActive(string groupName, bool active)
-        {
-            _inputGroupState[groupName] = active;
-        }
-
-        public void SetGroup(string target, string groupName, bool state = true)
-        {
-            _inputGroup[target] = groupName;
-            _inputGroupState.TryAdd(groupName, state);
-        }
 
         public void TriggerEvent(string name, Vector2 data)
         {
-            if (_inputGroup.TryGetValue(name, out var group) 
-                && _inputGroupState.TryGetValue(group, out var active)
-                && !active)
-                return;
             if ( _vector2Event.TryGetValue(name, out var res))
                 res.Trigger(data);
             else
@@ -45,10 +28,6 @@ namespace Core.OnlineRuntimeModule.InputModule.Model
 
         public void TriggerEvent(string name, bool data)
         {
-            if (_inputGroup.TryGetValue(name, out var group) 
-                && _inputGroupState.TryGetValue(group, out var active)
-                && !active)
-                return;
             if ( _boolEvent.TryGetValue(name, out var res) )
                 res.Trigger(data);
             else
@@ -56,10 +35,6 @@ namespace Core.OnlineRuntimeModule.InputModule.Model
         }
         public void TriggerEvent(string name)
         {
-            if (_inputGroup.TryGetValue(name, out var group) 
-                && _inputGroupState.TryGetValue(group, out var active)
-                && !active)
-                return;
             if ( _trigger.TryGetValue(name, out var res) )
                 res.Trigger();
             else
@@ -104,8 +79,6 @@ namespace Core.OnlineRuntimeModule.InputModule.Model
 
         protected override void OnInit()
         {
-            _inputGroupState = new();
-            _inputGroup = new();
             _vector2Event = new();
             _boolEvent = new();
             _trigger = new();

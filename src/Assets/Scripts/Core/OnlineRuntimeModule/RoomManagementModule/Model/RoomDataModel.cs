@@ -12,11 +12,13 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
     {
         public List<RoomData> RoomsData;
         public RoomData CurrentHostRoomData;
-        public List<UserAccountData> CurrentHostRoomJoinedUser;
+        public Dictionary<ulong, UserAccountData> CurrentHostRoomJoinedUser;
         
         protected override void OnInit()
         {
-            
+            CurrentHostRoomJoinedUser = new();
+            RoomsData = new();
+            CurrentHostRoomData = new();
         }  
 
         public void FetchRoomsList(string UserId)
@@ -94,6 +96,21 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                     Debug.LogError($"Failed to create room {roomId}: {task.Exception}");
                 }
             });
+        }
+
+        public void RemoveUserFromList(ulong clientId)
+        {
+            CurrentHostRoomJoinedUser.Remove(clientId);
+        }
+        
+        public void AddUserToList(string userId,  string username, ulong clientId)
+        {
+            CurrentHostRoomJoinedUser.Add(
+                clientId, new UserAccountData()
+                {
+                    UserId = userId,
+                    Username = username
+                });
         }
     }
 }
