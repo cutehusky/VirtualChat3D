@@ -21,7 +21,7 @@ namespace Core
             RegisterModel(new EncryptionProvider());
             RegisterModel(new UserProfileDataModel());
             RegisterModel(new RoomDataModel());
-            RegisterModel(new RoomEnvironmentDataModel());
+            RegisterModel(new EnvironmentDataModel());
             RegisterModel(new MessageDataModel());
             RegisterModel(new FriendDataModel());
             RegisterModel(new GeminiDataModel());

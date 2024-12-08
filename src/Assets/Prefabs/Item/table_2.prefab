@@ -166,11 +166,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a1b359035c4837977ba6e0816d93fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  databaseID: 
+  icon: {fileID: 21300000, guid: 896be68e4b2f49642bdf2adaf68ac8b9, type: 3}
   ID: 0
   meshRenderer: {fileID: 1553553858461937991}
   valid: {fileID: 2100000, guid: de3c6c4e1e6cb6f419be68ef4932dbdc, type: 2}
   invalid: {fileID: 2100000, guid: 3074a2fc6fdd2f24d896038be6eebe6a, type: 2}
+  databaseID: 
   isValid: 0
 --- !u!65 &5623473836357027713
 BoxCollider:

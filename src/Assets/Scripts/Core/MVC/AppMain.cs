@@ -12,6 +12,8 @@ using Core.FriendModule.View;
 using Core.MessageModule.Controller;
 using Core.MessageModule.View;
 using Core.OnlineRuntimeModule.CharacterControl;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.Controller;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.View;
 using Core.OnlineRuntimeModule.RoomManagementModule.Controller;
 using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
@@ -46,6 +48,7 @@ namespace Core.MVC
         public JoinRoomView joinRoomView;
         public CharacterControlView characterControlView;
         public JoinedUserListView joinedUserListView;
+        public EnvironmentEditView environmentEditView;
         
         public ViewBase currentView;
 
@@ -59,7 +62,8 @@ namespace Core.MVC
         public MessageController MessageController;
         public RoomManager RoomManager;
         public ConnectionManager ConnectionManager;
-
+        public EnvironmentObjectManager EnvironmentObjectManager;
+        
         public CanvasScaler canvasScaler;
         public RectTransform canvas;
         
@@ -159,7 +163,11 @@ namespace Core.MVC
                 hostRoomView, joinRoomView, characterControlView, joinedUserListView
             }); 
             joinedUserListView.Render(this.GetModel<RoomDataModel>());
-            
+            EnvironmentObjectManager = new();
+            EnvironmentObjectManager.OnInit(new List<ViewBase>()
+            {
+                environmentEditView
+            });
             //Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
             OpenLoginView();
         }
