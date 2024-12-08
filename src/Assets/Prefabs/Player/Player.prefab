@@ -74,8 +74,8 @@ MonoBehaviour:
   lookPoint: {fileID: 2108279936489380412}
   speedMultiply: 1
   moveSpeed: 2
-  sprintSpeed: 4
   crouchSpeed: 1.5
+  sprintSpeed: 4
   speedDamp: 0.1
   slopeMultiply: 1
   rotationSmoothTime: 0.1
@@ -85,17 +85,17 @@ MonoBehaviour:
   gravity: -15
   fallMultiply: 1.5
   terminalVelocity: 1000
+  jumpTimeout: 0.1
+  freeFallTimeout: 0.1
   groundCheckOffset: 0.5
   groundCheckMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 9
+  mainCamera: {fileID: 0}
   topClamp: 60
   bottomClamp: -40
-  mainCamera: {fileID: 0}
-  _cameraControl: {fileID: 7552019083080241463}
-  jumpTimeout: 0.1
-  freeFallTimeout: 0.1
   cameraPitchOverride: 0
+  _cameraControl: {fileID: 7552019083080241463}
 --- !u!95 &-4974855579738746086
 Animator:
   serializedVersion: 7

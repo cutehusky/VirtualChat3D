@@ -4,16 +4,15 @@ using UnityEngine;
 
 namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Model
 {
-    public class RoomEnvironmentDataModel: ModelBase
+    public class EnvironmentDataModel: ModelBase
     {
         public string CurrentEditingRoomId;
-        public List<RoomEnvironmentItemData> CurrentEditingEnvironmentData = new();
-        public GameObject CurrentSelectObject;
-        public List<GameObject> ObjectInScene = new();
+        public List<EnvironmentItemData> CurrentEditingEnvironmentData;
+        public bool IsPlacingItem;
 
         protected override void OnInit()
         {
-            
+            CurrentEditingEnvironmentData = new();
         }
     }
 }

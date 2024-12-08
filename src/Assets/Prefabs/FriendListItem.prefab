@@ -270,8 +270,8 @@ MonoBehaviour:
   dateOfBirth: {fileID: 0}
   button1: {fileID: 272173815509551441}
   button2: {fileID: 120478744527771287}
-  button1Icon: {fileID: 6788569783766236083}
-  button2Icon: {fileID: 3305799497336167169}
+  button1Icon: {fileID: 2385489581990636773}
+  button2Icon: {fileID: 1511110799612935798}
 --- !u!1 &5326187527682598262
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -710,7 +710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
