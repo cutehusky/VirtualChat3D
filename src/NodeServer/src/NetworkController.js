@@ -51,7 +51,7 @@ class NetworkController {
                 }
             }
 
-            //Firebase.getInstance().adminChecker(socket, data.uid);
+            Firebase.getInstance().adminChecker(socket, data.uid);
             socket.emit('fetchReply', data);
             this.clientList[data.uid] = socket;
             this.clientProcess[socket.id] = false;

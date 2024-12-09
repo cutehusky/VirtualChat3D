@@ -1,6 +1,7 @@
 const { Parser } = require("xml2js");
 const { google } = require('googleapis');
 const serviceAccount = require("../key.json");
+import os from "os"
 
 class FirebaseDataModel {
     static #instance = null;
@@ -33,7 +34,7 @@ class FirebaseDataModel {
         })
     }
 
-    viewSystemInfo() {
+    viewAnalyticSystemInfo() {
         const auth = new google.auth.GoogleAuth({
             keyFile: './virtualchat3d-firebase-adminsdk-udkda-0810e8cd7a.json',
             scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
@@ -70,6 +71,13 @@ class FirebaseDataModel {
             });
     }
 
+    viewSystemInfo() {
+        return ({
+            cpu: os.cpus()[0]['model'],
+            cpu_speed: os.cpus()[0]['speed'],
+            ram: os.totalmem()
+        });
+    }
 
     createUser(userId) {
         this.#databaseService.ref(`Account/${userId}/username`).set(userId);

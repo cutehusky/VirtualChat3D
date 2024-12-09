@@ -70,8 +70,14 @@ class AdminController {
         let fb = Firebase.getInstance();
         fb.createUser(data.uid);
     }
-    static processViewSystemInfo(socket, data) {
-
+    static async processViewSystemInfo(socket, data) {
+        let fb = Firebase.getInstance();
+        let nw = NetworkController.getInstance();
+        let anlt = await fb.viewAnalyticSystemInfo();
+        socket.emit('analytic', anlt);
+        let sys = fb.viewSystemInfo();
+        sys['active_user'] = Object.keys(nw.clientList).length;
+        socket.emit('system', sys);
     }
 }
 

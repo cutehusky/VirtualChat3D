@@ -7,9 +7,11 @@ namespace Core.AdminModule.View
 {
     public class SystemMonitorView: ViewBase
     {
-        public TMP_Text logs;
         public TMP_Text OnlineUserCount;
-        public TMP_Text ServerStatus;
+        public TMP_Text CpuSpeed;
+        public TMP_Text Cpu;
+        public TMP_Text Ram;
+
         public override void Render(ModelBase model)
         {
             
