@@ -13,7 +13,7 @@ namespace Core.AdminModule.Controller
     class AnalyticData
     {
         public string country;
-        public int activeUser;
+        public int activeUsers;
     };
 
     [JsonObject]
@@ -51,7 +51,7 @@ namespace Core.AdminModule.Controller
                 {
                     this.GetModel<SystemInfoDataModel>().Countries.Add(new Country()
                     {
-                        activeUser = data.activeUser,
+                        activeUsers = data.activeUsers,
                         name = data.country
                     });
                 }

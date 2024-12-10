@@ -6,14 +6,14 @@ namespace Core.AdminModule.Model
     public class Country
     {
         public string name;
-        public int activeUser;
+        public int activeUsers;
     }
     public class SystemInfoDataModel: ModelBase
     {
         public int OnlineUserCount;
         public string Cpu;
-        public int CpuSpeed;
-        public int Ram;
+        public long CpuSpeed;
+        public long Ram;
         public List<Country> Countries;
         protected override void OnInit()
         {
