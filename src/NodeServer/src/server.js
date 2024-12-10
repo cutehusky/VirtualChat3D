@@ -19,9 +19,8 @@ network.SubscribeEvent('processUnlockUser', admin.processUnlockUser);
 network.SubscribeEvent('processRemoveUser', admin.processRemoveUser);
 network.SubscribeEvent('getUserList', admin.processGetUserList);
 network.SubscribeEvent('createUser', admin.processCreateUser);
+network.SubscribeEvent('viewSystemInfo', admin.processViewSystemInfo);
 /* new event need to be implemented
-'viewFriendReply'
-'viewFriendRequestReply'
 'sendFriendRequestReply'
 'friendRequestAcceptReply'
 'friendRequestRefuseReply'

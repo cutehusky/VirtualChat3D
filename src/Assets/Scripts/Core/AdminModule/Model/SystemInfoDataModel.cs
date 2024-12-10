@@ -3,14 +3,21 @@ using Core.MVC;
 
 namespace Core.AdminModule.Model
 {
+    public class Country
+    {
+        public string name;
+        public int activeUsers;
+    }
     public class SystemInfoDataModel: ModelBase
     {
-        public List<string> Logs;
         public int OnlineUserCount;
-        public string ServerStatus;
+        public string Cpu;
+        public long CpuSpeed;
+        public long Ram;
+        public List<Country> Countries;
         protected override void OnInit()
         {
-            
+            Countries = new List<Country>();
         }
     }
 }

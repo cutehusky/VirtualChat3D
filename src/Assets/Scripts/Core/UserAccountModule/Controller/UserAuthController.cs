@@ -81,11 +81,18 @@ namespace Core.UserAccountModule.Controller
             {
                 return "Wrong Email or Password";
             }
+            if (exception.Contains("A password must be provided"))
+            {
+                return "A password must be provided";
+            }
+            if (exception.Contains("An email address must be provided"))
+            {
+                return "An email address must be provided";
+            }
             if (exception.Contains("We have blocked all requests from this device due to unusual activity. Try again later."))
             {
                 return "We have blocked all requests from this device due to unusual activity. Try again later.";
             }
-
             return exception;  // Debug for more errors in the future.
         }
 

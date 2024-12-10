@@ -1,6 +1,7 @@
 const { Parser } = require("xml2js");
 const { google } = require('googleapis');
 const serviceAccount = require("../key.json");
+const os = require('os');
 
 class FirebaseDataModel {
     static #instance = null;
@@ -33,7 +34,7 @@ class FirebaseDataModel {
         })
     }
 
-    viewSystemInfo() {
+    viewAnalyticSystemInfo() {
         const auth = new google.auth.GoogleAuth({
             keyFile: './virtualchat3d-firebase-adminsdk-udkda-0810e8cd7a.json',
             scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
@@ -70,6 +71,13 @@ class FirebaseDataModel {
             });
     }
 
+    viewSystemInfo() {
+        return ({
+            cpu: os.cpus()[0]['model'],
+            cpu_speed: os.cpus()[0]['speed'],
+            ram: os.totalmem()
+        });
+    }
 
     createUser(userId) {
         this.#databaseService.ref(`Account/${userId}/username`).set(userId);
@@ -92,7 +100,7 @@ class FirebaseDataModel {
         const frSnapshot = await frRef.get();
         if (frSnapshot.exists()) {
             const friendIds = Object.keys(frSnapshot.val());
-            for (const id of friendIds){
+            for (const id of friendIds) {
                 await this.#databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
                 await this.#databaseService.ref(`DMessages/${friendIds[id]}`).remove();
             }
@@ -141,7 +149,7 @@ class FirebaseDataModel {
                     description: description,
                     username: username
                 }));
-                for(let i in res) {
+                for (let i in res) {
                     await this.#authService.getUser(res[i]['uid']).then((user) => {
                         res[i]['status'] = !user.disabled;
                     });
