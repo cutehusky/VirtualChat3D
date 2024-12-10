@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.MessageModule.Model;
 using Core.MVC;
 using Core.OnlineRuntimeModule.CharacterControl;
+using Core.OnlineRuntimeModule.InputModule.Model;
+using Core.OnlineRuntimeModule.MessageModule;
 using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
 using Core.UserAccountModule.Model;
@@ -19,6 +22,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
         private JoinRoomView _joinRoomView;
         private CharacterControlView _characterControlView;
         private JoinedUserListView _joinedUserListView;
+        private RoomMessageView _roomMessageView;
 
         public void ClientConnect(string ip, ushort port)
         {
@@ -50,12 +54,16 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                 NetworkManager.Singleton.Shutdown();
         }
 
+        public ChatSession ChatSession;
+
         public override void OnInit(List<ViewBase> view)
         {
+            ChatSession = new();
             _hostRoomView = view[0] as HostRoomView;
             _joinRoomView = view[1] as JoinRoomView;
             _characterControlView = view[2] as CharacterControlView;
             _joinedUserListView = view[3] as JoinedUserListView;
+            _roomMessageView = view[4] as RoomMessageView;
             _joinedUserListView.OnKick += KickUser;
             _characterControlView.openUserList.onClick.AddListener(() =>
             {
@@ -65,6 +73,11 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                     _joinedUserListView.Display();
                 else
                     _joinedUserListView.Hide();
+            });
+            _characterControlView.openChat.onClick.AddListener(() =>
+            {
+                this.GetModel<PlayerInputAction>()
+                    .TriggerEvent(!_roomMessageView.gameObject.activeSelf ? "OpenChatView" : "CloseChatView");
             });
             _characterControlView.outRoom.onClick.AddListener(() =>
             {

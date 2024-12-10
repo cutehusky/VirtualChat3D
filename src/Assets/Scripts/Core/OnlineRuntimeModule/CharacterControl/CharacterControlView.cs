@@ -7,6 +7,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
     {
         public Button outRoom;
         public Button openUserList;
+        public Button openChat;
       
         public override void Render(ModelBase model)
         {

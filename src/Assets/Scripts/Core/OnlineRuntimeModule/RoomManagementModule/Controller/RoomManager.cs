@@ -18,7 +18,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             _hostRoomView.Display();
-            _hostRoomView.Render(null);
+            _hostRoomView.Render(this.GetModel<RoomDataModel>());
             return _hostRoomView;
         }
 

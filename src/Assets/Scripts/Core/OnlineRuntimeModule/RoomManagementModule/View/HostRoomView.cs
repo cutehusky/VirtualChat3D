@@ -85,7 +85,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
                 });
                 item.host.onClick.AddListener(() =>
                 {
-                    OnHostRoom(RoomDataModel.RoomsData.ElementAt(index).RoomId);
+                    OnHostRoom(RoomDataModel.RoomsData.ElementAt(index));
                 });
                 item.editEnvironment.onClick.AddListener(() =>
                 {

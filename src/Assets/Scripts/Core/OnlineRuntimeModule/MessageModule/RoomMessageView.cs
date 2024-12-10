@@ -9,30 +9,27 @@ using UnityEngine.UI;
 
 namespace Core.OnlineRuntimeModule.MessageModule
 {
-    public class MessageView: ViewBase, LoopScrollPrefabSource, LoopScrollDataSource
+    public class RoomMessageView: ViewBase, LoopScrollPrefabSource, LoopScrollDataSource
     {
         public MobileInputField chatInput;
         public TMP_InputField TMP_chatInput;
         public Button send;
         public LoopScrollRect list;
         public ChatSession ChatSession;
-        public Button back;
-        public RectTransform inputRect;
-        public RectTransform listRect;
         public string myUserId;
 
         public override void Render(ModelBase model)
         {
-            list.prefabSource = this;
-            list.dataSource = this;
-            list.totalCount = ChatSession.ChatData.Count;
-            list.RefillCells();
         }
 
         public void Render(ChatSession chatSession, string userId)
         {
             myUserId = userId;
             ChatSession = chatSession;
+            list.prefabSource = this;
+            list.dataSource = this;
+            list.totalCount = ChatSession.ChatData.Count;
+            list.RefillCells();
         }
 
         public void RefreshList()
