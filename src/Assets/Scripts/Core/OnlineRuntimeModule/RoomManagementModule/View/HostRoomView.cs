@@ -15,16 +15,22 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
 {
     public class HostRoomView : ViewBase, LoopScrollPrefabSource, LoopScrollDataSource
     {
-        public TMP_InputField ip;
-        public TMP_InputField port;
+        public MobileInputField ip;
+        public MobileInputField port;
+        public TMP_InputField TMP_ip;
+        public TMP_InputField TMP_port;
         public Button host;
         public RoomDataModel RoomDataModel;
 
         public override void Render(ModelBase model)
         {
             RoomDataModel = model as RoomDataModel;
-            ip.text = "localhost";
-            port.text = "8888";
+            ip.Text = "localhost";
+            port.Text = "8888";
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
+            TMP_ip.text = "localhost";
+            TMP_port.text = "8888";
+#endif
             list.prefabSource = this;
             list.dataSource = this;
             list.totalCount = RoomDataModel.RoomsData.Count;

@@ -79,33 +79,35 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                 this.GetModel<PlayerInputAction>()
                     .TriggerEvent(!_roomMessageView.gameObject.activeSelf ? "OpenChatView" : "CloseChatView");
             });
-            _characterControlView.outRoom.onClick.AddListener(() =>
-            {
-                Disconnect();
-                AppMain.Instance.OpenHostRoomView();
-            }); 
+            _characterControlView.outRoom.onClick.AddListener(Disconnect); 
             _hostRoomView.host.onClick.AddListener(() =>
             {
                 AppMain.Instance.OpenCharacterControlView();
                 this.GetModel<RoomDataModel>().CurrentHostRoomJoinedUser.Clear();
-                Host(_hostRoomView.ip.text, Convert.ToUInt16(_hostRoomView.port.text));
+                Host(_hostRoomView.ip.Text, Convert.ToUInt16(_hostRoomView.port.Text));
             });
             _joinRoomView.join.onClick.AddListener(() =>
             {
                 AppMain.Instance.OpenCharacterControlView();
-                ClientConnect(_joinRoomView.ip.text, Convert.ToUInt16(_joinRoomView.port.text));
+                ClientConnect(_joinRoomView.ip.Text, Convert.ToUInt16(_joinRoomView.port.Text));
             });
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
-            NetworkManager.Singleton.OnServerStopped += OnHostShutdown;
+            NetworkManager.Singleton.OnServerStopped += OnServerStopped;
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientStopped += OnClientStopped;
             NetworkManager.Singleton.NetworkConfig.ConnectionApproval = true;
         }
 
         private void OnClientConnected(ulong clientId)
         {
             _joinedUserListView.RefreshList();
+        }
+
+        private void OnClientStopped(bool isHost)
+        {
+            AppMain.Instance.OpenHostRoomView();
         }
         
         private void OnClientDisconnected(ulong clientId)
@@ -114,10 +116,17 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
             {
                 this.GetModel<RoomDataModel>().RemoveUserFromList(clientId);
                 _joinedUserListView.RefreshList();
+                Debug.Log($"user with uid: {clientId} disconnected");
             }
+            /*
+            Debug.Log($"user with uid: {clientId} disconnected");
+            Debug.Log($"user with uid: {NetworkManager.Singleton.LocalClientId} disconnected");
+            if (clientId == 0 || clientId == NetworkManager.Singleton.LocalClientId)
+                AppMain.Instance.OpenHostRoomView();
+                */
         }
         
-        private void OnHostShutdown(bool b)
+        private void OnServerStopped(bool isHost)
         { 
         }
         

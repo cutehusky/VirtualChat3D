@@ -28,17 +28,17 @@ namespace Core.OnlineRuntimeModule.MessageModule
             {
                 var text = _roomMessageView.chatInput.Text;
                 _roomMessageView.chatInput.Text = "";
-#if UNITY_EDITOR || !(UNITY_IOS && UNITY_ANDROID)
+#if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
                 _roomMessageView.TMP_chatInput.text = "";
 #endif
                 SendMessageServerRpc(this.GetModel<UserProfileDataModel>().UserProfileData.UserId, text);
                 
             });
-            this.GetModel<PlayerInputAction>().GetTrigger("OpenChatView").Register(OpenMessageView);
+            this.GetModel<PlayerInputAction>().GetTrigger("OpenChatView").Register(OpenMessageView).UnRegisterWhenGameObjectDestroyed(gameObject);
             this.GetModel<PlayerInputAction>().GetTrigger("CloseChatView").Register(() =>
             {
                 _roomMessageView.Hide();
-            });
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
         public void OpenMessageView()

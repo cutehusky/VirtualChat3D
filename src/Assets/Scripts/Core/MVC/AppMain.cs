@@ -200,7 +200,6 @@ namespace Core.MVC
         {
             SetVertical();
             currentView = RoomManager.OpenHostRoomView();
-            Debug.Log(currentView);
             currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
 
