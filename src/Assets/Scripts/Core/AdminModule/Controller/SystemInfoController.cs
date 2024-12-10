@@ -21,20 +21,20 @@ namespace Core.AdminModule.Controller
     {
         public int active_user;
         public string cpu;
-        public int cpu_speed;
-        public int ram;
+        public long cpu_speed;
+        public long ram;
     }
     public class SystemInfoController: ControllerBase
     {
         private SystemMonitorView _systemMonitorView;
         public void LoadSystemInfo()
         {
-            SocketIO.Instance.SendMessage("viewSystemInfo");
+            SocketIO.Instance.SendWebSocketMessage("viewSystemInfo", new AdminReqPacket());
         }
         
         public override void OnInit(List<ViewBase> view)
         {
-            //base.OnInit(view);
+            base.OnInit(view);
             _systemMonitorView = view[0] as SystemMonitorView;
             SocketIO.Instance.AddUnityCallback("system", (res) =>
             {
@@ -43,6 +43,7 @@ namespace Core.AdminModule.Controller
                 this.GetModel<SystemInfoDataModel>().Ram = sysPackage.ram;
                 this.GetModel<SystemInfoDataModel>().CpuSpeed = sysPackage.cpu_speed;
                 this.GetModel<SystemInfoDataModel>().OnlineUserCount = sysPackage.active_user;
+                _systemMonitorView.Render(this.GetModel<SystemInfoDataModel>());
             });
             SocketIO.Instance.AddUnityCallback("analytic", (res) =>
             {
@@ -55,6 +56,7 @@ namespace Core.AdminModule.Controller
                         name = data.country
                     });
                 }
+                _systemMonitorView.RefreshList();
             });
         }
 
@@ -64,7 +66,7 @@ namespace Core.AdminModule.Controller
             LoadSystemInfo();
             _systemMonitorView.Display();
             _systemMonitorView.Render(this.GetModel<SystemInfoDataModel>());
-            return null;
+            return _systemMonitorView;
         }
     }
 }
