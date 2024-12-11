@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core.MVC;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -15,9 +16,46 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         public ObjectPuttingArea objectPuttingArea;
         public List<GameObject> puttingItemPrefab;
         public Action<ItemObject> OnPuttingItemSuccess;
+        public Transform objectParent;
+        public Button save;
+        private EnvironmentDataModel _dataModel;
+        public Button back;
+        public Transform camera;
+        public Transform cameraPoint;
         public override void Render(ModelBase model)
         {
-           
+            _dataModel = model as EnvironmentDataModel;
+            foreach (Transform child in objectParent)
+            {
+                Destroy(child.gameObject);
+            }
+            _dataModel.InSceneObject.Clear();
+        }
+        
+        public void LoadItem()
+        {
+            foreach (var itemData in _dataModel.CurrentActiveEnvironmentData)
+            {
+                var obj = Instantiate(puttingItemPrefab[itemData.ID], objectParent, true);
+                obj.GetComponent<ItemObject>().ImportData(itemData);
+                _dataModel.InSceneObject.Add(obj, itemData);
+            }
+        }
+
+        public void OnEnable()
+        {
+            objectParent.gameObject.SetActive(true);
+            camera.transform.position = cameraPoint.transform.position;
+            camera.transform.rotation = cameraPoint.transform.rotation;
+        }
+
+        public void OnDisable()
+        {
+            objectParent.gameObject.SetActive(false);
+            foreach (Transform child in objectParent)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         public override void OnInit()
@@ -56,6 +94,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
             item.iconImage.sprite = data.icon;
             item.canvas = gameObject;
             item.targetPrefab = puttingItemPrefab[index];
+            item.objectParent = objectParent;
             item.OnPuttingSuccess += (obj) =>
             {
                 OnPuttingItemSuccess(obj);

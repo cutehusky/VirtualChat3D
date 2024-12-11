@@ -14,6 +14,7 @@ using Core.MessageModule.View;
 using Core.OnlineRuntimeModule.CharacterControl;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.Controller;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.View;
+using Core.OnlineRuntimeModule.MessageModule;
 using Core.OnlineRuntimeModule.RoomManagementModule.Controller;
 using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
@@ -49,6 +50,7 @@ namespace Core.MVC
         public CharacterControlView characterControlView;
         public JoinedUserListView joinedUserListView;
         public EnvironmentEditView environmentEditView;
+        public RoomMessageView roomMessageView;
         
         public ViewBase currentView;
 
@@ -63,7 +65,6 @@ namespace Core.MVC
         public RoomManager RoomManager;
         public ConnectionManager ConnectionManager;
         public EnvironmentObjectManager EnvironmentObjectManager;
-        
         public CanvasScaler canvasScaler;
         public RectTransform canvas;
         
@@ -160,7 +161,7 @@ namespace Core.MVC
             ConnectionManager = new();
             ConnectionManager.OnInit(new List<ViewBase>()
             {
-                hostRoomView, joinRoomView, characterControlView, joinedUserListView
+                hostRoomView, joinRoomView, characterControlView, joinedUserListView, roomMessageView
             }); 
             joinedUserListView.Render(this.GetModel<RoomDataModel>());
             EnvironmentObjectManager = new();
@@ -186,6 +187,12 @@ namespace Core.MVC
             Debug.Log($"_keyboardHeight {_keyboardHeight}");
             if (currentView)
                 currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
+        }
+
+        public void OpenEnvironmentEditView(string roomId)
+        {
+            SetHorizontal();
+            currentView = EnvironmentObjectManager.OpenEnvironmentEditView(roomId);
         }
         
         public void OpenSignUpView()

@@ -14,6 +14,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         private float _originRot;
         public ItemObject rotSelected;
         public ItemObject moveSelected;
+        public Action<ItemObject> OnModified;
 
 
         public bool isRotate;
@@ -78,6 +79,8 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
                 moveSelected.meshRenderer.enabled = false;
                 if (!moveSelected.isValid)
                     moveSelected.transform.position = _originPos;
+                else
+                    OnModified(moveSelected);
                 moveSelected = null;
             }
         }
@@ -89,6 +92,8 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
                 rotSelected.meshRenderer.enabled = false;
                 if (!rotSelected.isValid)
                     rotSelected.transform.rotation = Quaternion.Euler(0,_originRot,0);
+                else
+                    OnModified(rotSelected);
                 rotSelected = null;
             }
         }

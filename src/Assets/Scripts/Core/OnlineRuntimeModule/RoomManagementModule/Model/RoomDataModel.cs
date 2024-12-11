@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.MVC;
 using Core.UserAccountModule.Model;
 using Firebase;
@@ -18,19 +19,19 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
         {
             CurrentHostRoomJoinedUser = new();
             RoomsData = new();
-            CurrentHostRoomData = new();
         }  
 
-        public void FetchRoomsList(string UserId)
+        public void FetchRoomsList(string UserId, Action onSuccess = null, Action onFail = null)
         {
             FirebaseDatabase.DefaultInstance.GetReference($"Account/{UserId}/Rooms")
                 .GetValueAsync().ContinueWithOnMainThread(task =>
                 {
                     if (task.IsFaulted)
                     {
+                        onFail!();
                         return;
                     }
-                    else if (task.IsCompleted)
+                    if (task.IsCompleted)
                     {
                         RoomsData.Clear();
                         DataSnapshot snapshot = task.Result;
@@ -38,14 +39,15 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                         {
                             RoomData roomData = new RoomData();
                             roomData.RoomId = roomSnapshot.Key;
-                            roomData.AccessType = (EAccessType)roomSnapshot.Child("AccessType").GetValue(false);
+                            roomData.AccessType = (EAccessType) Convert.ToInt16(roomSnapshot.Child("AccessType").GetRawJsonValue());
                             RoomsData.Add(roomData);
                         }
+                        onSuccess!();
                     }
                 });
         }
 
-        public void DeleteRoom(string UserId, string roomId)
+        public void DeleteRoom(string UserId, string roomId, Action onSuccess = null, Action onFail = null)
         {
             FirebaseDatabase.DefaultInstance
                 .GetReference($"Account/{UserId}/Rooms/{roomId}")
@@ -56,15 +58,18 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
                     {
                         RoomsData.RemoveAll(room => room.RoomId == roomId);
                         Debug.Log($"Room {roomId} deleted successfully.");
+                        onSuccess!();
+                        return;
                     }
-                    else if (task.IsFaulted)
+                    if (task.IsFaulted)
                     {
                         Debug.LogError($"Failed to delete room {roomId}: {task.Exception}");
+                        onFail!();
                     }
                 });
         }
 
-        public void CreateRoom(string UserId, bool isPrivate)
+        public void CreateRoom(string UserId, bool isPrivate, Action onSuccess = null, Action onFail = null)
         {
             RoomData roomData = new RoomData();
             if (isPrivate)
@@ -87,12 +92,13 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
             {
                 if (task.IsCompletedSuccessfully)
                 {
-                    FetchRoomsList(UserId);
                     RoomsData.Add(roomData);
+                    onSuccess!();
                     Debug.Log($"Room {roomId} created successfully.");
                 }
                 else if (task.IsFaulted)
                 {
+                    onFail!();
                     Debug.LogError($"Failed to create room {roomId}: {task.Exception}");
                 }
             });

@@ -2,7 +2,7 @@
 {
     public enum EAccessType
     {
-        Anyone,
+        Anyone = 0,
         Friend
     }
 }

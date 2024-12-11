@@ -7,6 +7,7 @@ using Core.MessageModule.Model;
 using Core.NetworkModule.Model;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;
 using Core.OnlineRuntimeModule.InputModule.Model;
+using Core.OnlineRuntimeModule.MessageModule;
 using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.UserAccountModule.Model;
 using QFramework;
@@ -31,6 +32,7 @@ namespace Core
             RegisterModel(new FirebaseAuthModel());
             RegisterModel(new FirebaseRealTimeDatabaseModel());
             RegisterModel(new FirebaseStorageModel());
+            RegisterModel(new RoomMessageDataModel());
         }
     }
 }

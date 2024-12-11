@@ -15,6 +15,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         public GameObject targetPrefab;
         private bool _isValidPutting;
         private GameObject _currentPuttingObject;
+        public Transform objectParent;
         [SerializeField] private GameObject iconObject;
         [SerializeField] private LayerMask ignore;
         public Action<ItemObject> OnPuttingSuccess;
@@ -39,7 +40,9 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
                         if (_currentPuttingObject == null)
                         {
                             Debug.Log(targetPrefab);
-                            _currentPuttingObject = Instantiate(targetPrefab, hit.point, Quaternion.identity);
+                            _currentPuttingObject = Instantiate(targetPrefab,objectParent);
+                            _currentPuttingObject.GetComponent<ItemObject>().meshRenderer.enabled = true;
+                            _currentPuttingObject.transform.position = hit.point;
                         }
                         else
                         {

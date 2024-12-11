@@ -8,5 +8,13 @@
         public float PosY = 0;
         public float PosZ = 0;
         public float RotY = 0;
+
+        public void Copy(EnvironmentItemData data)
+        {
+            PosX = data.PosX;
+            PosY = data.PosY;
+            PosZ = data.PosZ;
+            RotY = data.RotY;
+        }
     }
 }
