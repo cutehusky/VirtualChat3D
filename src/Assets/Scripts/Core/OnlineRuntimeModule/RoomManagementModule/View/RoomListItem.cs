@@ -11,5 +11,6 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
         public Button delete;
         public Button host;
         public Button editEnvironment;
+        public Image hostIcon;
     }
 }

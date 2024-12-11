@@ -40,8 +40,9 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
                         if (_currentPuttingObject == null)
                         {
                             Debug.Log(targetPrefab);
-                            _currentPuttingObject = Instantiate(targetPrefab, hit.point, Quaternion.identity);
-                            _currentPuttingObject.transform.SetParent(objectParent);
+                            _currentPuttingObject = Instantiate(targetPrefab,objectParent);
+                            _currentPuttingObject.GetComponent<ItemObject>().meshRenderer.enabled = true;
+                            _currentPuttingObject.transform.position = hit.point;
                         }
                         else
                         {

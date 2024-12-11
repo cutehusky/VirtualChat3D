@@ -22,6 +22,9 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
         public Button createRoom;
         public Button host;
         public RoomDataModel RoomDataModel;
+        public string currentActiveRoom;
+        public Sprite hostingIcon;
+        public Sprite selectIcon;
 
         public override void Render(ModelBase model)
         {
@@ -86,6 +89,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
                 item.host.onClick.RemoveAllListeners();
                 item.editEnvironment.onClick.RemoveAllListeners();
                 item.roomId.text = RoomDataModel.RoomsData.ElementAt(index).RoomId;
+                item.hostIcon.sprite = RoomDataModel.RoomsData.ElementAt(index).RoomId == currentActiveRoom ? hostingIcon : selectIcon;
                 item.delete.onClick.AddListener(() =>
                 {
                     OnDeleteRoom(RoomDataModel.RoomsData.ElementAt(index).RoomId);

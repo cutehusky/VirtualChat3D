@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.MVC;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.View;
@@ -18,22 +19,22 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Controller
                 this.GetModel<UserProfileDataModel>().UserProfileData.UserId);
         }
 
-        public void LoadRoomEnvironmentData(string roomId)
+        public void LoadRoomEnvironmentData(string roomId, Action onSuccess)
         {
-            this.GetModel<EnvironmentDataModel>().CurrentEditingRoomId = roomId;
+            this.GetModel<EnvironmentDataModel>().CurrentActiveRoomId = roomId;
             this.GetModel<EnvironmentDataModel>()
                 .FetchRoomsEnvironment(this.GetModel<UserProfileDataModel>().UserProfileData.UserId
-                , () =>
-                {
-                    _environmentEditView.LoadItem();
-                });
+                , onSuccess);
         }
         
 
         public ViewBase OpenEnvironmentEditView(string roomId)
         {
             AppMain.Instance.CloseCurrentView();
-            LoadRoomEnvironmentData(roomId);
+            LoadRoomEnvironmentData(roomId, () =>
+            {
+                _environmentEditView.LoadItem();
+            });
             _environmentEditView.Display();
             _environmentEditView.Render(this.GetModel<EnvironmentDataModel>());
             return _environmentEditView;
@@ -45,7 +46,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Controller
             _environmentEditView.OnPuttingItemSuccess += (go) =>
             {
                 var data = go.ExportData();
-                this.GetModel<EnvironmentDataModel>().CurrentEditingEnvironmentData.Add(data);
+                this.GetModel<EnvironmentDataModel>().CurrentActiveEnvironmentData.Add(data);
                 this.GetModel<EnvironmentDataModel>().InSceneObject.Add(go.gameObject, data);
             };
             _environmentEditView.objectPuttingArea.OnModified += (item) =>

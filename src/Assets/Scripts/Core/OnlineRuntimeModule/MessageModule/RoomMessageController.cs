@@ -11,13 +11,16 @@ namespace Core.OnlineRuntimeModule.MessageModule
     public class RoomMessageController: NetworkBehaviour, IController
     {
         private RoomMessageView _roomMessageView;
-        private ChatSession _chatSession;
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            _chatSession = new();
-            OnInit(AppMain.Instance.roomMessageView);
+            if (IsOwner)
+            {
+                this.GetModel<RoomMessageDataModel>().ChatSession.ChatData.Clear();
+                OnInit(AppMain.Instance.roomMessageView);
+                Debug.Log("test");
+            }
         }
 
         public void OnInit(RoomMessageView view)
@@ -34,17 +37,21 @@ namespace Core.OnlineRuntimeModule.MessageModule
                 SendMessageServerRpc(this.GetModel<UserProfileDataModel>().UserProfileData.UserId, text);
                 
             });
-            this.GetModel<PlayerInputAction>().GetTrigger("OpenChatView").Register(OpenMessageView).UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetTrigger("OpenChatView").Register(() =>
+            {
+                _roomMessageView.Display();
+                _roomMessageView.Render(
+                    this.GetModel<RoomMessageDataModel>().ChatSession,
+                    this.GetModel<UserProfileDataModel>().UserProfileData.UserId);
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
             this.GetModel<PlayerInputAction>().GetTrigger("CloseChatView").Register(() =>
             {
                 _roomMessageView.Hide();
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
-        }
-
-        public void OpenMessageView()
-        {
-            _roomMessageView.Display();
-            _roomMessageView.Render(_chatSession, this.GetModel<UserProfileDataModel>().UserProfileData.UserId);
+            this.GetModel<PlayerInputAction>().GetTrigger("RefreshChatView").Register(() =>
+            {
+                _roomMessageView.RefreshList();
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -56,14 +63,12 @@ namespace Core.OnlineRuntimeModule.MessageModule
         [ClientRpc]
         public void SendMessageClientRpc(string userID, string message)
         {
-            if (!IsClient)
-                return;
-            _chatSession.ChatData.Add(new ChatMessage()
+            this.GetModel<RoomMessageDataModel>().ChatSession.ChatData.Add(new ChatMessage()
             {
                 Content = message,
                 UserId = userID
             });
-            _roomMessageView.RefreshList();
+            this.GetModel<PlayerInputAction>().TriggerEvent("RefreshChatView");
         }
         
         public IArchitecture GetArchitecture()

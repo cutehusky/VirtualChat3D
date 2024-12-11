@@ -20,6 +20,8 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         public Button save;
         private EnvironmentDataModel _dataModel;
         public Button back;
+        public Transform camera;
+        public Transform cameraPoint;
         public override void Render(ModelBase model)
         {
             _dataModel = model as EnvironmentDataModel;
@@ -32,7 +34,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         
         public void LoadItem()
         {
-            foreach (var itemData in _dataModel.CurrentEditingEnvironmentData)
+            foreach (var itemData in _dataModel.CurrentActiveEnvironmentData)
             {
                 var obj = Instantiate(puttingItemPrefab[itemData.ID], objectParent, true);
                 obj.GetComponent<ItemObject>().ImportData(itemData);
@@ -43,11 +45,17 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         public void OnEnable()
         {
             objectParent.gameObject.SetActive(true);
+            camera.transform.position = cameraPoint.transform.position;
+            camera.transform.rotation = cameraPoint.transform.rotation;
         }
 
         public void OnDisable()
         {
             objectParent.gameObject.SetActive(false);
+            foreach (Transform child in objectParent)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         public override void OnInit()

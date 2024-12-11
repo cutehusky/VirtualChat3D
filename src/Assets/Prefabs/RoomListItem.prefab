@@ -677,6 +677,7 @@ MonoBehaviour:
   delete: {fileID: 723748263340001395}
   host: {fileID: 981814298561633056}
   editEnvironment: {fileID: 8022911243390483468}
+  hostIcon: {fileID: 7008025553478586382}
 --- !u!1 &7338134907805969795
 GameObject:
   m_ObjectHideFlags: 0

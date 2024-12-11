@@ -16,9 +16,9 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
         public override void Render(ModelBase model)
         {
             ip.Text = "";
-            port.Text = "";
+            port.Text = "8888";
 #if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
-            TMP_ip.text = "localhost";
+            TMP_ip.text = "";
             TMP_port.text = "8888";
 #endif
         }

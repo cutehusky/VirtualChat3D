@@ -42,6 +42,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         {
             isValid = true;
             meshRenderer.material = valid;
+            meshRenderer.enabled = false;
             CollisionObject = new();
         }
 

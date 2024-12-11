@@ -19,7 +19,6 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Model
         {
             CurrentHostRoomJoinedUser = new();
             RoomsData = new();
-            CurrentHostRoomData = new();
         }  
 
         public void FetchRoomsList(string UserId, Action onSuccess = null, Action onFail = null)

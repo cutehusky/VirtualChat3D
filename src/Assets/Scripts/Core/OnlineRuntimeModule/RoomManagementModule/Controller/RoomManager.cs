@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core.MVC;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using Core.OnlineRuntimeModule.RoomManagementModule.View;
 using Core.UserAccountModule.Model;
@@ -18,7 +19,9 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             LoadRoomsData();
+            this.GetModel<RoomDataModel>().CurrentHostRoomData = null;
             _hostRoomView.Display();
+            _hostRoomView.currentActiveRoom = "";
             _hostRoomView.Render(this.GetModel<RoomDataModel>());
             return _hostRoomView;
         }
@@ -48,7 +51,21 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
 
         public void HostRoom(RoomData roomData)
         {
-            this.GetModel<RoomDataModel>().CurrentHostRoomData = roomData;
+            if ( this.GetModel<RoomDataModel>().CurrentHostRoomData == null ||
+                 roomData.RoomId != this.GetModel<RoomDataModel>().CurrentHostRoomData.RoomId)
+                AppMain.Instance.EnvironmentObjectManager.LoadRoomEnvironmentData(roomData.RoomId,
+                    () =>
+                    {
+                        this.GetModel<RoomDataModel>().CurrentHostRoomData = roomData;
+                        _hostRoomView.currentActiveRoom = roomData.RoomId;
+                        _hostRoomView.RefreshList();
+                    });
+            else
+            {
+                this.GetModel<RoomDataModel>().CurrentHostRoomData = null;
+                _hostRoomView.currentActiveRoom = "";
+                _hostRoomView.RefreshList(); 
+            }
         }
 
         public void DeleteRoom(string roomId)

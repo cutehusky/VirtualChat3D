@@ -1,5 +1,9 @@
 ﻿using Core.CharacterCustomizationModule.Model;
+using Core.MVC;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.Model;
+using Core.OnlineRuntimeModule.EnvironmentCustomize.View;
 using Core.OnlineRuntimeModule.InputModule.Model;
+using Core.OnlineRuntimeModule.RoomManagementModule.Model;
 using QFramework;
 using Unity.Cinemachine;
 using Unity.Collections;
@@ -103,6 +107,24 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                     AssignAnimationIDs();
                 }));
                 _controller = GetComponent<CharacterController>();
+            }
+
+            if (IsHost)
+            {
+                if (this.GetModel<RoomDataModel>().CurrentHostRoomData != null)
+                {
+                    LoadItem(); 
+                }
+            }
+        }
+
+        public void LoadItem()
+        {
+            foreach (var itemData in this.GetModel<EnvironmentDataModel>().CurrentActiveEnvironmentData)
+            {
+                var obj = Instantiate(AppMain.Instance.environmentEditView.puttingItemPrefab[itemData.ID]);
+                obj.GetComponent<NetworkObject>().Spawn();
+                obj.GetComponent<ItemObject>().ImportData(itemData);
             }
         }
         
