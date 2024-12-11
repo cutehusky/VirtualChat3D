@@ -17,6 +17,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
         public ViewBase OpenHostRoomView()
         {
             AppMain.Instance.CloseCurrentView();
+            LoadRoomsData();
             _hostRoomView.Display();
             _hostRoomView.Render(this.GetModel<RoomDataModel>());
             return _hostRoomView;
@@ -32,7 +33,12 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
 
         public void CreateRoom()
         {
-
+            this.GetModel<RoomDataModel>().CreateRoom(
+                this.GetModel<UserProfileDataModel>().UserProfileData.UserId,
+                false, () =>
+                {
+                    _hostRoomView.RefreshList();
+                });
         }
 
         public void EditRoomAccessType(string roomId)
@@ -47,12 +53,21 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
 
         public void DeleteRoom(string roomId)
         {
-            this.GetModel<RoomDataModel>().DeleteRoom(this.GetModel<UserProfileDataModel>().UserProfileData.UserId, roomId);
+            this.GetModel<RoomDataModel>().DeleteRoom(
+                this.GetModel<UserProfileDataModel>().UserProfileData.UserId, roomId,
+                () =>
+                {
+                    _hostRoomView.RefreshList();
+                });
         }
 
         public void LoadRoomsData()
         {
-            this.GetModel<RoomDataModel>().FetchRoomsList(this.GetModel<UserProfileDataModel>().UserProfileData.UserId);
+            this.GetModel<RoomDataModel>().FetchRoomsList(
+                this.GetModel<UserProfileDataModel>().UserProfileData.UserId, () =>
+                {
+                    _hostRoomView.RefreshList();
+                });
         }
 
         public override void OnInit(List<ViewBase> view)
@@ -62,9 +77,10 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
             _joinRoomView = view[1] as JoinRoomView;
             _hostRoomView.OnHostRoom += HostRoom;
             _hostRoomView.OnDeleteRoom += DeleteRoom;
+            _hostRoomView.createRoom.onClick.AddListener(CreateRoom);
             _hostRoomView.OnEditRoom += (roomId) =>
             {
-
+                AppMain.Instance.OpenEnvironmentEditView(roomId);
             };
         }
     }

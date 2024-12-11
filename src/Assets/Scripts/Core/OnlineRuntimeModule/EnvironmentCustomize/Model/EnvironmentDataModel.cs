@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.MVC;
 using UnityEngine;
 using Firebase;
@@ -11,14 +12,16 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Model
     {
         public string CurrentEditingRoomId;
         public List<EnvironmentItemData> CurrentEditingEnvironmentData;
+        public Dictionary<GameObject, EnvironmentItemData> InSceneObject;
         public bool IsPlacingItem;
 
         protected override void OnInit()
         {
             CurrentEditingEnvironmentData = new();
+            InSceneObject = new();
         }
 
-        public void FetchRoomsEnvironment(string userId)
+        public void FetchRoomsEnvironment(string userId, Action onSuccess =null, Action onFail = null)
         {
             FirebaseDatabase.DefaultInstance.GetReference($"Account/{userId}/Rooms/{CurrentEditingRoomId}/Environment")
                 .GetValueAsync().ContinueWithOnMainThread(task =>
@@ -26,9 +29,10 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Model
                     if (task.IsFaulted)
                     {
                         Debug.LogError("FetchRoomsEnvironment failed.");
+                        onFail!();
                         return;
                     }
-                    else if (task.IsCompleted)
+                    if (task.IsCompleted)
                     {
                         CurrentEditingEnvironmentData.Clear();
                         DataSnapshot snapshot = task.Result;
@@ -41,9 +45,9 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Model
                             itemData.PosY = float.Parse(itemSnapshot.Child("PosY").GetValue(false).ToString());
                             itemData.PosZ = float.Parse(itemSnapshot.Child("PosZ").GetValue(false).ToString());
                             itemData.RotY = float.Parse(itemSnapshot.Child("RotY").GetValue(false).ToString());
-
                             CurrentEditingEnvironmentData.Add(itemData);
                         }
+                        onSuccess!();
                     }
                 });
         }
@@ -54,13 +58,8 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Model
                 .GetReference($"Account/{userId}/Rooms/{CurrentEditingRoomId}/Environment");
 
             foreach (var itemData in CurrentEditingEnvironmentData){
-                if (string.IsNullOrEmpty(itemData.UID))
-                {
-                    Debug.LogError("UID is null or empty. Cannot push data.");
-                    return;
-                }
-
-                var itemRef = environmentRef.Child(itemData.UID);
+                var itemRef =string.IsNullOrEmpty(itemData.UID) ?environmentRef.Push():  environmentRef.Child(itemData.UID);
+                itemData.UID = itemRef.Key;
                 itemRef.SetRawJsonValueAsync(JsonUtility.ToJson(itemData)).ContinueWithOnMainThread(task =>
                 {
                     if (task.IsCompletedSuccessfully)

@@ -188,6 +188,12 @@ namespace Core.MVC
             if (currentView)
                 currentView.MoveUpWhenOpenKeyboard(_keyboardHeight);
         }
+
+        public void OpenEnvironmentEditView(string roomId)
+        {
+            SetHorizontal();
+            currentView = EnvironmentObjectManager.OpenEnvironmentEditView(roomId);
+        }
         
         public void OpenSignUpView()
         {

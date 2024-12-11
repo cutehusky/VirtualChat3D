@@ -15,6 +15,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
         public GameObject targetPrefab;
         private bool _isValidPutting;
         private GameObject _currentPuttingObject;
+        public Transform objectParent;
         [SerializeField] private GameObject iconObject;
         [SerializeField] private LayerMask ignore;
         public Action<ItemObject> OnPuttingSuccess;
@@ -40,6 +41,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
                         {
                             Debug.Log(targetPrefab);
                             _currentPuttingObject = Instantiate(targetPrefab, hit.point, Quaternion.identity);
+                            _currentPuttingObject.transform.SetParent(objectParent);
                         }
                         else
                         {

@@ -14,6 +14,15 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.View
 
         public string databaseID;
 
+        public void ImportData(EnvironmentItemData data)
+        {
+            var t = transform;
+            t.rotation = Quaternion.Euler(0, data.RotY, 0);
+            t.position = new Vector3(data.PosX, data.PosY, data.PosZ);
+            databaseID = data.UID;
+            meshRenderer.enabled = false;
+        }
+
         public EnvironmentItemData ExportData()
         {
             var t = transform;

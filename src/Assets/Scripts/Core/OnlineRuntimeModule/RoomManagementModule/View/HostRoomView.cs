@@ -19,6 +19,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.View
         public MobileInputField port;
         public TMP_InputField TMP_ip;
         public TMP_InputField TMP_port;
+        public Button createRoom;
         public Button host;
         public RoomDataModel RoomDataModel;
 
