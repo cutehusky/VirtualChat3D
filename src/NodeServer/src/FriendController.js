@@ -37,13 +37,15 @@ class FriendController {
         }
         socket.emit('friendRequestRefuseReply', null);
     }
-    static processViewFriendList(socket, data) {
+    static async processViewFriendList(socket, data) {
         let fb = Firebase.getInstance();
-        fb.getFriendList(socket, data.uid);
+        let res = await fb.getFriendList(data.uid);
+        socket.emit('viewFriendReply', res);
     }
-    static processViewFriendRequest(socket, data) {
+    static async processViewFriendRequest(socket, data) {
         let fb = Firebase.getInstance();
-        fb.getFriendRequest(socket, data.uid);
+        let res = await fb.getFriendRequest(data.uid);
+        socket.emit('viewFriendRequestReply', res);
     }
     static async processRemoveFriend(socket, data) {
         let fb = Firebase.getInstance();

@@ -140,8 +140,8 @@ class FirebaseDataModel {
     async friendRequestRefuse(userId, targetId) {
         await this.#databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
     }
-    getUserList(socket) {
-        this.#databaseService.ref(`Account`)
+    async getUserList() {
+        await this.#databaseService.ref(`Account`)
             .once('value', async (data) => {
                 let res = Object.entries(data.val()).map(([uid, { birthday, description, __, _, username }]) => ({
                     uid: uid,
@@ -155,16 +155,15 @@ class FirebaseDataModel {
                     });
                 }
                 console.log(`sent${res}`)
-                socket.emit('getUserListReply', res);
+                return res;
             });
     }
-    getFriendList(socket, userId) {
-        this.#databaseService.ref(`Account/${userId}/Friend`)
-            .once('value', (data) => {
+    async getFriendList(userId) {
+        await this.#databaseService.ref(`Account/${userId}/Friend`)
+            .once('value', async (data) => {
                 if (data.val() == null) {
                     console.log('testing 2');
-                    socket.emit('viewFriendReply', []);
-                    return;
+                    return [];
                 }
                 let res = Object.entries(data.val()).map(([fid, id_cons]) => ({
                     uid: fid,
@@ -173,7 +172,7 @@ class FirebaseDataModel {
                 let promises = []
                 for (let item in res) {
                     promises.push(
-                        this.#databaseService.ref(`Account/${res[item]['uid']}`)
+                        await this.#databaseService.ref(`Account/${res[item]['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
                                 res[item]['username'] = val['username'];
@@ -183,17 +182,14 @@ class FirebaseDataModel {
                     )
 
                 }
-                Promise.all(promises).then(() => {
-                    socket.emit('viewFriendReply', res);
-                });
+                return res;
             })
     }
-    getFriendRequest(socket, userId) {
-        this.#databaseService.ref(`Account/${userId}/FriendRequest`)
-            .once('value', (data) => {
+    async getFriendRequest(userId) {
+        await this.#databaseService.ref(`Account/${userId}/FriendRequest`)
+            .once('value', async (data) => {
                 if (data.val() == null) {
-                    socket.emit('viewFriendRequestReply', []);
-                    return;
+                    return [];
                 }
                 let res = Object.values(data.val()).map((fid) => ({
                     uid: fid
@@ -201,7 +197,7 @@ class FirebaseDataModel {
                 let promises = []
                 for (let item of res) {
                     promises.push(
-                        this.#databaseService.ref(`Account/${item['uid']}`)
+                        await this.#databaseService.ref(`Account/${item['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
                                 item['username'] = val['username'];
@@ -210,9 +206,7 @@ class FirebaseDataModel {
                             })
                     )
                 }
-                Promise.all(promises).then(() => {
-                    socket.emit('viewFriendRequestReply', res);
-                });
+                return res;
             })
     }
     messageWrite(data) {
@@ -226,8 +220,8 @@ class FirebaseDataModel {
     messageRead(data) {
         this.#databaseService.ref(`DMessage/${data.id_cons}/${data.uid}_has_new`).set(false);
     }
-    getMessage(socket, consId) {
-        this.#databaseService.ref(`/DMessage/${consId}`)
+    async getMessage(consId) {
+        await this.#databaseService.ref(`/DMessage/${consId}`)
             .once('value', (data) => {
                 if (data.val() == null) {
                     result = [];
@@ -245,8 +239,8 @@ class FirebaseDataModel {
                         id_cons: consId
                     }));
                 }
-                socket.emit('viewMessageReply', result);
                 console.log(result);
+                return result;
             })
     }
     adminChecker(socket, uid) {

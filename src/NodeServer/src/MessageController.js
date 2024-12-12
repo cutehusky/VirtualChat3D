@@ -12,9 +12,10 @@ class MessageController {
         let fb = Firebase.getInstance();
         fb.messageWrite(data);
     }
-    static processViewMessage(socket, data) {
+    static async processViewMessage(socket, data) {
         let fb = Firebase.getInstance();
-        fb.getMessage(socket, data.id_cons);
+        let result = await fb.getMessage(data.id_cons);
+        socket.emit('viewMessageReply', result);
     }
     static processReadMessage(socket, data) {
         let fb = Firebase.getInstance();
