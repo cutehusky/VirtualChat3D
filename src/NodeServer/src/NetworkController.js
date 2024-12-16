@@ -1,6 +1,7 @@
 const { Server } = require('socket.io');
 const express = require('express');
 const { createServer } = require('node:http');
+
 Firebase = require("./FirebaseDataModel.js")
 
 PORT = 3000
@@ -33,6 +34,7 @@ class NetworkController {
         this.#server.listen(port, () => {
             console.log(`Server is up and running on http://localhost:${port}`);
         });
+        this.PushIP();
     }
 
     runEvents(socket) {
@@ -80,6 +82,18 @@ class NetworkController {
                 this.clientProcess[socket.id] = true;
                 callback(socket, data);
                 this.clientProcess[socket.id] = false;
+            }
+        }
+    }
+
+    PushIP() {
+        const interfaces = os.networkInterfaces();
+        const firebaseInstance  = Firebase.getInstance();
+        for (const interfaceName in interfaces) {
+            for (const net of interfaces[interfaceName]) {
+                if (net.family === 'IPv4' && !net.internal) {
+                    firebaseInstance.ref(`IP/${interfaceName}`).set(net.address);
+                }
             }
         }
     }
