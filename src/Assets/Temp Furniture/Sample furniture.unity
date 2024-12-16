@@ -787,7 +787,7 @@ BoxCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.69, y: 1.02, z: 0.29}
+  m_Size: {x: 0.73, y: 0.96, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &834911653
 MonoBehaviour:
@@ -1390,7 +1390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1822631969
 MonoBehaviour:
   m_ObjectHideFlags: 0
