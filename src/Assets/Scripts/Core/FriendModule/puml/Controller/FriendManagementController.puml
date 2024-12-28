@@ -1,11 +1,12 @@
 @startuml
 class FriendManagementController {
     - _friendListView : FriendListView
-    + LoadFriendList() : void
-    + AddFriend(userId:string) : void
-    + AcceptFriend(userId:string) : void
-    + RemoveFriend(userId:string) : void
     + <<override>> OnInit(view:List<ViewBase>) : void
+    + LoadFriendList() : void
+    + SendFriendRequest(targetUserId:string) : void
+    + AcceptFriendRequest(requesterId:string) : void
+    + RefuseFriendRequest(requesterId:string) : void
+    + RemoveFriend(friendId:string) : void
     + OpenFriendListView() : ViewBase
 }
 ControllerBase <|-- FriendManagementController

@@ -1,4 +1,5 @@
 @startuml
+!include .\\.\CharacterControlView.puml
 !include .\\.\EAnimation.puml
 !include .\\.\PlayerController.puml
 !include .\\.\PlayerExpressionController.puml

@@ -1,8 +1,14 @@
 @startuml
+class Country {
+    + name : string
+    + activeUsers : int
+}
 class SystemInfoDataModel {
-    + Logs : List<string>
     + OnlineUserCount : int
-    + ServerStatus : string
+    + Cpu : string
+    + CpuSpeed : long
+    + Ram : long
+    + Countries : List<Country>
     # <<override>> OnInit() : void
 }
 ModelBase <|-- SystemInfoDataModel

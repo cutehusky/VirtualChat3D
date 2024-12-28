@@ -5,6 +5,7 @@ class RoomListItem {
     + delete : Button
     + host : Button
     + editEnvironment : Button
+    + hostIcon : Image
 }
 MonoBehaviour <|-- RoomListItem
 @enduml

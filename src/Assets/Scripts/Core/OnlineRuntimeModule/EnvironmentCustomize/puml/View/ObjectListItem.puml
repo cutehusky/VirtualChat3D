@@ -1,7 +1,24 @@
 @startuml
 class ObjectListItem {
-    + objectName : TMP_Text
-    + icon : Image
+    + canvas : GameObject
+    + iconImage : Image
+    + targetPrefab : GameObject
+    - _isValidPutting : bool
+    - _currentPuttingObject : GameObject
+    + objectParent : Transform
+    - iconObject : GameObject
+    - ignore : LayerMask
+    + OnPuttingSuccess : Action<ItemObject>
+    + OnDrag(eventData:PointerEventData) : void
+    - _startPos : Vector3
+    - _pointerId : int
+    + OnBeginDrag(eventData:PointerEventData) : void
+    + OnEndDrag(eventData:PointerEventData) : void
+    + GetArchitecture() : IArchitecture
 }
 MonoBehaviour <|-- ObjectListItem
+IBeginDragHandler <|-- ObjectListItem
+IDragHandler <|-- ObjectListItem
+IEndDragHandler <|-- ObjectListItem
+IController <|-- ObjectListItem
 @enduml

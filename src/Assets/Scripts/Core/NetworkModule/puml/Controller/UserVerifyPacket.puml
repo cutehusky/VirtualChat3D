@@ -1,0 +1,6 @@
+@startuml
+class UserVerifyPacket {
+    + uid : string
+    + token : string
+}
+@enduml

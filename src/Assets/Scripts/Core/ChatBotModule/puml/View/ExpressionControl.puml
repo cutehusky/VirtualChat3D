@@ -10,6 +10,7 @@ class ExpressionControl {
     + Surprised() : void
     + Sad() : void
     + Fun() : void
+    + Reset() : IEnumerator
     + Neutral() : void
     - Update() : void
 }

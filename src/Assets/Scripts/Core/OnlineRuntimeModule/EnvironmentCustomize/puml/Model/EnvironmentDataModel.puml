@@ -1,0 +1,12 @@
+@startuml
+class EnvironmentDataModel {
+    + CurrentActiveRoomId : string
+    + CurrentActiveEnvironmentData : List<EnvironmentItemData>
+    + InSceneObject : Dictionary<GameObject, EnvironmentItemData>
+    + IsPlacingItem : bool
+    # <<override>> OnInit() : void
+    + FetchRoomsEnvironment(userId:string, onSuccess:Action, onFail:Action) : void
+    + SaveRoomEnvironmentData(userId:string) : void
+}
+ModelBase <|-- EnvironmentDataModel
+@enduml

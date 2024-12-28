@@ -1,7 +1,9 @@
 @startuml
 class JoinRoomView {
-    + ip : TMP_InputField
-    + port : TMP_InputField
+    + ip : MobileInputField
+    + port : MobileInputField
+    + TMP_ip : TMP_InputField
+    + TMP_port : TMP_InputField
     + join : Button
     + <<override>> Render(model:ModelBase) : void
     + <<override>> OnInit() : void

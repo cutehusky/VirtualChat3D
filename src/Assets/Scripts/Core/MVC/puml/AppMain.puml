@@ -1,17 +1,58 @@
 @startuml
 class AppMain {
+    + App : FirebaseApp
     + LoginView : LoginView
     + SignUpView : SignUpView
     + UserProfileView : UserProfileView
-    + App : FirebaseApp
-    - _currentView : ViewBase
+    + SystemMonitorView : SystemMonitorView
+    + UserListView : UserListView
+    + ModelListView : ModelListView
+    + ChatBotView : ChatBotView
+    + FriendListView : FriendListView
+    + MessageView : MessageView
+    + hostRoomView : HostRoomView
+    + joinRoomView : JoinRoomView
+    + characterControlView : CharacterControlView
+    + joinedUserListView : JoinedUserListView
+    + environmentEditView : EnvironmentEditView
+    + roomMessageView : RoomMessageView
+    + currentView : ViewBase
     + UserProfileController : UserProfileController
     + UserAuthController : UserAuthController
+    + SystemInfoController : SystemInfoController
+    + UserManagementController : UserManagementController
+    + CharacterCustomizationController : CharacterCustomizationController
+    + GeminiController : GeminiController
+    + FriendManagementController : FriendManagementController
+    + MessageController : MessageController
+    + RoomManager : RoomManager
+    + ConnectionManager : ConnectionManager
+    + EnvironmentObjectManager : EnvironmentObjectManager
+    + canvasScaler : CanvasScaler
+    + canvas : RectTransform
+    + unityTransport : UnityTransport
+    + SetHorizontal() : void
+    + SetVertical() : void
     # <<override>> Awake() : void
+    + OnInit() : void
+    - OnOrientationChange(orientation:HardwareOrientation) : void
+    - _keyboardHeight : float = 0
+    - OnKeyboardAction(isShow:bool, height:int) : void
+    + OpenEnvironmentEditView(roomId:string) : void
     + OpenSignUpView() : void
+    + OpenHostRoomView() : void
+    + OpenCharacterControlView() : void
+    + OpenJoinRoomView() : void
     + CloseCurrentView() : void
     + OpenUserProfileView() : void
     + OpenLoginView() : void
+    + OpenSystemMonitorView() : void
+    + OpenUserListView() : void
+    + OpenModelListView() : void
+    + OpenChatBotView() : void
+    + OpenFriendListView() : void
+    + OpenMessageView(chatSessionId:string, friendId:string) : void
+    + Update() : void
     + GetArchitecture() : IArchitecture
 }
 "MonoSingleton`1" "<AppMain>" <|-- AppMain

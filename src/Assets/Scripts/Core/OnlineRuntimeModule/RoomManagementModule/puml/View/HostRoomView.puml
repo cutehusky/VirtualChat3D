@@ -1,14 +1,29 @@
 @startuml
 class HostRoomView {
-    + ip : TMP_InputField
-    + port : TMP_InputField
-    + accessType : Toggle
-    + create : Button
-    + roomListScrollViewParent : RectTransform
-    + listItemTemplate : GameObject
-    + items : List<RoomListItem>
+    + ip : MobileInputField
+    + port : MobileInputField
+    + TMP_ip : TMP_InputField
+    + TMP_port : TMP_InputField
+    + createRoom : Button
+    + host : Button
+    + RoomDataModel : RoomDataModel
+    + currentActiveRoom : string
+    + hostingIcon : Sprite
+    + selectIcon : Sprite
     + <<override>> Render(model:ModelBase) : void
     + <<override>> OnInit() : void
+    + list : LoopScrollRect
+    + RefreshList() : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + OnDeleteRoom : Action<string>
+    + OnEditRoom : Action<string>
+    + OnHostRoom : Action<RoomData>
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- HostRoomView
+LoopScrollPrefabSource <|-- HostRoomView
+LoopScrollDataSource <|-- HostRoomView
 @enduml

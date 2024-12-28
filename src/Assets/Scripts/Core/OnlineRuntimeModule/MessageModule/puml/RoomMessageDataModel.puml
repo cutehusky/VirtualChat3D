@@ -1,0 +1,7 @@
+@startuml
+class RoomMessageDataModel {
+    + ChatSession : ChatSession
+    # <<override>> OnInit() : void
+}
+ModelBase <|-- RoomMessageDataModel
+@enduml

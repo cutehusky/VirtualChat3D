@@ -1,0 +1,9 @@
+@startuml
+class MessagePacket {
+    + uid : string
+    + fid : string
+    + id_cons : string
+    + msg : string
+    + timestamp : long
+}
+@enduml

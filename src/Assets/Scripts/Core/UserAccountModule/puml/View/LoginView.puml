@@ -1,12 +1,17 @@
 @startuml
 class LoginView {
-    + email : TMP_InputField
-    + password : TMP_InputField
+    + email : MobileInputField
+    + password : MobileInputField
+    + TMP_email : TMP_InputField
+    + TMP_password : TMP_InputField
+    + notice : TMP_Text
     + resetPassword : Button
     + login : Button
     + signUp : Button
     + {static} EmailCheck(s:string) : bool
     + <<override>> Render(model:ModelBase) : void
+    + SetNotice(notice:string) : void
+    + SetNoticeSuccess(notice:string) : void
     + <<override>> OnInit() : void
 }
 ViewBase <|-- LoginView

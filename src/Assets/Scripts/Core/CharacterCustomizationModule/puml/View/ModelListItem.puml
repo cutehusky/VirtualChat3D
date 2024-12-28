@@ -1,6 +1,9 @@
 @startuml
 class ModelListItem {
     + modelId : TMP_Text
+    + preview : Button
+    + selectAsChatBot : Button
+    + selectAsCharacter : Button
 }
 MonoBehaviour <|-- ModelListItem
 @enduml

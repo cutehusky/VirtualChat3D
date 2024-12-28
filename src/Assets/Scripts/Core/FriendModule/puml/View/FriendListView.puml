@@ -1,12 +1,33 @@
 @startuml
 class FriendListView {
-    + friendListScrollViewParent : RectTransform
-    + listItemTemplate : GameObject
-    + items : List<FriendListItem>
-    + userIdSearch : TMP_InputField
+    + list : LoopScrollRect
+    + userIdSearch : MobileInputField
+    + TMP_userIdSearch : TMP_InputField
     + addFriendButton : Button
+    + _friendDataModel : FriendDataModel
+    + inputRect : RectTransform
+    + listRect : RectTransform
+    + buttonRemoveIcon : Sprite
+    + buttonRefuseIcon : Sprite
+    + buttonMessageIcon : Sprite
+    + buttonAcceptIcon : Sprite
     + <<override>> Render(model:ModelBase) : void
+    + RefreshList() : void
+    - _listOffset : float
+    - _inputOffset : float
     + <<override>> OnInit() : void
+    + <<override>> MoveUpWhenOpenKeyboard(height:float) : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + OpenMessageView : Action<string, string>
+    + OnRemoveFriend : Action<string>
+    + OnRequestAccept : Action<string>
+    + OnRequestRefuse : Action<string>
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- FriendListView
+LoopScrollPrefabSource <|-- FriendListView
+LoopScrollDataSource <|-- FriendListView
 @enduml

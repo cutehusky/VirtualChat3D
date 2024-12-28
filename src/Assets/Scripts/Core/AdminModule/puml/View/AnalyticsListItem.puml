@@ -1,0 +1,7 @@
+@startuml
+class AnalyticsListItem {
+    + activeUser : TMP_Text
+    + countryName : TMP_Text
+}
+MonoBehaviour <|-- AnalyticsListItem
+@enduml

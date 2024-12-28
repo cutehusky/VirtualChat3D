@@ -1,7 +1,8 @@
 @startuml
 class FriendDataModel {
-    + FriendList : List<FriendData>
+    + FriendList : Dictionary<string, FriendData>
+    + RequestList : Dictionary<string, FriendData>
     # <<override>> OnInit() : void
 }
-AbstractModel <|-- FriendDataModel
+ModelBase <|-- FriendDataModel
 @enduml

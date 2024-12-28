@@ -6,7 +6,4 @@
 !include .\\.\Controller\Touch\OnScreenJoystick.puml
 !include .\\.\Controller\Touch\OnScreenTouchBase.puml
 !include .\\.\Controller\Touch\OnScreenTouchpad.puml
-OnScreenTouchBase o-- PlayerInputAction
-BasicInput o-- PlayerInputAction
-GyroscopeInput o-- PlayerInputAction
 @enduml

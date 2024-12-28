@@ -1,0 +1,6 @@
+@startuml
+class UserData {
+    + IsLock : bool
+}
+UserAccountData <|-- UserData
+@enduml

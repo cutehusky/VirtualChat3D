@@ -1,13 +1,26 @@
 @startuml
 class ModelListView {
-    + modelListScrollViewParent : RectTransform
-    + listItemTemplate : GameObject
-    + items : List<ModelListItem>
-    + selectAsChatBotAvatar : Button
-    + selectAsCharacterInRoom : Button
+    + import : Button
+    - _dataModel : CharacterModelDataModel
+    + OnModelPreviewChange : Action<int>
+    + OnSelectChatBotModel : Action<int>
+    + OnSelectCharacterModel : Action<int>
+    + list : LoopScrollRect
+    + back : Button
     + previewModelPoint : Transform
+    + cameraPoint : Transform
+    + camera : Transform
+    + OnEnable() : void
+    + OnDisable() : void
     + <<override>> Render(model:ModelBase) : void
     + <<override>> OnInit() : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- ModelListView
+LoopScrollPrefabSource <|-- ModelListView
+LoopScrollDataSource <|-- ModelListView
 @enduml

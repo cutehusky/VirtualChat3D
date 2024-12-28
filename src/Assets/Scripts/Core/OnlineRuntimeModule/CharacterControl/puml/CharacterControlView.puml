@@ -1,0 +1,10 @@
+@startuml
+class CharacterControlView {
+    + outRoom : Button
+    + openUserList : Button
+    + openChat : Button
+    + <<override>> Render(model:ModelBase) : void
+    + <<override>> OnInit() : void
+}
+ViewBase <|-- CharacterControlView
+@enduml

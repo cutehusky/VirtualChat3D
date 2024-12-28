@@ -1,6 +1,6 @@
 @startuml
 class FriendData {
-    + IsAccepted : bool
+    + ChatSessionId : string
 }
 UserAccountData <|-- FriendData
 @enduml

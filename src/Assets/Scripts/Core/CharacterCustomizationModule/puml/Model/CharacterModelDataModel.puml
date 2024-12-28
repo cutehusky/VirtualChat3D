@@ -1,11 +1,16 @@
 @startuml
 class CharacterModelDataModel {
     + ModelId : List<string>
-    + ChatRoomSelectModelId : string
-    + ChatBotSelectModelId : string
+    + ChatRoomSelectModelId : string = "FoxGirl.vrm_"
+    + ChatBotSelectModelId : string = "FoxGirl.vrm_"
+    - {static} s_context : SynchronizationContext
+    + <<const>> ModelPath : string = "/Model/"
     + LoadModelList() : void
-    + LoadModelFromInternal(fileName:string) : byte[]
     + CreateCharacter(modelId:string, onVrmModelLoaded:Action<GameObject>) : void
+    + CreateRoomCharacter(onVrmModelLoaded:Action<GameObject, string>) : void
+    + CreateChatBotCharacter(onVrmModelLoaded:Action<GameObject>) : void
+    - {static} LoadModelFromPath(modelName:string, onLoad:Action<GameObject>) : void
+    - {static} LoadVrm(characterBinary:byte[], onVrmModelLoaded:Action<GameObject>, onFailed:Action<ModelLoadFailException>, materialGenerator:IMaterialDescriptorGenerator) : void
     # <<override>> OnInit() : void
 }
 ModelBase <|-- CharacterModelDataModel

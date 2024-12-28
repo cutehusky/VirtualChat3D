@@ -1,8 +1,10 @@
 @startuml
 class ChatBox {
     + role : TMP_Text
-    + text : TMP_Text
+    + text : MarkdownRenderer
     + time : TMP_Text
+    + background : Image
+    + roundedCorners : ImageWithIndependentRoundedCorners
 }
 MonoBehaviour <|-- ChatBox
 @enduml

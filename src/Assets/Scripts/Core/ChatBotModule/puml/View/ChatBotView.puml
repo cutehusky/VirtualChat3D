@@ -3,12 +3,27 @@ class ChatBotView {
     + newChat : Button
     + chatBotModelPoint : Transform
     + chatBotExpressionControl : ExpressionControl
-    + chatInput : TMP_InputField
+    + chatInput : MobileInputField
+    + TMP_chatInput : TMP_InputField
     + send : Button
-    + userInput : ChatBox
-    + chatBotOutput : ChatBox
+    + animatorController : RuntimeAnimatorController
+    + list : LoopScrollRect
+    + back : Button
+    + cameraPoint : Transform
+    + camera : Transform
+    + ChatSession : ChatSession
     + <<override>> Render(model:ModelBase) : void
+    + OnEnable() : void
+    + OnDisable() : void
+    + RefreshList() : void
     + <<override>> OnInit() : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- ChatBotView
+LoopScrollPrefabSource <|-- ChatBotView
+LoopScrollDataSource <|-- ChatBotView
 @enduml
