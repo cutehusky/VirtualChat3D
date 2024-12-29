@@ -1,0 +1,11 @@
+@startuml
+
+class UserControl {
+    + {static}processLockUser(socket: Socket, data: Object)
+    + {static}processUnlockUser(socket: Socket, data: Object)
+    + {static}processRemoveUser(socket: Socket, data: Object)
+}
+
+NetworkController o-- UserControl
+UserControl o-- FirebaseDataModel
+@enduml

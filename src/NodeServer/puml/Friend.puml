@@ -1,0 +1,13 @@
+@startuml
+
+class Friend {
+    + {static}processFriendRequest(socket: Socket, data: Object)
+    + {static}processFriendRequestAccept(socket: Socket, data: Object)
+    + {static}processFriendRequestRefuse(socket: Socket, data: Object)
+    + {static}processViewFriendList(socket: Socket, data: Object)
+    + {static}processRemoveFriend(socket: Socket, data: Object)
+}
+
+NetworkController o-- Friend
+Friend o-- FirebaseDataModel
+@enduml

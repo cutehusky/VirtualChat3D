@@ -1,0 +1,39 @@
+@startuml
+class NetworkController {
+    - {static} Instance
+    + {static} GetInstance()
+    - clientAESKey: Buffer[]
+    - clientRSAPublicKey: NodeRSA[]
+    - io: Server
+    - serverPrivateKey: NodeRSA
+    - socketEventDict: Dict[string, function]
+    + clientList: Dict[string, Socket]
+    + SubscribeEvent(eventName:string, callback: function(socket: Socket, data: Object))
+    + encryptDataAES(data: string, key: Buffer): Buffer
+    + decryptDataAES(data: Buffer, key: Buffer): string
+    + OnInit()
+}
+
+
+class FirebaseDataModel {
+    - {static} Instance
+    + {static} GetInstance()
+    + adminInstance
+    + authInstance
+    + databaseInstance
+    + OnInit()
+    + PushIP()
+    + verifyToken(token)
+    + adminChecker(uid)
+}
+
+NetworkController o-- UserControl
+NetworkController o-- Message
+NetworkController o-- Friend
+NetworkController o-- SystenInfoAnalytics
+
+SystenInfoAnalytics o-- FirebaseDataModel
+UserControl o-- FirebaseDataModel
+Message o-- FirebaseDataModel
+Friend o-- FirebaseDataModel
+@enduml

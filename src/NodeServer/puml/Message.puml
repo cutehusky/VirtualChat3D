@@ -1,0 +1,11 @@
+@startuml
+
+class Message {
+    + {static}processSendMessage(socket: Socket, data: Object)
+    + {static}processViewMessage(socket: Socket, data: Object)
+    + {static}processReadMessage(socket: Socket, data: Object)
+}
+
+Network o-- Message
+Message o-- FirebaseDataModel
+@enduml

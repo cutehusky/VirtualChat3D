@@ -1,0 +1,11 @@
+@startuml
+
+class SystemInfoAnalytics {
+    + {static}processViewSystemInfo(socket: Socket, data: Object)
+    + {static}processViewGoogleAnalytics(socket: Socket, data: Object)
+    + {static}processViewUserAnalytics(socket: Socket, data: Object)
+}
+
+NetworkController o-- SystemInfoAnalytics
+SystemInfoAnalytics o-- FirebaseDataModel
+@enduml
