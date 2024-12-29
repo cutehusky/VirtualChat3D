@@ -1,4 +1,14 @@
 @startuml
+class AnalyticData {
+    + country : string
+    + activeUsers : int
+}
+class SystemData {
+    + active_user : int
+    + cpu : string
+    + cpu_speed : long
+    + ram : long
+}
 class SystemInfoController {
     - _systemMonitorView : SystemMonitorView
     + LoadSystemInfo() : void

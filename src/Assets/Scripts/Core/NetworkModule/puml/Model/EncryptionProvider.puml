@@ -6,13 +6,7 @@ class EncryptionProvider {
     + EncryptAES128ECB(plaintext:string) : byte[]
     + DecryptAES128ECB(ciphertext:byte[]) : string
     - _client2ServerEncryption : RSA.RSAProvider
-    - _server2ClientDecryption : RSA.RSAProvider
-    - _clientPublicKey : string
-    + ClientPublicKey : string <<get>>
-    - CreateClientRSAKey() : void
     + SetServerKey(key:string) : void
-    + EncryptRSAString(data:string) : string
-    + DecryptRSAString(data:string) : string
     # <<override>> OnInit() : void
 }
 ModelBase <|-- EncryptionProvider

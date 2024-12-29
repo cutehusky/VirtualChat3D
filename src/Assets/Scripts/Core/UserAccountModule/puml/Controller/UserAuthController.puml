@@ -5,8 +5,13 @@ class UserAuthController {
     - _userProfileView : UserProfileView
     + OpenSignUpView() : ViewBase
     + OpenLoginView() : ViewBase
+    - ConvertException(exception:string) : string
+    - TransitionToLoginViewAfterDelay() : IEnumerator
     + SignUp() : void
     + ResetPassword() : void
+    + SendTokenDeltaTime : float = 0
+    + <<readonly>> SendTokenTimeout : float = 3
+    + <<override>> Update() : void
     + Login() : void
     + SignOut() : void
     + <<override>> OnInit(view:List<ViewBase>) : void

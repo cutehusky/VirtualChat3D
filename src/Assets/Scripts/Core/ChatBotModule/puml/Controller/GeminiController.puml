@@ -1,12 +1,11 @@
 @startuml
 class GeminiController {
     - _chatBotView : ChatBotView
-    - _chatBotExpressionControl : ExpressionControl
-    + <<async>> OnChat(text:string) : Task<string>
-    + ExpressionControl(emotion:EEmotion) : void
-    + NewChat(geminiModelName:string, avatarId:string) : void
-    + EndChat() : void
+    - <<async>> OnChat(text:string) : void
+    - ExpressionControl(chatContent:string) : string
+    + NewChat() : void
     + <<override>> OnInit(view:List<ViewBase>) : void
+    + AddMessage(role:string, text:string) : void
     + OpenChatBotView() : ViewBase
 }
 ControllerBase <|-- GeminiController

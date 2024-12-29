@@ -1,12 +1,28 @@
 @startuml
 class MessageView {
-    + chatInput : TMP_InputField
+    + chatInput : MobileInputField
+    + TMP_chatInput : TMP_InputField
     + send : Button
-    + messageScrollViewParent : RectTransform
-    + listItemTemplate : GameObject
-    + items : List<ChatBox>
+    + list : LoopScrollRect
+    + ChatSession : ChatSession
+    + friendId : string
+    + back : Button
+    + friendName : TMP_Text
+    + inputRect : RectTransform
+    + listRect : RectTransform
     + <<override>> Render(model:ModelBase) : void
+    + RefreshList() : void
+    - _listOffset : float
+    - _inputOffset : float
     + <<override>> OnInit() : void
+    + <<override>> MoveUpWhenOpenKeyboard(height:float) : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- MessageView
+LoopScrollPrefabSource <|-- MessageView
+LoopScrollDataSource <|-- MessageView
 @enduml

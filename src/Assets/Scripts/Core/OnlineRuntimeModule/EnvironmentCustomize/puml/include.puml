@@ -1,14 +1,9 @@
 @startuml
 !include .\\.\Controller\EnvironmentObjectManager.puml
-!include .\\.\Model\RoomEnvironmentDataModel.puml
-!include .\\.\Model\RoomEnvironmentItemData.puml
+!include .\\.\Model\EnvironmentDataModel.puml
+!include .\\.\Model\EnvironmentItemData.puml
 !include .\\.\View\EnvironmentEditView.puml
+!include .\\.\View\ItemObject.puml
 !include .\\.\View\ObjectListItem.puml
 !include .\\.\View\ObjectPuttingArea.puml
-!include .\\.\View\OnSceneObjectController.puml
-RoomEnvironmentDataModel *-- RoomEnvironmentItemData
-EnvironmentEditView *-- ObjectListItem
-EnvironmentEditView *-- ObjectPuttingArea
-EnvironmentObjectManager o-- RoomEnvironmentDataModel
-EnvironmentObjectManager o-- EnvironmentEditView
 @enduml

@@ -1,13 +1,12 @@
 @startuml
 class MessageController {
     - _messageView : MessageView
-    + ReadMessageOfUser(userId:string) : void
-    + SendMessage(userId:string, data:string) : void
-    + ReceiveNewMessage() : void
-    + IsHaveNewMessageFromUser(userId:string) : bool
-    + LoadMessage() : void
+    + SendMessage() : void
+    - AddMessage(userId:string, content:string, time:string, chatSessionId:string) : void
+    + LoadMessage(chatSessionId:string, friendId:string) : void
+    + ReadMessage(chatSessionId:string) : void
     + <<override>> OnInit(view:List<ViewBase>) : void
-    + OpenMessageView() : ViewBase
+    + OpenMessageView(chatSessionId:string, friendId:string) : ViewBase
 }
 ControllerBase <|-- MessageController
 @enduml

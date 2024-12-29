@@ -1,0 +1,11 @@
+@startuml
+class EnvironmentItemData {
+    + ID : int = 0
+    + UID : string
+    + PosX : float = 0
+    + PosY : float = 0
+    + PosZ : float = 0
+    + RotY : float = 0
+    + Copy(data:EnvironmentItemData) : void
+}
+@enduml

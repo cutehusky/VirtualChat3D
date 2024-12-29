@@ -1,0 +1,19 @@
+@startuml
+class ItemObject {
+    + icon : Sprite
+    + ID : int
+    + meshRenderer : MeshRenderer
+    - valid : Material
+    - invalid : Material
+    + databaseID : string
+    + ImportData(data:EnvironmentItemData) : void
+    + ExportData() : EnvironmentItemData
+    - Awake() : void
+    + isValid : bool
+    + CollisionObject : HashSet<GameObject>
+    - Update() : void
+    - OnCollisionEnter(other:Collision) : void
+    - OnCollisionExit(other:Collision) : void
+}
+MonoBehaviour <|-- ItemObject
+@enduml

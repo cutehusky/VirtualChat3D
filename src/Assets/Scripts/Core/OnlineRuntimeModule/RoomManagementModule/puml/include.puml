@@ -9,12 +9,4 @@
 !include .\\.\View\JoinedUserListView.puml
 !include .\\.\View\JoinRoomView.puml
 !include .\\.\View\RoomListItem.puml
-RoomManager o-- RoomDataModel
-RoomManager o-- HostRoomView
-ConnectionManager o-- HostRoomView
-ConnectionManager o-- JoinedUserListView
-JoinedUserListView *-- JoinedUserListItem
-HostRoomView *-- RoomListItem
-ConnectionManager o-- JoinRoomView
-RoomDataModel *-- RoomData
 @enduml

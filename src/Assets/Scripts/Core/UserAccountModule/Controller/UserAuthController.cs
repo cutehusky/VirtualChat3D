@@ -135,7 +135,22 @@ namespace Core.UserAccountModule.Controller
         
         public void ResetPassword()
         {
-            Debug.Log($"reset password with email: {_loginView.email.Text}");
+            this.GetModel<FirebaseAuthModel>().Auth.SendPasswordResetEmailAsync(_loginView.email.Text).ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    _loginView.SetNotice("Reset password was canceled by Firebase.");
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    _loginView.SetNotice(task.Exception != null
+                        ? ConvertException(task.Exception.Message.ToString())
+                        : "An unknown error occurred.");
+                    return;
+                }
+                _loginView.SetNoticeSuccess("Reset password email has been sent.");
+            });
         }
 
         

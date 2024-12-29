@@ -1,0 +1,6 @@
+@startuml
+class ChatSessionPacket {
+    + id_cons : string
+    + uid : string
+}
+@enduml

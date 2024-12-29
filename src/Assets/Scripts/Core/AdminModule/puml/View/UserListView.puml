@@ -1,11 +1,30 @@
 @startuml
 class UserListView {
-    + scrollViewParent : RectTransform
-    + listItemTemplate : GameObject
-    + items : List<FriendListItem>
-    + userIdSearch : TMP_InputField
+    + userIdSearch : MobileInputField
+    + TMP_userIdSearch : TMP_InputField
+    + inputRect : RectTransform
+    + listRect : RectTransform
+    + list : LoopScrollRect
+    + searchUserButton : Button
+    + _userAccountDataModel : UserAccountDataModel
     + <<override>> Render(model:ModelBase) : void
+    + <<override>> MoveUpWhenOpenKeyboard(height:float) : void
+    + RefreshList() : void
+    - _listOffset : float
+    - _inputOffset : float
     + <<override>> OnInit() : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + lockIcon : Sprite
+    + unlockIcon : Sprite
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + OnRemoveUser : Action<string>
+    + OnLockUser : Action<string>
+    + OnUnlockUser : Action<string>
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- UserListView
+LoopScrollPrefabSource <|-- UserListView
+LoopScrollDataSource <|-- UserListView
 @enduml

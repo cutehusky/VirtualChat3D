@@ -4,7 +4,7 @@ class UserAccountData {
     + Description : string
     + Username : string
     + DateOfBirth : DateTime
-    + UserId : string
-    + IsOnline : bool
+    + Email : string
+    + UserId : string = ""
 }
 @enduml

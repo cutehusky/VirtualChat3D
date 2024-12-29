@@ -1,0 +1,12 @@
+@startuml
+class RoomMessageController {
+    - _roomMessageView : RoomMessageView
+    + <<override>> OnNetworkSpawn() : void
+    + OnInit(view:RoomMessageView) : void
+    + SendMessageServerRpc(userID:string, message:string) : void
+    + SendMessageClientRpc(userID:string, message:string) : void
+    + GetArchitecture() : IArchitecture
+}
+NetworkBehaviour <|-- RoomMessageController
+IController <|-- RoomMessageController
+@enduml

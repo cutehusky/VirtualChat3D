@@ -1,6 +1,7 @@
 @startuml
 class FirebaseAuthModel {
     + Auth : Firebase.Auth.FirebaseAuth
+    + IsSentToken : bool = false
     + <<override>> InitFirebase() : void
     + GetLoginToken(callback:Action<string>) : void
 }

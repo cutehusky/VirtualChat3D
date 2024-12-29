@@ -1,5 +1,4 @@
 @startuml
-!include .\\.\Controller\EEmotion.puml
 !include .\\.\Controller\GeminiController.puml
 !include .\\.\Model\GeminiDataModel.puml
 !include .\\.\View\ChatBotView.puml

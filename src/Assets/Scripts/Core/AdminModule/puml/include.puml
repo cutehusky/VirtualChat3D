@@ -3,6 +3,8 @@
 !include .\\.\Controller\UserManagementController.puml
 !include .\\.\Model\SystemInfoDataModel.puml
 !include .\\.\Model\UserAccountDataModel.puml
+!include .\\.\Model\UserData.puml
+!include .\\.\View\AnalyticsListItem.puml
 !include .\\.\View\SystemMonitorView.puml
 !include .\\.\View\UserListItem.puml
 !include .\\.\View\UserListView.puml

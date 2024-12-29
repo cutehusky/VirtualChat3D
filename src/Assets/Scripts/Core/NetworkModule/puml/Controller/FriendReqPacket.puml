@@ -1,0 +1,6 @@
+@startuml
+class FriendReqPacket {
+    + uid : string
+    + fid : string
+}
+@enduml

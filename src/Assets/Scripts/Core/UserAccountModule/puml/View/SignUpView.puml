@@ -1,12 +1,18 @@
 @startuml
 class SignUpView {
-    + email : TMP_InputField
-    + password : TMP_InputField
-    + re_password : TMP_InputField
+    + email : MobileInputField
+    + password : MobileInputField
+    + re_password : MobileInputField
+    + TMP_email : TMP_InputField
+    + TMP_password : TMP_InputField
+    + TMP_re_password : TMP_InputField
+    + notice : TMP_Text
     + login : Button
     + signUp : Button
     + {static} EmailCheck(s:string) : bool
     + <<override>> Render(model:ModelBase) : void
+    + SetNotice(notice:string) : void
+    + SetNoticeSuccess(notice:string) : void
     + <<override>> OnInit() : void
 }
 ViewBase <|-- SignUpView

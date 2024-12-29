@@ -1,5 +1,5 @@
 @startuml
-!include .\\.\MessageController.puml
-!include .\\.\MessageView.puml
-MessageController o-- MessageView
+!include .\\.\RoomMessageController.puml
+!include .\\.\RoomMessageDataModel.puml
+!include .\\.\RoomMessageView.puml
 @enduml

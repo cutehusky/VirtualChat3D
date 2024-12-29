@@ -1,9 +1,13 @@
 @startuml
 class GeminiDataModel {
-    + History : List<GeminiContent>
-    + CurrentGeminiModelName : string
+    - _history : List<GeminiContent>
+    + ChatHistory : ChatSession
     + ChatBotAvatar : GameObject
+    - <<const>> ChatBotModelId : string = "gemini-1.5-flash-002"
+    + IsProcessing : bool
     # <<override>> OnInit() : void
+    + InitHistory() : void
+    + <<async>> GetResponse(text:string) : Task<string>
 }
 ModelBase <|-- GeminiDataModel
 @enduml

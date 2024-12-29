@@ -1,0 +1,22 @@
+@startuml
+class RoomMessageView {
+    + chatInput : MobileInputField
+    + TMP_chatInput : TMP_InputField
+    + send : Button
+    + list : LoopScrollRect
+    + ChatSession : ChatSession
+    + myUserId : string
+    + <<override>> Render(model:ModelBase) : void
+    + Render(chatSession:ChatSession, userId:string) : void
+    + RefreshList() : void
+    + <<override>> OnInit() : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
+}
+ViewBase <|-- RoomMessageView
+LoopScrollPrefabSource <|-- RoomMessageView
+LoopScrollDataSource <|-- RoomMessageView
+@enduml

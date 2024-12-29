@@ -1,6 +1,7 @@
 @startuml
 class ChatSession {
     + ChatData : List<ChatMessage>
-    + NewChatData : List<ChatMessage>
+    + FriendId : string = "0"
+    + ChatSessionId : string = "0"
 }
 @enduml

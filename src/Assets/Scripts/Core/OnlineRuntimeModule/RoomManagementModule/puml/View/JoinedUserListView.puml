@@ -1,10 +1,18 @@
 @startuml
 class JoinedUserListView {
-    + joinedUserListScrollViewParent : RectTransform
-    + listItemTemplate : GameObject
-    + items : List<JoinedUserListItem>
+    + list : LoopScrollRect
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    - _dataModel : RoomDataModel
+    + OnKick : Action<ulong>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
+    + RefreshList() : void
     + <<override>> Render(model:ModelBase) : void
     + <<override>> OnInit() : void
 }
 ViewBase <|-- JoinedUserListView
+LoopScrollPrefabSource <|-- JoinedUserListView
+LoopScrollDataSource <|-- JoinedUserListView
 @enduml

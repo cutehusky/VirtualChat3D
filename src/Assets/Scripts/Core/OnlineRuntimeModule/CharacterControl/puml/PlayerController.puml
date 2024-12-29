@@ -1,10 +1,79 @@
 @startuml
 class PlayerController {
-    + Jump() : void
-    + SetCrouch(isCrouch:bool) : void
-    + SetSprint(isSprint:bool) : void
-    + MoveAndRotate() : void
-    + PlayAnimation(animationName:EAnimation) : void
+    - lookPoint : Transform
+    - <<readonly>> _modelName : NetworkVariable<FixedString512Bytes>
+    - _animator : Animator
+    - _actorTransform : Transform
+    - _controller : CharacterController
+    + speedMultiply : float = 1f
+    # moveSpeed : float = 2.5f
+    # crouchSpeed : float = 2.5f
+    # sprintSpeed : float = 4f
+    # speedDamp : float = 0.1f
+    + slopeMultiply : float = 1.0f
+    # rotationSmoothTime : float = 0.1f
+    - fallThreshold : float = 0.75f
+    + jumpHeight : float = 1f
+    + sprintJumpHeight : float = 1.25f
+    # gravity : float
+    # fallMultiply : float = 1.5f
+    # terminalVelocity : float = 1000.0f
+    # jumpTimeout : float = 0.1f
+    # freeFallTimeout : float = 0.1f
+    # groundCheckOffset : float = 0.5f
+    # groundCheckMask : LayerMask
+    + mainCamera : Transform
+    - topClamp : float = 60.0f
+    - bottomClamp : float
+    - cameraPitchOverride : float
+    - _cameraControl : CinemachineVirtualCameraBase
+    - _cameraYaw : float
+    - _cameraPitch : float
+    - _animMotionScaleID : int
+    - _animYSpeedID : int
+    - _animMotionMultipleID : int
+    - _animMoveSpeedID : int
+    - _animGroundedID : int
+    - _animFreeFallID : int
+    - _animCrouchID : int
+    - _animAimID : int
+    - _moveDir : Vector2
+    - _isJumping : bool
+    - _isGrounded : bool
+    - _isMidAir : bool
+    - _isSprint : bool
+    - _jumpTimeoutDelta : float
+    - _freeFallTimeoutDelta : float
+    - <<readonly>> _moveAvg : Vector3AvgPool
+    - _verticalVelocity : float
+    - _rotationSpeed : float
+    - _rotationTarget : float
+    - <<const>> Threshold : float = 0.01f
+    + Awake() : void
+    + <<override>> OnNetworkSpawn() : void
+    + LoadItem() : void
+    + SetModelClientRpc(modelName:string, clientRpcParams:ClientRpcParams) : void
+    + SetModelServerRpc(modelName:string) : void
+    + SetModelServerRpc(modelName:string, uid:ulong) : void
+    + Start() : void
+    + Look(lookDir:Vector2) : void
+    + Move(moveDir:Vector2) : void
+    # <<virtual>> OnAnimatorMove() : void
+    - GroundCheck() : void
+    - SetGravity(v:float) : void
+    - CalculateGravity() : void
+    - AssignAnimationIDs() : void
+    - MoveActor(moveDir:Vector3) : void
+    - InputRegister() : void
+    - _jumpHeight : float = 0
+    - Jump() : void
+    - SetSprint(isSprint:bool) : void
+    # Timeout() : void
+    - OnEnable() : void
+    + Update() : void
+    # <<virtual>> MoveAndRotate(moveDir:Vector2, speed:float) : void
+    - {static} ClampAngle(lfAngle:float, lfMin:float, lfMax:float) : float
+    - SetRotation(rotation:Quaternion) : void
     + GetArchitecture() : IArchitecture
 }
 NetworkBehaviour <|-- PlayerController

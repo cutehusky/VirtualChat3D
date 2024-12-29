@@ -1,5 +1,12 @@
 @startuml
+!include .\\.\Controller\AdminReqPacket.puml
+!include .\\.\Controller\ChatSessionPacket.puml
+!include .\\.\Controller\FriendReqPacket.puml
+!include .\\.\Controller\MessagePacket.puml
+!include .\\.\Controller\SignUpReqPacket.puml
 !include .\\.\Controller\SocketIO.puml
+!include .\\.\Controller\UserDataPacket.puml
+!include .\\.\Controller\UserVerifyPacket.puml
 !include .\\.\Model\EncryptionProvider.puml
 SocketIO o-- EncryptionProvider
 @enduml

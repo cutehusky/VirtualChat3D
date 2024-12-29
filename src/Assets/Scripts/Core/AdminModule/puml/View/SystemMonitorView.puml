@@ -1,10 +1,21 @@
 @startuml
 class SystemMonitorView {
-    + logs : TMP_Text
     + OnlineUserCount : TMP_Text
-    + ServerStatus : TMP_Text
+    + CpuSpeed : TMP_Text
+    + Cpu : TMP_Text
+    + Ram : TMP_Text
+    + list : LoopScrollRect
+    - _systemInfoDataModel : SystemInfoDataModel
     + <<override>> Render(model:ModelBase) : void
     + <<override>> OnInit() : void
+    + RefreshList() : void
+    + itemPrefab : GameObject
+    - pool : Stack<Transform>
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- SystemMonitorView
+LoopScrollPrefabSource <|-- SystemMonitorView
+LoopScrollDataSource <|-- SystemMonitorView
 @enduml

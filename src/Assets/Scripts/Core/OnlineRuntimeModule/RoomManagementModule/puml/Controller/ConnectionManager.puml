@@ -3,11 +3,21 @@ class ConnectionManager {
     - _hostRoomView : HostRoomView
     - _userListView : JoinedUserListView
     - _joinRoomView : JoinRoomView
-    + ClientConnect(ip:string, port:int) : void
-    + Host(ip:string, port:int) : void
-    + KickUser() : void
+    - _characterControlView : CharacterControlView
+    - _joinedUserListView : JoinedUserListView
+    - _roomMessageView : RoomMessageView
+    + ClientConnect(ip:string, port:ushort) : void
+    + Host(ip:string, port:ushort) : void
+    + KickUser(id:ulong) : void
     + Disconnect() : void
+    + ChatSession : ChatSession
     + <<override>> OnInit(view:List<ViewBase>) : void
+    - OnClientConnected(clientId:ulong) : void
+    - OnClientStopped(isHost:bool) : void
+    - OnClientDisconnected(clientId:ulong) : void
+    - OnServerStopped(isHost:bool) : void
+    - ApprovalCheck(request:NetworkManager.ConnectionApprovalRequest, response:NetworkManager.ConnectionApprovalResponse) : void
+    - OnServerStarted() : void
 }
 ControllerBase <|-- ConnectionManager
 @enduml

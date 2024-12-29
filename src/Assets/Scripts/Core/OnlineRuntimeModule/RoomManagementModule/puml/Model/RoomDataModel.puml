@@ -2,8 +2,13 @@
 class RoomDataModel {
     + RoomsData : List<RoomData>
     + CurrentHostRoomData : RoomData
-    + CurrentHostRoomJoinedUser : List<UserAccountData>
+    + CurrentHostRoomJoinedUser : Dictionary<ulong, UserAccountData>
     # <<override>> OnInit() : void
+    + FetchRoomsList(UserId:string, onSuccess:Action, onFail:Action) : void
+    + DeleteRoom(UserId:string, roomId:string, onSuccess:Action, onFail:Action) : void
+    + CreateRoom(UserId:string, isPrivate:bool, onSuccess:Action, onFail:Action) : void
+    + RemoveUserFromList(clientId:ulong) : void
+    + AddUserToList(userId:string, username:string, clientId:ulong) : void
 }
 ModelBase <|-- RoomDataModel
 @enduml

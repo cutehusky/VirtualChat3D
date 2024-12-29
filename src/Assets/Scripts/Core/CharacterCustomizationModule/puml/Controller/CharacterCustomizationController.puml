@@ -4,6 +4,7 @@ class CharacterCustomizationController {
     + LoadModelFromExternal() : void
     + SelectChatRoomModel(id:string) : void
     + SelectChatBotModel(id:string) : void
+    + PreviewModel(id:string) : void
     + <<override>> OnInit(view:List<ViewBase>) : void
     + OpenModelListView() : ViewBase
 }

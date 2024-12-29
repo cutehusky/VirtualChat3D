@@ -1,0 +1,10 @@
+@startuml
+class UserDataPacket {
+    + uid : string
+    + id_cons : string
+    + description : string
+    + birthday : long
+    + username : string
+    + status : bool
+}
+@enduml

@@ -1,6 +1,6 @@
 @startuml
 class MessageDataModel {
-    + ChatSessions : Dictionary<string, ChatSession>
+    + CurrentChatSession : ChatSession
     # <<override>> OnInit() : void
 }
 ModelBase <|-- MessageDataModel

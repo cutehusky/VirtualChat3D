@@ -1,5 +1,8 @@
 @startuml
 abstract class ViewBase {
+    + footer : Footer
+    + header : Header
+    + <<virtual>> MoveUpWhenOpenKeyboard(height:float) : void
     + {abstract} Render(model:ModelBase) : void
     + Display() : void
     + Hide() : void

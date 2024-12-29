@@ -1,12 +1,15 @@
 @startuml
 class UserProfileView {
-    + userId : TMP_Text
-    + username : TMP_InputField
-    + description : TMP_InputField
+    + userId : TMP_InputField
+    + email : TMP_InputField
+    + username : MobileInputField
+    + description : MobileInputField
+    + TMP_username : TMP_InputField
+    + TMP_description : TMP_InputField
     + avatar : Image
     + dateOfBirth : DatePicker
     + save : Button
-    + cancel : Button
+    + reset : Button
     + resetPassword : Button
     + signOut : Button
     + <<override>> Render(model:ModelBase) : void

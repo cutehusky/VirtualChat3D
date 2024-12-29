@@ -1,13 +1,27 @@
 @startuml
 class EnvironmentEditView {
-    + rootOfScene : Transform
-    + itemToPut : List<GameObject>
-    + objectListScrollViewParent : RectTransform
-    + items : List<ObjectListItem>
-    + listItemTemplate : GameObject
+    + list : LoopScrollRect
+    + listItemPrefab : GameObject
+    - pool : Stack<Transform>
     + objectPuttingArea : ObjectPuttingArea
+    + puttingItemPrefab : List<GameObject>
+    + OnPuttingItemSuccess : Action<ItemObject>
+    + objectParent : Transform
+    + save : Button
+    - _dataModel : EnvironmentDataModel
+    + back : Button
+    + camera : Transform
+    + cameraPoint : Transform
     + <<override>> Render(model:ModelBase) : void
+    + LoadItem() : void
+    + OnEnable() : void
+    + OnDisable() : void
     + <<override>> OnInit() : void
+    + GetObject(index:int) : GameObject
+    + ReturnObject(trans:Transform) : void
+    + ProvideData(trans:Transform, index:int) : void
 }
 ViewBase <|-- EnvironmentEditView
+LoopScrollPrefabSource <|-- EnvironmentEditView
+LoopScrollDataSource <|-- EnvironmentEditView
 @enduml

@@ -62,9 +62,10 @@ class AdminController {
         }
         socket.emit("removeUserReply", null);
     }
-    static processGetUserList(socket, data) {
+    static async processGetUserList(socket, data) {
         let fb = Firebase.getInstance();
-        fb.getUserList(socket);
+        let res = await fb.getUserList(socket);
+        socket.emit('getUserListReply', res);
     }
     static processCreateUser(socket, data) {
         let fb = Firebase.getInstance();

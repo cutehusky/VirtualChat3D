@@ -3,12 +3,12 @@ class SocketIO {
     - _socket : SocketIOUnity
     - _sendKeyDeltaTime : float = 0
     - _isSentAESKey : bool = false
-    - _isSentRSAKey : bool = false
     + ip : string
     + sendKeyTimeout : float = 10f
-    + SendWebSocketMessageRSA(eventName:string, data:string) : void
     + SendWebSocketMessageAES(eventName:string, data:string) : void
+    + SendWebSocketMessage(eventName:string, data:T) : void
     - SendKey() : void
+    # <<override>> Awake() : void
     - Update() : void
     + AddUnityCallback(eventName:string, callback:Action<SocketIOResponse>) : void
     + AddCallback(eventName:string, callback:Action<SocketIOResponse>) : void
