@@ -40,7 +40,11 @@ namespace Core.FriendModule.Controller
                var packets = res.GetValue<UserDataPacket[]>();
                 this.GetModel<FriendDataModel>().FriendList.Clear();
                 if (packets == null)
+                {
+                    _friendListView.RefreshList(); 
                     return;
+                }
+
                 foreach (var packet in packets) {
                     this.GetModel<FriendDataModel>().FriendList.Add(packet.uid,new FriendData()
                     {
@@ -57,6 +61,11 @@ namespace Core.FriendModule.Controller
             SocketIO.Instance.AddUnityCallback("viewFriendRequestReply", (res) => {
                 var packets = res.GetValue<UserDataPacket[]>();
                 this.GetModel<FriendDataModel>().RequestList.Clear();
+                if (packets == null)
+                {
+                    _friendListView.RefreshList(); 
+                    return;
+                }
                 foreach (var packet in packets)
                 {
                     this.GetModel<FriendDataModel>().RequestList.Add(packet.uid, new FriendData()

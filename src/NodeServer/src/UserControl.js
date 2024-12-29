@@ -13,7 +13,8 @@ class UserControl {
                     username: username
                 }));
                 for (let i in res) {
-                    await this.authService.getUser(res[i]['uid']).then((user) => {
+                    let fb = Firebase.getInstance();
+                    await fb.authService.getUser(res[i]['uid']).then((user) => {
                         res[i]['status'] = !user.disabled;
                     });
                 }
@@ -21,7 +22,7 @@ class UserControl {
                 socket.emit('getUserListReply', res);
             });
     }
-    
+
     static async processLockUser(socket, data) {
         network = NetworkController.getInstance();
         console.log("lock user " + data.uid);
@@ -74,8 +75,8 @@ class UserControl {
         if (frSnapshot.exists()) {
             const friendIds = Object.keys(frSnapshot.val());
             for (const id of friendIds) {
-                await this.databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
-                await this.databaseService.ref(`DMessages/${friendIds[id]}`).remove();
+                await fb.databaseService.ref(`Account/${id}/Friend/${userId}`).remove();
+                await fb.databaseService.ref(`DMessages/${friendIds[id]}`).remove();
             }
         }
         await fb.authService.deleteUser(userId);

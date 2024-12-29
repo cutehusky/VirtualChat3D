@@ -1,3 +1,5 @@
+const { json } = require("express");
+
 NetworkController = require("./NetworkController.js")
 Firebase = require("./FirebaseDataModel.js")
 
@@ -20,7 +22,7 @@ class Friend {
         let userId = data.uid;
         let targetId = data.fid;
         await fb.databaseService.ref(`Account/${userId}/FriendRequest/${targetId}`).remove();
-        let consId = (await this.databaseService.ref(`DMessage`).push({
+        let consId = (await fb.databaseService.ref(`DMessage`).push({
             [`${userId}_has_new`]: false,
             [`${targetId}_has_new`]: false
         })).key;
@@ -54,17 +56,18 @@ class Friend {
         fb.databaseService.ref(`Account/${data.uid}/Friend`)
             .once('value', async (data) => {
                 if (data.val() == null) {
-                    console.log('testing 2');
-                    return [];
+                    socket.emit('viewFriendReply', []);
+                    return;
                 }
                 let res = Object.entries(data.val()).map(([fid, id_cons]) => ({
                     uid: fid,
                     id_cons: id_cons,
                 }));
-                let promises = []
+                let promises = [];
+                let fb = Firebase.getInstance();
                 for (let item in res) {
                     promises.push(
-                        await this.databaseService.ref(`Account/${res[item]['uid']}`)
+                        await fb.databaseService.ref(`Account/${res[item]['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
                                 res[item]['username'] = val['username'];
@@ -83,15 +86,17 @@ class Friend {
         fb.databaseService.ref(`Account/${data.uid}/FriendRequest`)
             .once('value', async (data) => {
                 if (data.val() == null) {
-                    return [];
+                    socket.emit('viewFriendRequestReply', []);
+                    return;
                 }
                 let res = Object.values(data.val()).map((fid) => ({
                     uid: fid
                 }));
                 let promises = []
+                let fb = Firebase.getInstance();
                 for (let item of res) {
                     promises.push(
-                        await this.databaseService.ref(`Account/${item['uid']}`)
+                        await fb.databaseService.ref(`Account/${item['uid']}`)
                             .once('value', (friend) => {
                                 let val = friend.val();
                                 item['username'] = val['username'];
@@ -109,7 +114,7 @@ class Friend {
         await fb.databaseService.ref(`Account/${data.uid}/Friend/${data.fid}`)
             .once('value', (cons_id) => {
                 console.log(cons_id.val());
-                this.databaseService.ref(`DMessage/${cons_id.val()}`).remove();
+                fb.databaseService.ref(`DMessage/${cons_id.val()}`).remove();
             });
         await fb.databaseService.ref(`Account/${data.uid}/Friend/${data.fid}`).remove();
         await fb.databaseService.ref(`Account/${data.fid}/Friend/${data.uid}`).remove();

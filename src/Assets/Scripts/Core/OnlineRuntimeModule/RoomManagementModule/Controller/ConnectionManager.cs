@@ -67,12 +67,17 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                 if (!NetworkManager.Singleton.IsHost)
                     return;
                 if (!_joinedUserListView.gameObject.activeSelf)
+                {
                     _joinedUserListView.Display(false);
+                    this.GetModel<PlayerInputAction>().TriggerEvent("CloseChatView");
+                }
                 else
                     _joinedUserListView.Hide();
             });
             _characterControlView.openChat.onClick.AddListener(() =>
             {
+                if (!_roomMessageView.gameObject.activeSelf)
+                    _joinedUserListView.Hide();
                 this.GetModel<PlayerInputAction>()
                     .TriggerEvent(!_roomMessageView.gameObject.activeSelf ? "OpenChatView" : "CloseChatView");
             });
@@ -85,13 +90,23 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
             });
             _characterControlView.openEmotion.onClick.AddListener(() =>
             {
-                _characterControlView.emotionList.gameObject.SetActive(!_characterControlView.emotionList.gameObject
-                    .activeSelf);
+                if (_characterControlView.emotionList.gameObject.activeSelf)
+                    _characterControlView.emotionList.gameObject.SetActive(false);
+                else
+                {
+                    _characterControlView.emotionList.gameObject.SetActive(true);
+                    _characterControlView.animationList.gameObject.SetActive(false);
+                }
             });
             _characterControlView.openAnimation.onClick.AddListener(() =>
             {
-                _characterControlView.animationList.gameObject.SetActive(!_characterControlView.animationList.gameObject
-                    .activeSelf);
+                if (_characterControlView.animationList.gameObject.activeSelf)
+                    _characterControlView.animationList.gameObject.SetActive(false);
+                else
+                {
+                    _characterControlView.animationList.gameObject.SetActive(true);
+                    _characterControlView.emotionList.gameObject.SetActive(false);
+                }
             });
             _joinRoomView.join.onClick.AddListener(() =>
             {
