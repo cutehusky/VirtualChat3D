@@ -3,6 +3,7 @@ using Core.AdminModule.Model;
 using Core.AdminModule.View;
 using Core.MVC;
 using Core.NetworkModule.Controller;
+using Core.UserAccountModule.Model;
 using Newtonsoft.Json;
 using QFramework;
 using UnityEngine.Splines;
@@ -64,7 +65,7 @@ namespace Core.AdminModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             LoadSystemInfo();
-            _systemMonitorView.Display();
+            _systemMonitorView.Display(this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin);
             _systemMonitorView.Render(this.GetModel<SystemInfoDataModel>());
             return _systemMonitorView;
         }

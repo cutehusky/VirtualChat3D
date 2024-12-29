@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Core.MVC;
 using Core.NetworkModule.Model;
 using Core.UserAccountModule.Model;
@@ -29,7 +30,6 @@ namespace Core.NetworkModule.Controller
         private float _sendKeyDeltaTime = 0;
         private bool _isSentAESKey = false;
         
-        public string ip;
         public float sendKeyTimeout = 10f;
         
         public void SendWebSocketMessageAES(string eventName, string data)
@@ -62,12 +62,6 @@ namespace Core.NetworkModule.Controller
             _socket.Emit("clientAESKey", 
                     this.GetModel<EncryptionProvider>().AESEncrytedKey);
             _sendKeyDeltaTime = sendKeyTimeout;
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            OnInit();
         }
         
         void Update()
@@ -105,8 +99,9 @@ namespace Core.NetworkModule.Controller
             await _socket.DisconnectAsync();
         }
 
-        public async void OnInit()
+        public void OnInit(string ip)
         {
+            Debug.Log("Connecting to " + ip);
             this.GetModel<EncryptionProvider>().SetServerKey("<RSAKeyValue><Modulus>iDk6uA51M3XpWp/6rbjPMrJUqGPZXowRJKODTxx1iTFZUi/IgGWL3el1QrI72c8lMS/gAsadUlDw8n6cch8kMQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
             
             var uri = new Uri("http://"+ ip + ":3000");
@@ -199,6 +194,10 @@ namespace Core.NetworkModule.Controller
                 _sendKeyDeltaTime = 0;
                 this.GetModel<FirebaseAuthModel>().IsSentToken = false;
             };
+        }
+
+        public async Task Connect()
+        {
             await _socket.ConnectAsync();
         }
 

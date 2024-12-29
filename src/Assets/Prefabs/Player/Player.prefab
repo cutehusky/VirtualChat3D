@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 6776801379692114092}
   - component: {fileID: -1760217871635971076}
   - component: {fileID: 747561648594120540}
+  - component: {fileID: -9191738335111249685}
+  - component: {fileID: -7039731323890234811}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -73,6 +75,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookPoint: {fileID: 2108279936489380412}
+  animator: {fileID: 0}
+  vrm10Instance: {fileID: 0}
   speedMultiply: 1
   moveSpeed: 2
   crouchSpeed: 1.5
@@ -91,7 +95,7 @@ MonoBehaviour:
   groundCheckOffset: 0.5
   groundCheckMask:
     serializedVersion: 2
-    m_Bits: 9
+    m_Bits: 73
   mainCamera: {fileID: 0}
   topClamp: 60
   bottomClamp: -40
@@ -139,6 +143,34 @@ MonoBehaviour:
     TransitionDuration: 0.25
     TriggerNameHash: 1058437765
     TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 521822810
+    DestinationState: 1565939373
+    TransitionDuration: 0.25
+    TriggerNameHash: -738730109
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 521822810
+    DestinationState: -1514526622
+    TransitionDuration: 0.25
+    TriggerNameHash: -1031419995
+    TransitionIndex: 2
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 521822810
+    DestinationState: 1997956136
+    TransitionDuration: 0.25
+    TriggerNameHash: -686758620
+    TransitionIndex: 3
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 521822810
+    DestinationState: 1621571009
+    TransitionDuration: 0.25
+    TriggerNameHash: 1316085542
+    TransitionIndex: 4
   m_Animator: {fileID: -4974855579738746086}
 --- !u!143 &6776801379692114092
 CharacterController:
@@ -206,6 +238,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f06b1e107f84072a703868656356197, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-9191738335111249685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360012149169474031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf755e1e5fb043aab82185871dc63836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7039731323890234811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360012149169474031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09aee4eb0d94cd2ad88edbefdb41da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1822475505702034118
@@ -338,7 +394,7 @@ MonoBehaviour:
     Enabled: 1
     CollisionFilter:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 72
     IgnoreTag: 
     CameraRadius: 0.2
     DampingIntoCollision: 0
@@ -370,7 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CollideAgainst:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
   IgnoreTag: 
   TransparentLayers:
     serializedVersion: 2

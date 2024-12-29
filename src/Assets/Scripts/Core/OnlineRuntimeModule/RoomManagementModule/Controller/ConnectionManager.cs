@@ -54,11 +54,8 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                 NetworkManager.Singleton.Shutdown();
         }
 
-        public ChatSession ChatSession;
-
         public override void OnInit(List<ViewBase> view)
         {
-            ChatSession = new();
             _hostRoomView = view[0] as HostRoomView;
             _joinRoomView = view[1] as JoinRoomView;
             _characterControlView = view[2] as CharacterControlView;
@@ -70,7 +67,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                 if (!NetworkManager.Singleton.IsHost)
                     return;
                 if (!_joinedUserListView.gameObject.activeSelf)
-                    _joinedUserListView.Display();
+                    _joinedUserListView.Display(false);
                 else
                     _joinedUserListView.Hide();
             });
@@ -85,6 +82,16 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
                 AppMain.Instance.OpenCharacterControlView();
                 this.GetModel<RoomDataModel>().CurrentHostRoomJoinedUser.Clear();
                 Host(_hostRoomView.ip.Text, Convert.ToUInt16(_hostRoomView.port.Text));
+            });
+            _characterControlView.openEmotion.onClick.AddListener(() =>
+            {
+                _characterControlView.emotionList.gameObject.SetActive(!_characterControlView.emotionList.gameObject
+                    .activeSelf);
+            });
+            _characterControlView.openAnimation.onClick.AddListener(() =>
+            {
+                _characterControlView.animationList.gameObject.SetActive(!_characterControlView.animationList.gameObject
+                    .activeSelf);
             });
             _joinRoomView.join.onClick.AddListener(() =>
             {

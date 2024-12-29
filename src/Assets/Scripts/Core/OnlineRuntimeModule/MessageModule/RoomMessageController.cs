@@ -23,6 +23,16 @@ namespace Core.OnlineRuntimeModule.MessageModule
             }
         }
 
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            if (IsOwner)
+            {
+                this.GetModel<RoomMessageDataModel>().ChatSession.ChatData.Clear();
+                _roomMessageView.RefreshList();
+            }
+        }
+
         public void OnInit(RoomMessageView view)
         {
             _roomMessageView = view; 
@@ -39,10 +49,7 @@ namespace Core.OnlineRuntimeModule.MessageModule
             });
             this.GetModel<PlayerInputAction>().GetTrigger("OpenChatView").Register(() =>
             {
-                _roomMessageView.Display();
-                _roomMessageView.Render(
-                    this.GetModel<RoomMessageDataModel>().ChatSession,
-                    this.GetModel<UserProfileDataModel>().UserProfileData.UserId);
+                _roomMessageView.Display(false);
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
             this.GetModel<PlayerInputAction>().GetTrigger("CloseChatView").Register(() =>
             {
@@ -52,6 +59,9 @@ namespace Core.OnlineRuntimeModule.MessageModule
             {
                 _roomMessageView.RefreshList();
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
+            _roomMessageView.Render(
+                this.GetModel<RoomMessageDataModel>().ChatSession,
+                this.GetModel<UserProfileDataModel>().UserProfileData.UserId);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -63,6 +73,7 @@ namespace Core.OnlineRuntimeModule.MessageModule
         [ClientRpc]
         public void SendMessageClientRpc(string userID, string message)
         {
+            Debug.Log("content");
             this.GetModel<RoomMessageDataModel>().ChatSession.ChatData.Add(new ChatMessage()
             {
                 Content = message,

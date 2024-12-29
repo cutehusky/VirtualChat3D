@@ -124,7 +124,7 @@ namespace Core.MessageModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             LoadMessage(chatSessionId, friendId);
-            _messageView.Display();
+            _messageView.Display(this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin);
             _messageView.Render(this.GetModel<MessageDataModel>());
             return _messageView;
         }

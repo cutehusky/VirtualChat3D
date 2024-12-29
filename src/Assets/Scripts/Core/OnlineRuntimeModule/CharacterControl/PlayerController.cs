@@ -9,6 +9,7 @@ using Unity.Cinemachine;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UniVRM10;
 using Utilities.AvgPool;
 using Utilities.Netcode;
 using Random = UnityEngine.Random;
@@ -21,7 +22,8 @@ namespace Core.OnlineRuntimeModule.CharacterControl
         private readonly NetworkVariable<FixedString512Bytes> _modelName = new("",
             NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-        private Animator _animator;
+        public Animator animator;
+        public Vrm10Instance vrm10Instance;
         private Transform _actorTransform;
         private CharacterController _controller;
         
@@ -102,7 +104,8 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                     vrm.transform.SetParent(transform, false);
                     GetComponent<ClientAnimator>().Animator.avatar = vrm.GetComponent<Animator>().avatar;
                     vrm.GetComponent<Animator>().enabled = false;
-                    _animator = GetComponent<ClientAnimator>().Animator;
+                    animator = GetComponent<ClientAnimator>().Animator;
+                    vrm10Instance = vrm.GetComponent<Vrm10Instance>();
                     transform.position = new Vector3(Random.value * 5, 0, 0);
                     AssignAnimationIDs();
                 }));
@@ -140,6 +143,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                     vrm.transform.SetParent(transform, false);
                     GetComponent<ClientAnimator>().Animator.avatar = vrm.GetComponent<Animator>().avatar;
                     vrm.GetComponent<Animator>().enabled = false;
+                    vrm10Instance = vrm.GetComponent<Vrm10Instance>();
                 });
             }
         }
@@ -190,11 +194,11 @@ namespace Core.OnlineRuntimeModule.CharacterControl
         
         protected virtual void OnAnimatorMove()
         {
-            if (_animator != null)
+            if (animator != null)
                 if (!_isJumping && !_isMidAir)
                 {
-                    _moveAvg.Add(_animator.velocity);
-                    var moveDir = _animator.deltaPosition;
+                    _moveAvg.Add(animator.velocity);
+                    var moveDir = animator.deltaPosition;
                     moveDir.y = _verticalVelocity * Time.deltaTime;
                     MoveActor(moveDir);
                 } else {
@@ -219,13 +223,13 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                     , groundCheckOffset - radius 
                       + 2 * _controller.skinWidth + fallThreshold
                     , groundCheckMask);
-            _animator.SetBool(_animGroundedID, _isGrounded);
+            animator.SetBool(_animGroundedID, _isGrounded);
         }
 
         private void SetGravity(float v = -2)
         {
             _verticalVelocity = v;
-            _animator.SetFloat(_animYSpeedID, _verticalVelocity
+            animator.SetFloat(_animYSpeedID, _verticalVelocity
                 , speedDamp, Time.deltaTime);
         }
         
@@ -235,7 +239,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                 _verticalVelocity += (_verticalVelocity < 0
                     ? gravity * fallMultiply * Time.deltaTime
                     : gravity * Time.deltaTime);
-            _animator.SetFloat(_animYSpeedID, _verticalVelocity
+            animator.SetFloat(_animYSpeedID, _verticalVelocity
                 , speedDamp, Time.deltaTime);
         }
 
@@ -252,13 +256,13 @@ namespace Core.OnlineRuntimeModule.CharacterControl
             _animCrouchID = Animator.StringToHash("isCrouching");
 
             // initial value
-            _animator.SetFloat(_animMotionMultipleID, (1 / _animator.humanScale) * speedMultiply);
-            _animator.SetFloat(_animMoveSpeedID, 0);
-            _animator.SetFloat(_animMotionScaleID, 1 / _animator.humanScale);
-           _animator.SetFloat(_animYSpeedID, 0);
-           _animator.SetBool(_animGroundedID, true);
-           _animator.SetBool(_animFreeFallID, false);
-           _animator.SetBool(_animCrouchID, false);
+            animator.SetFloat(_animMotionMultipleID, (1 / animator.humanScale) * speedMultiply);
+            animator.SetFloat(_animMoveSpeedID, 0);
+            animator.SetFloat(_animMotionScaleID, 1 / animator.humanScale);
+            animator.SetFloat(_animYSpeedID, 0);
+            animator.SetBool(_animGroundedID, true);
+            animator.SetBool(_animFreeFallID, false);
+            animator.SetBool(_animCrouchID, false);
         }
         
         private void MoveActor(Vector3 moveDir)
@@ -282,10 +286,14 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         private void InputRegister()
         {
-            this.GetModel<PlayerInputAction>().GetVector2Event("Look").Register(Look);
-            this.GetModel<PlayerInputAction>().GetVector2Event("Move").Register(Move);
-            this.GetModel<PlayerInputAction>().GetBoolEvent("Sprint").Register(SetSprint);
-            this.GetModel<PlayerInputAction>().GetTrigger("Jump").Register(Jump);
+            this.GetModel<PlayerInputAction>().GetVector2Event("Look").Register(Look)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetVector2Event("Move").Register(Move)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetBoolEvent("Sprint").Register(SetSprint)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetTrigger("Jump").Register(Jump)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
         }
         
 
@@ -326,7 +334,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
         
         public void Update()
         {
-            if (_animator == null || !IsOwner)
+            if (animator == null || !IsOwner)
                 return;
             GroundCheck();
             Timeout();
@@ -345,7 +353,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                 {
                     _isJumping = false;
                     _isMidAir = true;
-                    _animator.SetBool(_animFreeFallID, true);
+                    animator.SetBool(_animFreeFallID, true);
                     _jumpTimeoutDelta = jumpTimeout;
                 }
             } else if (_isMidAir)
@@ -356,7 +364,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                 {
                     _freeFallTimeoutDelta = freeFallTimeout;
                     _isMidAir = false;
-                    _animator.SetBool(_animFreeFallID, false);
+                    animator.SetBool(_animFreeFallID, false);
                 }
             } else
             {
@@ -366,17 +374,17 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                 if (!_isGrounded && _freeFallTimeoutDelta <= 0)
                 {
                     _isMidAir = true;
-                    _animator.SetBool(_animFreeFallID, true);
+                    animator.SetBool(_animFreeFallID, true);
                 }
             }
         }
 
         protected virtual void MoveAndRotate(Vector2 moveDir, float speed)
         {
-            _animator.SetFloat(_animMoveSpeedID, moveDir.magnitude * speed,
+            animator.SetFloat(_animMoveSpeedID, moveDir.magnitude * speed,
                 speedDamp, Time.deltaTime);
-            _animator.SetFloat(_animMotionMultipleID,
-                (1 / _animator.humanScale) * speedMultiply * Mathf.Min(moveDir.magnitude,1),
+            animator.SetFloat(_animMotionMultipleID,
+                (1 / animator.humanScale) * speedMultiply * Mathf.Min(moveDir.magnitude,1),
                 speedDamp, Time.deltaTime);
             if (moveDir.sqrMagnitude * speed > Threshold)
                 _rotationTarget = Mathf.Atan2(moveDir.x, moveDir.y) * Mathf.Rad2Deg 

@@ -20,7 +20,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
             AppMain.Instance.CloseCurrentView();
             LoadRoomsData();
             this.GetModel<RoomDataModel>().CurrentHostRoomData = null;
-            _hostRoomView.Display();
+            _hostRoomView.Display(this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin);
             _hostRoomView.currentActiveRoom = "";
             _hostRoomView.Render(this.GetModel<RoomDataModel>());
             return _hostRoomView;
@@ -29,7 +29,7 @@ namespace Core.OnlineRuntimeModule.RoomManagementModule.Controller
         public ViewBase OpenJoinRoomView()
         {
             AppMain.Instance.CloseCurrentView();
-            _joinRoomView.Display();
+            _joinRoomView.Display(this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin);
             _joinRoomView.Render(null);
             return _joinRoomView;
         }

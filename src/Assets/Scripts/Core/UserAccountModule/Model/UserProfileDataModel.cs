@@ -6,13 +6,21 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
-using static Unity.Networking.Transport.Utilities.ReliableUtility;
 
 namespace Core.UserAccountModule.Model
 {
     public class UserProfileDataModel: ModelBase
     {
         public UserAccountData UserProfileData = new();
+
+        public void SaveProfile(FirebaseAuth auth)
+        {
+            var reference = FirebaseDatabase.DefaultInstance.GetReference($"Account/{auth.CurrentUser.UserId}");
+            reference.Child("description").SetValueAsync(UserProfileData.Description);
+            reference.Child("username").SetValueAsync(UserProfileData.Username);
+            reference.Child("birthday").SetValueAsync(((DateTimeOffset)UserProfileData.DateOfBirth).ToUnixTimeMilliseconds());
+        }
+        
         public void FetchProfile(FirebaseAuth auth, Action onSuccess, Action onFailure)
         {
             FirebaseDatabase.DefaultInstance.GetReference($"Account/{auth.CurrentUser.UserId}")

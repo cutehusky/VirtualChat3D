@@ -19,9 +19,13 @@ namespace Core.MVC
         
         public abstract void Render(ModelBase model);
 
-        public void Display()
+        public void Display(bool isAdmin)
         {
             gameObject.SetActive(true);
+            if (footer)
+                footer.users.gameObject.SetActive(isAdmin);
+            if (header)
+                header.analytic.gameObject.SetActive(isAdmin);
         }
 
         public void Hide()

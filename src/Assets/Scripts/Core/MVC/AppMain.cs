@@ -6,11 +6,11 @@ using Core.CharacterCustomizationModule.Controller;
 using Core.CharacterCustomizationModule.View;
 using Core.ChatBotModule.Controller;
 using Core.ChatBotModule.View;
-using Core.FirebaseDatabaseModule.Model;
 using Core.FriendModule.Controller;
 using Core.FriendModule.View;
 using Core.MessageModule.Controller;
 using Core.MessageModule.View;
+using Core.NetworkModule.Controller;
 using Core.OnlineRuntimeModule.CharacterControl;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.Controller;
 using Core.OnlineRuntimeModule.EnvironmentCustomize.View;
@@ -22,12 +22,12 @@ using Core.UserAccountModule.Controller;
 using Core.UserAccountModule.Model;
 using Core.UserAccountModule.View;
 using Firebase;
+using Firebase.Database;
 using Firebase.Extensions;
 using QFramework;
 using UMI;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utilities;
 
@@ -96,10 +96,16 @@ namespace Core.MVC
                 {
                     App = FirebaseApp.DefaultInstance;
                     Debug.Log("Firebase started");
-                    this.GetModel<FirebaseRealTimeDatabaseModel>().InitFirebase();
                     this.GetModel<FirebaseAuthModel>().InitFirebase();
-                    this.GetModel<FirebaseStorageModel>().InitFirebase();
-                    OnInit();
+                    FirebaseDatabase.DefaultInstance.GetReference("IP").GetValueAsync().ContinueWithOnMainThread( async (subtask) =>
+                    {
+                        if (task.IsCompleted)
+                        {
+                            SocketIO.Instance.OnInit(subtask.Result.GetValue(true) as string);
+                            OnInit();
+                            await SocketIO.Instance.Connect();
+                        }
+                    });
                 }  
                 else
                 {
@@ -111,6 +117,7 @@ namespace Core.MVC
 
         public void OnInit()
         {
+            Debug.Log("UI Initializing");
             UserAuthController = new();
             UserAuthController.OnInit(new List<ViewBase>()
             {
@@ -171,6 +178,7 @@ namespace Core.MVC
             });
             //Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
             OpenLoginView();
+            Debug.Log("UI Initialized");
         }
 
         void OnOrientationChange(HardwareOrientation orientation) {
@@ -213,7 +221,7 @@ namespace Core.MVC
         {
             CloseCurrentView();
             SetHorizontal();
-            characterControlView.Display();
+            characterControlView.Display(false);
             characterControlView.Render(null);
             currentView = characterControlView;
         }

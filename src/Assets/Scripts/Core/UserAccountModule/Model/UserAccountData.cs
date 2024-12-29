@@ -11,6 +11,7 @@ namespace Core.UserAccountModule.Model
         public DateTime DateOfBirth;
         public string Email;
         public string UserId = "";
+        public bool IsAdmin = false;
         //public bool IsOnline;
     }
 }
