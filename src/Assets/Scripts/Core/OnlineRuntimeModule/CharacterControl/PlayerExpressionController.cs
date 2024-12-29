@@ -8,14 +8,13 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 {
     public class PlayerExpressionController : NetworkBehaviour, IController
     {
-        public Vrm10Instance vrm10Instance;
+        private PlayerController _playerController;
 
         public void Start()
         {
             if (IsOwner)
-            {
                 InputRegister();
-            }
+            _playerController = GetComponent<PlayerController>();
         }
 
         public void InputRegister()
@@ -80,6 +79,9 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         public void Relax()
         {
+            if (!_playerController || !_playerController.vrm10Instance)
+                return;
+            var vrm10Instance = _playerController.vrm10Instance;
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Relaxed, 1);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Angry, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Surprised, 0);
@@ -90,6 +92,9 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         public void Angry()
         {
+            if (!_playerController || !_playerController.vrm10Instance)
+                return;
+            var vrm10Instance = _playerController.vrm10Instance;
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Relaxed, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Angry, 1);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Surprised, 0);
@@ -100,6 +105,9 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         public void Surprised()
         {
+            if (!_playerController || !_playerController.vrm10Instance)
+                return;
+            var vrm10Instance = _playerController.vrm10Instance;
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Relaxed, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Angry, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Surprised, 1);
@@ -110,6 +118,9 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         public void Sad()
         {
+            if (!_playerController || !_playerController.vrm10Instance)
+                return;
+            var vrm10Instance = _playerController.vrm10Instance;
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Relaxed, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Angry, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Surprised, 0);
@@ -120,6 +131,9 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         public void Fun()
         {
+            if (!_playerController || !_playerController.vrm10Instance)
+                return;
+            var vrm10Instance = _playerController.vrm10Instance;
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Relaxed, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Angry, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Surprised, 0);
@@ -130,6 +144,9 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         public void Neutral()
         {
+            if (!_playerController || !_playerController.vrm10Instance)
+                return;
+            var vrm10Instance = _playerController.vrm10Instance;
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Relaxed, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Angry, 0);
             vrm10Instance.Runtime.Expression.SetWeight(ExpressionKey.Surprised, 0);

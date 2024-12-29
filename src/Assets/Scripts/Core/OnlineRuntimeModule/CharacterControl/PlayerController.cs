@@ -9,6 +9,7 @@ using Unity.Cinemachine;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UniVRM10;
 using Utilities.AvgPool;
 using Utilities.Netcode;
 using Random = UnityEngine.Random;
@@ -22,6 +23,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
             NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         public Animator animator;
+        public Vrm10Instance vrm10Instance;
         private Transform _actorTransform;
         private CharacterController _controller;
         
@@ -103,6 +105,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                     GetComponent<ClientAnimator>().Animator.avatar = vrm.GetComponent<Animator>().avatar;
                     vrm.GetComponent<Animator>().enabled = false;
                     animator = GetComponent<ClientAnimator>().Animator;
+                    vrm10Instance = vrm.GetComponent<Vrm10Instance>();
                     transform.position = new Vector3(Random.value * 5, 0, 0);
                     AssignAnimationIDs();
                 }));
@@ -140,6 +143,7 @@ namespace Core.OnlineRuntimeModule.CharacterControl
                     vrm.transform.SetParent(transform, false);
                     GetComponent<ClientAnimator>().Animator.avatar = vrm.GetComponent<Animator>().avatar;
                     vrm.GetComponent<Animator>().enabled = false;
+                    vrm10Instance = vrm.GetComponent<Vrm10Instance>();
                 });
             }
         }
@@ -282,10 +286,14 @@ namespace Core.OnlineRuntimeModule.CharacterControl
 
         private void InputRegister()
         {
-            this.GetModel<PlayerInputAction>().GetVector2Event("Look").Register(Look);
-            this.GetModel<PlayerInputAction>().GetVector2Event("Move").Register(Move);
-            this.GetModel<PlayerInputAction>().GetBoolEvent("Sprint").Register(SetSprint);
-            this.GetModel<PlayerInputAction>().GetTrigger("Jump").Register(Jump);
+            this.GetModel<PlayerInputAction>().GetVector2Event("Look").Register(Look)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetVector2Event("Move").Register(Move)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetBoolEvent("Sprint").Register(SetSprint)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<PlayerInputAction>().GetTrigger("Jump").Register(Jump)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
         }
         
 

@@ -89,7 +89,7 @@ namespace Core.AdminModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             LoadUserList();
-            _userListView.Display();
+            _userListView.Display(this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin);
             _userListView.Render(this.GetModel<UserAccountDataModel>());
             return _userListView;
         }

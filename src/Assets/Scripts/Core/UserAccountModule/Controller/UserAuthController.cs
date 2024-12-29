@@ -21,7 +21,7 @@ namespace Core.UserAccountModule.Controller
         public ViewBase OpenSignUpView()
         {
             AppMain.Instance.CloseCurrentView();
-            _signUpView.Display();
+            _signUpView.Display(false);
             _signUpView.Render(null);
             return _signUpView;
         }
@@ -29,7 +29,7 @@ namespace Core.UserAccountModule.Controller
         public ViewBase OpenLoginView()
         {
             AppMain.Instance.CloseCurrentView();
-            _loginView.Display();
+            _loginView.Display(false);
             _loginView.Render(null);
             return _loginView;
         }
@@ -240,6 +240,11 @@ namespace Core.UserAccountModule.Controller
                     return;
                 }
                 SignOut();
+            });
+            SocketIO.Instance.AddUnityCallback("fetchAdminReply", (res) =>
+            {
+                Debug.Log(res.GetValue<AdminRepPacket>().res);
+                this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin = res.GetValue<AdminRepPacket>().res;
             });
             SocketIO.Instance.AddUnityCallback("logout", (res) =>
             {

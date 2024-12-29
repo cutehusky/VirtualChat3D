@@ -68,7 +68,7 @@ namespace Core.CharacterCustomizationModule.Controller
             };
             _modelListView.back.onClick.AddListener(() =>
             {
-                AppMain.Instance.OpenUserProfileView();
+                AppMain.Instance.OpenHostRoomView();
             });
         }
 
@@ -76,7 +76,7 @@ namespace Core.CharacterCustomizationModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             this.GetModel<CharacterModelDataModel>().LoadModelList();
-            _modelListView.Display();
+            _modelListView.Display(false);
             _modelListView.Render(this.GetModel<CharacterModelDataModel>());
             return _modelListView;
         }

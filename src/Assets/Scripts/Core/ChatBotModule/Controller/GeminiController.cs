@@ -18,12 +18,17 @@ namespace Core.ChatBotModule.Controller
         
         private async void OnChat(string text)
         {
+            if (this.GetModel<GeminiDataModel>().IsProcessing)
+                return;
             var str = await this.GetModel<GeminiDataModel>().GetResponse(text);
-            Debug.Log(str);
-            str = ExpressionControl(str);
-            Debug.Log(str);
+            if (!this.GetModel<GeminiDataModel>().IsProcessing)
+            {
+                Debug.Log(str);
+                str = ExpressionControl(str);
+                Debug.Log(str);
+                _chatBotView.send.interactable = true;
+            } 
             AddMessage("ChatBot", str);
-            _chatBotView.send.interactable = true;
             _chatBotView.newChat.interactable = true;
         }
 
@@ -42,10 +47,10 @@ namespace Core.ChatBotModule.Controller
             {
                 _chatBotView.chatBotExpressionControl.Angry();
                 chatContent = chatContent.Replace("*Angry*", "");
-            } else if (chatContent.IndexOf("*Surprised*", StringComparison.Ordinal) != -1)
+            } else if (chatContent.IndexOf("*Surprise*", StringComparison.Ordinal) != -1)
             {
                 _chatBotView.chatBotExpressionControl.Surprised();
-                chatContent = chatContent.Replace("*Surprised*", "");
+                chatContent = chatContent.Replace("*Surprise*", "");
             } else if (chatContent.IndexOf("*Neutral*", StringComparison.Ordinal) != -1)
             {
                 _chatBotView.chatBotExpressionControl.Neutral();
@@ -61,7 +66,7 @@ namespace Core.ChatBotModule.Controller
             {
                 model.AddComponent<ExpressionControl>().vrm10Instance = model.GetComponent<Vrm10Instance>();
                 this.GetModel<GeminiDataModel>().ChatBotAvatar = model;
-                _chatBotView.Display();
+                _chatBotView.Display(false);
                 _chatBotView.Render(this.GetModel<GeminiDataModel>());
             }));
         }

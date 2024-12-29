@@ -14,7 +14,7 @@ namespace Core.ChatBotModule.Model
         private List<GeminiContent> _history;
         public ChatSession ChatHistory;
         public GameObject ChatBotAvatar;
-        private const string ChatBotModelId = "gemini-1.5-flash-002";
+        private const string ChatBotModelId = "gemini-1.5-pro";
         public bool IsProcessing;
 
         protected override void OnInit()
@@ -34,8 +34,6 @@ namespace Core.ChatBotModule.Model
 
         public async Task<string> GetResponse(string text)
         {
-            if (IsProcessing)
-                return "";
             _history.Add(GeminiContent.GetContent(text, GeminiRole.User));
             IsProcessing = true;
             var response = await GeminiManager.Instance.Request<GeminiChatResponse>(
@@ -44,9 +42,9 @@ namespace Core.ChatBotModule.Model
                     Contents = _history.ToArray(),
                 } 
             );
-            IsProcessing = false;
             if (response.Candidates == null || response.Candidates.Length == 0)
-                return "";
+                return "No internet or your message violate the Gemini's ToS, Please start a new chat";
+            IsProcessing = false;
             _history.Add(response.Candidates[0].Content);
             return response.Parts[0].Text;
         }

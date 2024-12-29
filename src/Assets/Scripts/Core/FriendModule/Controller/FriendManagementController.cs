@@ -39,6 +39,8 @@ namespace Core.FriendModule.Controller
             SocketIO.Instance.AddUnityCallback("viewFriendReply", (res) => {
                var packets = res.GetValue<UserDataPacket[]>();
                 this.GetModel<FriendDataModel>().FriendList.Clear();
+                if (packets == null)
+                    return;
                 foreach (var packet in packets) {
                     this.GetModel<FriendDataModel>().FriendList.Add(packet.uid,new FriendData()
                     {
@@ -151,7 +153,7 @@ namespace Core.FriendModule.Controller
         {
             AppMain.Instance.CloseCurrentView();
             LoadFriendList();
-            _friendListView.Display();
+            _friendListView.Display(this.GetModel<UserProfileDataModel>().UserProfileData.IsAdmin);
             _friendListView.Render(this.GetModel<FriendDataModel>());
             return _friendListView;
         }

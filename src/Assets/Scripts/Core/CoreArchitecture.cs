@@ -1,7 +1,6 @@
 ﻿using Core.AdminModule.Model;
 using Core.CharacterCustomizationModule.Model;
 using Core.ChatBotModule.Model;
-using Core.FirebaseDatabaseModule.Model;
 using Core.FriendModule.Model;
 using Core.MessageModule.Model;
 using Core.NetworkModule.Model;
@@ -30,8 +29,6 @@ namespace Core
             RegisterModel(new UserAccountDataModel());
             RegisterModel(new SystemInfoDataModel());
             RegisterModel(new FirebaseAuthModel());
-            RegisterModel(new FirebaseRealTimeDatabaseModel());
-            RegisterModel(new FirebaseStorageModel());
             RegisterModel(new RoomMessageDataModel());
         }
     }

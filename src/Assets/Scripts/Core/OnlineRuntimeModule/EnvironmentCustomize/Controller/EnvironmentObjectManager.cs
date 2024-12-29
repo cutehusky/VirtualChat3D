@@ -35,7 +35,7 @@ namespace Core.OnlineRuntimeModule.EnvironmentCustomize.Controller
             {
                 _environmentEditView.LoadItem();
             });
-            _environmentEditView.Display();
+            _environmentEditView.Display(false);
             _environmentEditView.Render(this.GetModel<EnvironmentDataModel>());
             return _environmentEditView;
         }

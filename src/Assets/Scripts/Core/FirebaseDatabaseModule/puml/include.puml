@@ -1,4 +1,0 @@
-@startuml
-!include .\\.\Model\FirebaseRealTimeDatabaseModel.puml
-!include .\\.\Model\FirebaseStorageModel.puml
-@enduml
