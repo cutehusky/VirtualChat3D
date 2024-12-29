@@ -97,6 +97,7 @@ namespace Core.MVC
                     App = FirebaseApp.DefaultInstance;
                     Debug.Log("Firebase started");
                     this.GetModel<FirebaseAuthModel>().InitFirebase();
+                    FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
                     FirebaseDatabase.DefaultInstance.GetReference("IP").GetValueAsync().ContinueWithOnMainThread( async (subtask) =>
                     {
                         if (task.IsCompleted)

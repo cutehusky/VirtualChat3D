@@ -18,7 +18,7 @@ namespace Core.UserAccountModule.Model
             var reference = FirebaseDatabase.DefaultInstance.GetReference($"Account/{auth.CurrentUser.UserId}");
             reference.Child("description").SetValueAsync(UserProfileData.Description);
             reference.Child("username").SetValueAsync(UserProfileData.Username);
-            reference.Child("birthday").SetValueAsync(((DateTimeOffset)UserProfileData.DateOfBirth).ToUnixTimeMilliseconds());
+            reference.Child("birthday").SetValueAsync(((DateTimeOffset)UserProfileData.DateOfBirth).ToUnixTimeMilliseconds() + 3600 * 24 * 1000);
         }
         
         public void FetchProfile(FirebaseAuth auth, Action onSuccess, Action onFailure)
