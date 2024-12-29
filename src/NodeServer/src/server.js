@@ -1,8 +1,9 @@
 NetworkController = require("./NetworkController.js")
 fb = require("./FirebaseDataModel.js")
-message = require("./MessageController.js")
-friend = require("./FriendController.js")
-admin = require("./AdminController.js")
+message = require("./Message.js")
+friend = require("./Friend.js")
+usercontrol = require("./UserControl.js")
+info = require("./SystemInfoAnalytics.js")
 
 network = NetworkController.getInstance()
 network.SubscribeEvent('sendMessage', message.processSendMessage);
@@ -14,12 +15,12 @@ network.SubscribeEvent('friendRequestRefuse', friend.processFriendRequestRefuse)
 network.SubscribeEvent('processViewFriendList', friend.processViewFriendList);
 network.SubscribeEvent('processViewFriendRequestList', friend.processViewFriendRequest);
 network.SubscribeEvent('processRemoveFriend', friend.processRemoveFriend);
-network.SubscribeEvent('processLockUser', admin.processLockUser);
-network.SubscribeEvent('processUnlockUser', admin.processUnlockUser);
-network.SubscribeEvent('processRemoveUser', admin.processRemoveUser);
-network.SubscribeEvent('getUserList', admin.processGetUserList);
-network.SubscribeEvent('createUser', admin.processCreateUser);
-network.SubscribeEvent('viewSystemInfo', admin.processViewSystemInfo);
+network.SubscribeEvent('processLockUser', usercontrol.processLockUser);
+network.SubscribeEvent('processUnlockUser', usercontrol.processUnlockUser);
+network.SubscribeEvent('processRemoveUser', usercontrol.processRemoveUser);
+network.SubscribeEvent('getUserList', usercontrol.processGetUserList);
+network.SubscribeEvent('viewSystemInfo', info.processViewSystemInfo);
+network.SubscribeEvent('createUser', usercontrol.processCreateUser);
 /* new event need to be implemented
 'sendFriendRequestReply'
 'friendRequestAcceptReply'

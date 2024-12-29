@@ -34,16 +34,17 @@ class NetworkController {
         this.#server.listen(port, () => {
             console.log(`Server is up and running on http://localhost:${port}`);
         });
-        this.PushIP();
+        Firebase.getInstance();
     }
 
     runEvents(socket) {
         console.log(`client: ${socket.id} connected`);
+        this.clientProcess[socket.id] = false;
         socket.on('fetch', (data) => {
             //let uid = Firebase.getInstance().verifyToken(data.token);
             console.log(`fetched uid from ${data.uid}`);
 
-            if (this.clientList[data.uid])
+            if (this.clientList[data.uid] && this.clientList[data.uid].id != socket.id)
                 this.clientList[data.uid].emit("logout", null);
 
             for (const uid of Object.keys(this.clientList)) {
@@ -56,7 +57,6 @@ class NetworkController {
             Firebase.getInstance().adminChecker(socket, data.uid);
             socket.emit('fetchReply', data);
             this.clientList[data.uid] = socket;
-            this.clientProcess[socket.id] = false;
         })
         socket.on('clear', (data) => {
             //let uid = Firebase.getInstance().verifyToken(data.token);
@@ -82,18 +82,6 @@ class NetworkController {
                 this.clientProcess[socket.id] = true;
                 callback(socket, data);
                 this.clientProcess[socket.id] = false;
-            }
-        }
-    }
-
-    PushIP() {
-        const interfaces = os.networkInterfaces();
-        const firebaseInstance  = Firebase.getInstance();
-        for (const interfaceName in interfaces) {
-            for (const net of interfaces[interfaceName]) {
-                if (net.family === 'IPv4' && !net.internal) {
-                    firebaseInstance.ref(`IP/${interfaceName}`).set(net.address);
-                }
             }
         }
     }
