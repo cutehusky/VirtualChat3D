@@ -3,6 +3,10 @@ class CharacterControlView {
     + outRoom : Button
     + openUserList : Button
     + openChat : Button
+    + openEmotion : Button
+    + openAnimation : Button
+    + emotionList : EmotionList
+    + animationList : AnimationList
     + <<override>> Render(model:ModelBase) : void
     + <<override>> OnInit() : void
 }

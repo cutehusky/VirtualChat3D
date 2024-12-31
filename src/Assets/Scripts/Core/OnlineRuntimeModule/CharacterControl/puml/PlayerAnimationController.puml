@@ -1,0 +1,10 @@
+@startuml
+class PlayerAnimationController {
+    - _playerController : PlayerController
+    + Start() : void
+    + InputRegister() : void
+    + GetArchitecture() : IArchitecture
+}
+NetworkBehaviour <|-- PlayerAnimationController
+IController <|-- PlayerAnimationController
+@enduml

@@ -10,7 +10,6 @@ class ConnectionManager {
     + Host(ip:string, port:ushort) : void
     + KickUser(id:ulong) : void
     + Disconnect() : void
-    + ChatSession : ChatSession
     + <<override>> OnInit(view:List<ViewBase>) : void
     - OnClientConnected(clientId:ulong) : void
     - OnClientStopped(isHost:bool) : void

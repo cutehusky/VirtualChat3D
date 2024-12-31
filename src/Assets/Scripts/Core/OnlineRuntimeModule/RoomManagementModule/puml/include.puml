@@ -1,7 +1,6 @@
 @startuml
 !include .\\.\Controller\ConnectionManager.puml
 !include .\\.\Controller\RoomManager.puml
-!include .\\.\Model\EAccessType.puml
 !include .\\.\Model\RoomData.puml
 !include .\\.\Model\RoomDataModel.puml
 !include .\\.\View\HostRoomView.puml
@@ -9,4 +8,13 @@
 !include .\\.\View\JoinedUserListView.puml
 !include .\\.\View\JoinRoomView.puml
 !include .\\.\View\RoomListItem.puml
+ConnectionManager o-- JoinRoomView
+ConnectionManager o-- HostRoomView
+RoomManager o-- RoomDataModel
+RoomManager o-- JoinRoomView
+RoomManager o-- HostRoomView
+RoomDataModel *-- RoomData
+HostRoomView *-- RoomListItem
+ConnectionManager o-- JoinedUserListView
+JoinedUserListView *-- JoinedUserListItem
 @enduml
