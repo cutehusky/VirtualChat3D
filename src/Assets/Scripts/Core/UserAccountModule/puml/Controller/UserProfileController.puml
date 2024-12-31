@@ -2,11 +2,7 @@
 class UserProfileController {
     - _userProfileView : UserProfileView
     + OpenUserProfileView() : ViewBase
-    + LoadUserProfile() : void
-    + EditUsername() : void
-    + EditDescription() : void
-    + EditDateOfBirth() : void
-    + EditAvatar() : void
+    + SaveUserProfile() : void
     + <<override>> OnInit(view:List<ViewBase>) : void
 }
 ControllerBase <|-- UserProfileController

@@ -2,7 +2,8 @@
 class PlayerController {
     - lookPoint : Transform
     - <<readonly>> _modelName : NetworkVariable<FixedString512Bytes>
-    - _animator : Animator
+    + animator : Animator
+    + vrm10Instance : Vrm10Instance
     - _actorTransform : Transform
     - _controller : CharacterController
     + speedMultiply : float = 1f

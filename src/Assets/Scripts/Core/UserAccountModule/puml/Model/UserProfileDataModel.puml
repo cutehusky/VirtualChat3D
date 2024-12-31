@@ -1,6 +1,7 @@
 @startuml
 class UserProfileDataModel {
     + UserProfileData : UserAccountData
+    + SaveProfile(auth:FirebaseAuth) : void
     + FetchProfile(auth:FirebaseAuth, onSuccess:Action, onFailure:Action) : void
     # <<override>> OnInit() : void
 }

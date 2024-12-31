@@ -1,0 +1,14 @@
+@startuml
+class EmotionList {
+    + neutral : Button
+    + relax : Button
+    + angry : Button
+    + surprised : Button
+    + sad : Button
+    + fun : Button
+    + Awake() : void
+    + GetArchitecture() : IArchitecture
+}
+MonoBehaviour <|-- EmotionList
+IController <|-- EmotionList
+@enduml

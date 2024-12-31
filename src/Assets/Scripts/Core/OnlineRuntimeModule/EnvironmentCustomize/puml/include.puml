@@ -6,4 +6,8 @@
 !include .\\.\View\ItemObject.puml
 !include .\\.\View\ObjectListItem.puml
 !include .\\.\View\ObjectPuttingArea.puml
+EnvironmentObjectManager o-- EnvironmentEditView
+EnvironmentObjectManager o-- EnvironmentDataModel
+EnvironmentDataModel *-- EnvironmentItemData
+EnvironmentEditView *-- ObjectListItem
 @enduml

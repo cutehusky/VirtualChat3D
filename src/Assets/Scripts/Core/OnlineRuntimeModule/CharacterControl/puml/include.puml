@@ -1,6 +1,10 @@
 @startuml
+!include .\\.\AnimationList.puml
 !include .\\.\CharacterControlView.puml
-!include .\\.\EAnimation.puml
+!include .\\.\EmotionList.puml
+!include .\\.\PlayerAnimationController.puml
 !include .\\.\PlayerController.puml
 !include .\\.\PlayerExpressionController.puml
+CharacterControlView o-- EmotionList
+CharacterControlView o-- AnimationList
 @enduml

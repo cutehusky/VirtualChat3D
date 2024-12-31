@@ -1,6 +1,8 @@
 @startuml
 class PlayerExpressionController {
-    + vrm10Instance : Vrm10Instance
+    - _playerController : PlayerController
+    + Start() : void
+    + InputRegister() : void
     + SetExpressionServerRpc(v:int) : void
     + SetExpressionClientRpc(v:int) : void
     + Relax() : void
@@ -9,6 +11,8 @@ class PlayerExpressionController {
     + Sad() : void
     + Fun() : void
     + Neutral() : void
+    + GetArchitecture() : IArchitecture
 }
 NetworkBehaviour <|-- PlayerExpressionController
+IController <|-- PlayerExpressionController
 @enduml

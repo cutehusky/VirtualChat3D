@@ -6,5 +6,6 @@ class UserAccountData {
     + DateOfBirth : DateTime
     + Email : string
     + UserId : string = ""
+    + IsAdmin : bool = false
 }
 @enduml

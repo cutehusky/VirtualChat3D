@@ -1,0 +1,12 @@
+@startuml
+class AnimationList {
+    + laughing : Button
+    + applause : Button
+    + crying : Button
+    + waves : Button
+    + Awake() : void
+    + GetArchitecture() : IArchitecture
+}
+MonoBehaviour <|-- AnimationList
+IController <|-- AnimationList
+@enduml

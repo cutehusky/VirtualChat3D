@@ -11,6 +11,9 @@
 UserListView *-- UserListItem
 UserManagementController o-- UserListView
 UserManagementController o-- UserAccountDataModel
+UserAccountDataModel *-- UserData
 SystemInfoController o-- SystemMonitorView
 SystemInfoController o-- SystemInfoDataModel
+SystemMonitorView *-- AnalyticsListItem
+SystemInfoDataModel *-- Country
 @enduml
